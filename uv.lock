@@ -21,6 +21,15 @@ wheels = [
 ]
 
 [[package]]
+name = "appdirs"
+version = "1.4.4"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/d7/d8/05696357e0311f5b5c316d7b95f46c669dd9c15aaeecbb48c7d0aeb88c40/appdirs-1.4.4.tar.gz", hash = "sha256:7d5d0167b2b1ba821647616af46a749d1c653740dd0d2415100fe26e27afdf41", size = 13470, upload-time = "2020-05-11T07:59:51.037Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/3b/00/2344469e2084fb287c2e0b57b72910309874c3245463acd6cf5e3db69324/appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128", size = 9566, upload-time = "2020-05-11T07:59:49.499Z" },
+]
+
+[[package]]
 name = "appnope"
 version = "0.1.4"
 source = { registry = "https://pypi.org/simple" }
@@ -300,6 +309,15 @@ wheels = [
 ]
 
 [[package]]
+name = "chevron"
+version = "0.14.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/15/1f/ca74b65b19798895d63a6e92874162f44233467c9e7c1ed8afd19016ebe9/chevron-0.14.0.tar.gz", hash = "sha256:87613aafdf6d77b6a90ff073165a61ae5086e21ad49057aa0e53681601800ebf", size = 11440, upload-time = "2021-01-02T22:47:59.233Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/52/93/342cc62a70ab727e093ed98e02a725d85b746345f05d2b5e5034649f4ec8/chevron-0.14.0-py3-none-any.whl", hash = "sha256:fbf996a709f8da2e745ef763f482ce2d311aa817d287593a5b990d6d6e4f0443", size = 11595, upload-time = "2021-01-02T22:47:57.847Z" },
+]
+
+[[package]]
 name = "click"
 version = "8.3.3"
 source = { registry = "https://pypi.org/simple" }
@@ -509,6 +527,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/30/3e/a80a8c077fd798951169626cde3e239adeba7dab75deb3555716415bd9b0/fqdn-1.5.1.tar.gz", hash = "sha256:105ed3677e767fb5ca086a0c1f4bb66ebc3c100be518f0e0d755d9eae164d89f", size = 6015, upload-time = "2021-03-11T07:16:29.08Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/cf/58/8acf1b3e91c58313ce5cb67df61001fc9dcd21be4fadb76c1a2d540e09ed/fqdn-1.5.1-py3-none-any.whl", hash = "sha256:3a179af3761e4df6eb2e026ff9e1a3033d3587bf980a0b1b2e1e5d08d7358014", size = 9121, upload-time = "2021-03-11T07:16:28.351Z" },
+]
+
+[[package]]
+name = "future"
+version = "1.0.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/a7/b2/4140c69c6a66432916b26158687e821ba631a4c9273c474343badf84d3ba/future-1.0.0.tar.gz", hash = "sha256:bd2968309307861edae1458a4f8a4f3598c03be43b97521076aebf5d94c07b05", size = 1228490, upload-time = "2024-02-21T11:52:38.461Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/da/71/ae30dadffc90b9006d77af76b393cb9dfbfc9629f339fc1574a1c52e6806/future-1.0.0-py3-none-any.whl", hash = "sha256:929292d34f5872e70396626ef385ec22355a1fae8ad29e1a734c3e43f9fbc216", size = 491326, upload-time = "2024-02-21T11:52:35.956Z" },
 ]
 
 [[package]]
@@ -1125,6 +1152,15 @@ wheels = [
 ]
 
 [[package]]
+name = "lzstring"
+version = "1.0.4"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "future" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/ab/0c/28347673b45e5f0975cdf1f6d69ede6ad049be873194c4e164d79aecd34c/lzstring-1.0.4.tar.gz", hash = "sha256:1afa61e598193fbcc211e0899f09a9679e33f9102bccc37fbfda0b7fef4d9ea2", size = 4256, upload-time = "2018-06-01T02:32:12.639Z" }
+
+[[package]]
 name = "markdown-it-py"
 version = "4.0.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1298,6 +1334,7 @@ dependencies = [
     { name = "numpy" },
     { name = "pymupdf" },
     { name = "shiny" },
+    { name = "shinylive" },
     { name = "watchdog" },
 ]
 
@@ -1318,6 +1355,7 @@ requires-dist = [
     { name = "numpy", specifier = ">=2.4.4" },
     { name = "pymupdf", specifier = ">=1.25.0" },
     { name = "shiny", specifier = ">=1.6.0" },
+    { name = "shinylive", specifier = ">=0.8.6" },
     { name = "watchdog", specifier = ">=6.0.0" },
 ]
 
@@ -2263,6 +2301,24 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/47/34/4aae4d21ae2603b40a99ce12d34848f271c076cbb112aac528242093751d/shinychat-0.2.9.tar.gz", hash = "sha256:59d48522dc0d04d0a89bbf33d3e1a9b5b21378405563d0692f1abff151f2d1aa", size = 547957, upload-time = "2026-02-09T15:58:09.117Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/8d/27/f1115e431e7156b268c5792b15a3abbe12ed5b45dd9f96f041da93ae9335/shinychat-0.2.9-py3-none-any.whl", hash = "sha256:20e2101b22dfa2eeb5318e95b622e62ddcf5f2dd8cebe870c36673dd8eb4d901", size = 561839, upload-time = "2026-02-09T15:58:07.279Z" },
+]
+
+[[package]]
+name = "shinylive"
+version = "0.8.6"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "appdirs" },
+    { name = "chevron" },
+    { name = "click" },
+    { name = "lzstring" },
+    { name = "setuptools" },
+    { name = "shiny" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/9e/e1/7086151f4d62c046403234d994a7fa259fa55fb38c38132758fb74c83db3/shinylive-0.8.6.tar.gz", hash = "sha256:b6bdc1926417ea1393902eb0819d4beca74b3d257e9f65c14afe4a54b18cdc77", size = 29549, upload-time = "2026-03-25T18:20:03.226Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ed/3c/cbcd11ce1240d76838cde05c7da63264378b9e48c3080cf63a2b440415ba/shinylive-0.8.6-py3-none-any.whl", hash = "sha256:e81e6e710c3aa942dc64ec88161eb2e34571eaf58b87766b7eb8c50c7739c5d5", size = 29424, upload-time = "2026-03-25T18:20:02.324Z" },
 ]
 
 [[package]]
