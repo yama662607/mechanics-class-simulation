@@ -109,6 +109,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
 
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../templates/styles.css">
 </head>
@@ -230,7 +273,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#はじめに" id="toc-はじめに" class="nav-link active" data-scroll-target="#はじめに">はじめに</a></li>
-  <li><a href="#intro-notation" id="toc-intro-notation" class="nav-link" data-scroll-target="#intro-notation">導入と記法</a></li>
+  <li><a href="#intro-notation" id="toc-intro-notation" class="nav-link" data-scroll-target="#intro-notation">導入と記法</a>
+  <ul class="collapse">
+  <li><a href="#polar-coordinates" id="toc-polar-coordinates" class="nav-link" data-scroll-target="#polar-coordinates">極座標系と基底ベクトルの微分</a></li>
+  </ul></li>
   <li><a href="#particle-mechanics" id="toc-particle-mechanics" class="nav-link" data-scroll-target="#particle-mechanics">質点の力学</a></li>
   <li><a href="#rigid-body" id="toc-rigid-body" class="nav-link" data-scroll-target="#rigid-body">剛体の力学</a></li>
   <li><a href="#analytical-mechanics" id="toc-analytical-mechanics" class="nav-link" data-scroll-target="#analytical-mechanics">解析力学</a></li>
@@ -266,6 +312,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="intro-notation" class="level1">
 <h1>導入と記法</h1>
 <p>ここでは力学で用いるベクトル解析、微分方程式の記法などを整理します。</p>
+<section id="polar-coordinates" class="level2">
+<h2 class="anchored" data-anchor-id="polar-coordinates">極座標系と基底ベクトルの微分</h2>
+<p>平面の極座標 <span class="math inline">(r, \theta)</span> では、位置ベクトル <span class="math inline">\vec{r}</span> は以下のように表されます。 <span class="math display"> \vec{r} = r \hat{e}_r </span> ここで、<span class="math inline">\hat{e}_r</span> は動径方向の単位ベクトルです。また、これに直交し反時計回りを正とする方向の単位ベクトルを <span class="math inline">\hat{e}_\theta</span> とします。</p>
+<p>直交座標系 (デカルト座標) の基底ベクトル <span class="math inline">\hat{i}, \hat{j}</span> は時間や位置によらず一定ですが、極座標の基底ベクトル <span class="math inline">\hat{e}_r, \hat{e}_\theta</span> は <strong>質点の位置（角度 <span class="math inline">\theta</span>）に依存して向きが変わる</strong> ため、時間微分するとゼロにはなりません。</p>
+<p>以下の図は、角度が <span class="math inline">\theta</span> から <span class="math inline">\theta + d\theta</span> へ微小に変化したときの基底ベクトルの変化 <span class="math inline">d\hat{e}_r, d\hat{e}_\theta</span> を示しています。</p>
+<div id="fig-polar-vectors" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-polar-vectors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/lectures/polar_unit_vectors.png" class="img-fluid figure-img" style="width:60.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-polar-vectors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+図&nbsp;2.1: 極座標の単位ベクトルの微分（定性的な図解）
+</figcaption>
+</figure>
+</div>
+<p>図から定性的に以下のことが分かります： 1. <strong><span class="math inline">d\hat{e}_r</span> の向き</strong>: <span class="math inline">\hat{e}_r</span> が <span class="math inline">d\theta</span> だけ回転すると、その変化分 <span class="math inline">d\hat{e}_r</span> は元のベクトルと直交する方向、すなわち <span class="math inline">\hat{e}_\theta</span> の方向を向きます。長さは <span class="math inline">1 \cdot d\theta</span> となります。 2. <strong><span class="math inline">d\hat{e}_\theta</span> の向き</strong>: <span class="math inline">\hat{e}_\theta</span> が <span class="math inline">d\theta</span> だけ回転すると、その変化分 <span class="math inline">d\hat{e}_\theta</span> は元のベクトルと直交する方向ですが、<span class="math inline">\hat{e}_r</span> とは逆向き（中心に向かう方向）となります。長さは <span class="math inline">1 \cdot d\theta</span> となります。</p>
+<p>これを時間 <span class="math inline">dt</span> で割ることで、時間微分の公式が得られます： <span class="math display"> \frac{d\hat{e}_r}{dt} = \dot{\theta} \hat{e}_\theta, \quad \frac{d\hat{e}_\theta}{dt} = -\dot{\theta} \hat{e}_r </span></p>
+<p>これらは速度と加速度の極座標成分を計算する上で最も重要な関係式です。</p>
+</section>
 </section>
 <section id="particle-mechanics" class="level1">
 <h1>質点の力学</h1>
@@ -771,17 +836,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>ここでは力学で用いるベクトル解析、微分方程式の記法などを整理します。</span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu"># 質点の力学 {#particle-mechanics}</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">## 極座標系と基底ベクトルの微分 {#polar-coordinates}</span></span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>ニュートンの運動方程式、保存則、振動現象などを扱います。</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="fu"># 剛体の力学 {#rigid-body}</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>平面の極座標 $(r, \theta)$ では、位置ベクトル $\vec{r}$ は以下のように表されます。</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>$$ \vec{r} = r \hat{e}_r $$</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>ここで、$\hat{e}_r$ は動径方向の単位ベクトルです。また、これに直交し反時計回りを正とする方向の単位ベクトルを $\hat{e}_\theta$ とします。</span>
 <span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>剛体の回転運動、慣性テンソル、オイラー方程式などを扱います。</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>直交座標系 (デカルト座標) の基底ベクトル $\hat{i}, \hat{j}$ は時間や位置によらず一定ですが、極座標の基底ベクトル $\hat{e}_r, \hat{e}_\theta$ は **質点の位置（角度 $\theta$）に依存して向きが変わる** ため、時間微分するとゼロにはなりません。</span>
 <span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="fu"># 解析力学 {#analytical-mechanics}</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>以下の図は、角度が $\theta$ から $\theta + d\theta$ へ微小に変化したときの基底ベクトルの変化 $d\hat{e}_r, d\hat{e}_\theta$ を示しています。</span>
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>最小作用の原理、ラグランジュ形式、ハミルトン形式などを扱います。</span></code></pre></div><button title="コピー" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="al">![極座標の単位ベクトルの微分（定性的な図解）](../assets/images/lectures/polar_unit_vectors.png)</span>{#fig-polar-vectors width=60%}</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>図から定性的に以下のことが分かります：</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**$d\hat{e}_r$ の向き**: $\hat{e}_r$ が $d\theta$ だけ回転すると、その変化分 $d\hat{e}_r$ は元のベクトルと直交する方向、すなわち $\hat{e}_\theta$ の方向を向きます。長さは $1 \cdot d\theta$ となります。</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**$d\hat{e}_\theta$ の向き**: $\hat{e}_\theta$ が $d\theta$ だけ回転すると、その変化分 $d\hat{e}_\theta$ は元のベクトルと直交する方向ですが、$\hat{e}_r$ とは逆向き（中心に向かう方向）となります。長さは $1 \cdot d\theta$ となります。</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>これを時間 $dt$ で割ることで、時間微分の公式が得られます：</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>$$ \frac{d\hat{e}_r}{dt} = \dot{\theta} \hat{e}_\theta, \quad \frac{d\hat{e}_\theta}{dt} = -\dot{\theta} \hat{e}_r $$</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>これらは速度と加速度の極座標成分を計算する上で最も重要な関係式です。</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="fu"># 質点の力学 {#particle-mechanics}</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>ニュートンの運動方程式、保存則、振動現象などを扱います。</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="fu"># 剛体の力学 {#rigid-body}</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>剛体の回転運動、慣性テンソル、オイラー方程式などを扱います。</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="fu"># 解析力学 {#analytical-mechanics}</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>最小作用の原理、ラグランジュ形式、ハミルトン形式などを扱います。</span></code></pre></div><button title="コピー" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
