@@ -25,7 +25,7 @@ $$ \vec{r} = r \hat{e}_r $$
 
 以下の図は、角度が $\theta$ から $\theta + d\theta$ へ微小に変化したときの基底ベクトルの変化 $d\hat{e}_r, d\hat{e}_\theta$ を示しています。
 
-![極座標の単位ベクトルの微分（定性的な図解）](../../assets/images/lectures/polar_unit_vectors.png){#fig-polar-vectors width=60%}
+![極座標の単位ベクトルの微分（定性的な図解）](../assets/images/lectures/polar_unit_vectors.png){#fig-polar-vectors width=60%}
 
 図から定性的に以下のことが分かります：
 1. **$d\hat{e}_r$ の向き**: $\hat{e}_r$ が $d\theta$ だけ回転すると、その変化分 $d\hat{e}_r$ は元のベクトルと直交する方向、すなわち $\hat{e}_\theta$ の方向を向きます。長さは $1 \cdot d\theta$ となります。
