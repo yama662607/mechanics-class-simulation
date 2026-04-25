@@ -1,0 +1,83 @@
+---
+title: "単振り子のシミュレーション"
+format: html
+---
+
+このページは力学（物理学基礎論A）のデモ用シミュレーションです。Quartoの標準機能であるObservable JS (OJS) を使用して、ブラウザ上で動作するインタラクティブなアニメーションを実装しています。
+
+## シミュレーション
+
+パラメータを変更して、単振り子の運動がどのように変化するか観察してください。
+
+```{ojs}
+//| panel: input
+viewof length = Inputs.range([0.1, 2.0], {value: 1.0, label: "振り子の長さ (m)", step: 0.1})
+viewof initialAngle = Inputs.range([-Math.PI/2, Math.PI/2], {value: Math.PI/4, label: "初期角度 (rad)", step: 0.1})
+viewof gravity = Inputs.range([1.0, 20.0], {value: 9.8, label: "重力加速度 (m/s²)", step: 0.1})
+```
+
+```{ojs}
+//| echo: false
+//| fig-cap: "単振り子のアニメーション"
+
+// 時間の経過（60fps相当）
+import { now } from "@observablehq/stdlib"
+
+// シミュレーションの状態更新
+state = {
+  const t = now / 1000; // 秒に変換
+  // ω = √(g/l)
+  const omega = Math.sqrt(gravity / length);
+  // θ(t) = θ0 * cos(ωt)
+  const angle = initialAngle * Math.cos(omega * t);
+  
+  return {
+    time: t,
+    angle: angle,
+    x: length * Math.sin(angle),
+    y: length * Math.cos(angle)
+  };
+}
+
+// 描画キャンバスの設定
+width = 400
+height = 300
+cx = width / 2
+cy = 50
+scale = 100 // 1m = 100px
+
+// SVGによる描画
+html`<svg width="${width}" height="${height}" style="background-color: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
+  <!-- 支持点 -->
+  <circle cx="${cx}" cy="${cy}" r="5" fill="#333" />
+  
+  <!-- 紐 -->
+  <line x1="${cx}" y1="${cy}" 
+        x2="${cx + state.x * scale}" y2="${cy + state.y * scale}" 
+        stroke="#666" stroke-width="2" />
+        
+  <!-- おもり -->
+  <circle cx="${cx + state.x * scale}" cy="${cy + state.y * scale}" 
+          r="15" fill="#e63946" stroke="#333" stroke-width="2" />
+</svg>`
+```
+
+## 理論的背景
+
+長さ $l$ の軽い糸に質量 $m$ のおもりをつるした単振り子の運動方程式は、以下のようになります。
+
+$$
+\frac{d^2 \theta}{dt^2} = -\frac{g}{l} \sin \theta
+$$
+
+微小振動（$\theta \ll 1$）の近似を用いると、$\sin \theta \approx \theta$ となり、方程式は単振動の形になります。
+
+$$
+\frac{d^2 \theta}{dt^2} = -\frac{g}{l} \theta
+$$
+
+この方程式の一般解は以下の通りです。
+
+$$
+\theta(t) = \theta_0 \cos\left(\sqrt{\frac{g}{l}} t + \phi \right)
+$$

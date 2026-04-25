@@ -1,0 +1,9 @@
+# Lecture material intake manifest.
+#
+# Record source files here before moving their contents into theory topics.
+# Keep private lecture PDFs/images out of git; track only the metadata needed
+# to recover where each idea came from.
+#
+# status: pending → in_progress → done
+
+materials: []

@@ -1,0 +1,85 @@
+---
+title: "演習：極座標系における速度と加速度"
+format: html
+---
+
+## 問題
+
+等角螺旋 $r = ae^{k\theta} \ (\theta > 0)$ の上を、角速度 $\dot{\theta} = \omega = \text{const}$ で運動する点があります。
+この点の速度と加速度の極座標成分 $v_r, v_\theta, a_r, a_\theta$ を求めよ。
+
+また、$a > 0$ のとき、求めた加速度の動径成分 $a_r$ が $k$ に対してどのように変化するか、定性的なグラフと共に簡潔に説明せよ。
+
+---
+
+## 解答と解説
+
+### 1. 速度と加速度の極座標成分の導出
+
+極座標 $(r, \theta)$ における速度と加速度の各成分の公式は以下の通りです。
+
+*   **速度**: $v_r = \dot{r}$, $\quad v_\theta = r\dot{\theta}$
+*   **加速度**: $a_r = \ddot{r} - r\dot{\theta}^2$, $\quad a_\theta = r\ddot{\theta} + 2\dot{r}\dot{\theta}$
+
+問題の条件より、以下の関係式が与えられています。
+
+*   $r = ae^{k\theta}$
+*   $\dot{\theta} = \omega \quad (\text{一定})$
+*   $\ddot{\theta} = 0$
+
+まず、$r$ の時間微分を計算します。合成関数の微分により、$\dot{\theta} = \omega$ を用います。
+
+$$ \dot{r} = \frac{dr}{d\theta} \cdot \frac{d\theta}{dt} = \left( ake^{k\theta} \right) \cdot \omega = ak\omega e^{k\theta} = k\omega r $$
+
+さらに、もう一度時間微分して $\ddot{r}$ を求めます。
+
+$$ \ddot{r} = \frac{d}{dt}(k\omega r) = k\omega\dot{r} = k\omega(ak\omega e^{k\theta}) = ak^2\omega^2 e^{k\theta} $$
+
+これらを公式に代入して、各成分を求めます。
+
+**速度成分:**
+$$
+\begin{align*}
+v_r &= \dot{r} = \boldsymbol{ak\omega e^{k\theta}} \\
+v_\theta &= r\dot{\theta} = (ae^{k\theta})\omega = \boldsymbol{a\omega e^{k\theta}}
+\end{align*}
+$$
+
+**加速度成分:**
+$$
+\begin{align*}
+a_r &= \ddot{r} - r\dot{\theta}^2 = ak^2\omega^2 e^{k\theta} - (ae^{k\theta})\omega^2 = \boldsymbol{a\omega^2(k^2 - 1)e^{k\theta}} \\
+a_\theta &= r\ddot{\theta} + 2\dot{r}\dot{\theta} = (ae^{k\theta})(0) + 2(ak\omega e^{k\theta})\omega = \boldsymbol{2ak\omega^2 e^{k\theta}}
+\end{align*}
+$$
+
+---
+
+### 2. 加速度の動径成分 $a_r$ の $k$ に対する依存性
+
+求めた動径加速度は $a_r(k) = a\omega^2(k^2 - 1)e^{k\theta}$ です。
+$a > 0$ かつ $\theta > 0$ を固定した場合に、この値がパラメータ $k$ によってどのように変化するかを考察します。定数部分 $a\omega^2 > 0$ なので、関数 $f(k) = (k^2 - 1)e^{k\theta}$ の振る舞いを調べればよいことになります。
+
+微分して極値を求めます。
+$$ f'(k) = 2ke^{k\theta} + \theta(k^2 - 1)e^{k\theta} = (\theta k^2 + 2k - \theta)e^{k\theta} $$
+$f'(k) = 0$ となる $k$ は、2次方程式 $\theta k^2 + 2k - \theta = 0$ の解であり、解の公式より
+$$ k_{\pm} = \frac{-1 \pm \sqrt{1 + \theta^2}}{\theta} $$
+となります。$\theta > 0$ のため、$k_+ > 0$（極小値を与える）、$k_- < -1$（極大値を与える）となります。
+
+以下が、その定性的なグラフです。
+
+![動径加速度 a_r の k に対する依存性](../../../assets/images/exercises/ar_graph.png)
+
+#### グラフから読み取れる物理的・定性的な振る舞い
+
+1.  **$a_r$ の符号（力の向き）**:
+    $e^{k\theta}$ は常に正なので、$a_r$ の符号は $(k^2 - 1)$ だけで決まります。
+    *   **$|k| < 1$ のとき**: $a_r < 0$ となり、質点は原点に向かって引かれるような実効的な力（向心力）を感じます。
+    *   **$|k| > 1$ のとき**: $a_r > 0$ となり、遠心力が勝り、原点から遠ざかる方向へ加速（斥力）します。
+    *   **$k = \pm 1$ のとき**: $a_r = 0$ となり、動径方向の力と遠心力が釣り合って、動径方向の加速度を持たなくなります。
+2.  **$k \to \infty$ のとき**: 
+    指数関数 $e^{k\theta}$ が爆発的に増加するため、正の無限大に発散します。
+3.  **$k \to -\infty$ のとき**: 
+    $(k^2 - 1)$ は大きくなりますが、指数関数 $e^{k\theta}$ が $0$ へ急激に減衰する効果が勝るため、$a_r \to 0$ へと漸近します（螺旋が急激に原点に巻き込まれるため、速度自体が急速に0に近づくためです）。
+4.  **極値の存在**:
+    $k < -1$ の領域にただ一つの極大値（正の値）を持ち、$0 < k < 1$ の領域にただ一つの極小値（負の値）を持ちます。

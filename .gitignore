@@ -1,0 +1,57 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments and dependency directories
+.venv/
+node_modules/
+
+# Quarto-generated files
+_output/
+quarto/_output/
+quarto/_freeze/
+quarto/.quarto/
+quarto/**/*.html
+!quarto/templates/**/*.html
+quarto/**/*_files/
+quarto/*.aux
+quarto/*.log
+quarto/*.tex
+!quarto/preamble.tex
+quarto/*.toc
+quarto/*.pdf
+
+# Local/private material
+.data/
+quarto/assets/raw/
+quarto/assets/pdf/lectures/
+quarto/assets/images/lectures/
+!quarto/assets/raw/
+!quarto/assets/raw/lectures/
+!quarto/assets/raw/lectures/.gitkeep
+!quarto/assets/pdf/
+!quarto/assets/pdf/lectures/
+!quarto/assets/pdf/lectures/.gitkeep
+!quarto/assets/images/
+!quarto/assets/images/lectures/
+!quarto/assets/images/lectures/.gitkeep
+
+# Intake raw materials (PDFs, images, OCR outputs)
+research/inbox/*/
+!research/inbox/manifest.yml
+
+# Tool caches and OS files
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+tools/.validation_cache.json
+.DS_Store
+
+# Machine-local agent/tool config
+.codex/
+.gemini/
+.vscode/

@@ -1,0 +1,12 @@
+{
+  "name": "mechanics-class-simulation",
+  "version": "0.1.0",
+  "description": "Quarto notes and simulations for Fundamentals of Physics A",
+  "license": "MIT",
+  "type": "commonjs",
+  "dependencies": {
+    "dompurify": "^3.3.1",
+    "jsdom": "^27.3.0",
+    "mermaid": "^11.12.2"
+  }
+}
