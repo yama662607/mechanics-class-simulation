@@ -79,6 +79,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../../site_libs/bootstrap/bootstrap-f57d11532290d8ef44d35aa1dbbccd91.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<meta name="shinylive:serviceworker_dir" content="../../..">
+<script src="../../../site_libs/quarto-contrib/shinylive-0.10.8/shinylive/load-shinylive-sw.js" type="module"></script>
+<script src="../../../site_libs/quarto-contrib/shinylive-0.10.8/shinylive/run-python-blocks.js" type="module"></script>
+<link href="../../../site_libs/quarto-contrib/shinylive-0.10.8/shinylive/shinylive.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-contrib/shinylive-quarto-css/shinylive-quarto.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,8 +112,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
-<script type="module" src="../../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
-<link href="../../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
@@ -289,7 +292,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../theory/topics/exercises/polar_kinematics.html">演習問題</a></li><li class="breadcrumb-item"><a href="../../../theory/topics/exercises/polar_kinematics.html"><span class="chapter-title">演習：極座標系における速度と加速度</span></a></li></ol></nav>
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-title">演習：極座標系における速度と加速度</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> コード</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">すべてのコードを表示</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">すべてのコードを非表示</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">ソースコードを表示</a></li></ul></div></div>
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-title">演習：極座標系における速度と加速度</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> コード</button></div></div>
 </div>
 
 
@@ -315,149 +318,78 @@ window.Quarto = {
 <section id="インタラクティブシミュレーション" class="level2">
 <h2 class="anchored" data-anchor-id="インタラクティブシミュレーション">インタラクティブ・シミュレーション</h2>
 <p>螺旋上の質点の動きをイメージするためのシミュレーションです。スライダーを動かして、パラメータ <span class="math inline">k</span> が軌道にどう影響するか確認してください。</p>
-<div class="cell panel-input card bg-light p-2">
-<details class="code-fold">
-<summary>コード</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" data-startfrom="21" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 20;"><span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>viewof k_param <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="fl">0.5</span><span class="op">,</span> <span class="fl">0.5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="fl">0.15</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"パラメータ k"</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.05</span>})</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>viewof omega_param <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="fl">1.5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"角速度 ω"</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span>})</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-1-1" data-nodetype="declaration">
+<pre class="shinylive-python" data-engine="python"><code>#| '!! shinylive warning !!': |
+#|   shinylive does not work in self-contained HTML documents.
+#|   Please set `embed-resources: false` in your metadata.
+#| standalone: true
+#| components: [editor, viewer]
 
-</div>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-1-2" data-nodetype="declaration">
+import numpy as np
+import matplotlib.pyplot as plt
+from shiny import App, render, ui
 
-</div>
-</div>
-</div>
-</div>
-<div class="cell">
-<details class="code-fold hidden">
-<summary>コード</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="27" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 26;"><span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { now } <span class="im">from</span> <span class="st">"@observablehq/stdlib"</span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co">// 状態の更新</span></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>spiral_state <span class="op">=</span> {</span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  <span class="co">// アニメーションが大きくなりすぎないように時間をループさせる</span></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> raw_t <span class="op">=</span> (now <span class="op">/</span> <span class="dv">1000</span>)<span class="op">;</span></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> t <span class="op">=</span> raw_t <span class="op">%</span> <span class="dv">8</span><span class="op">;</span> <span class="co">// 8秒でリセット</span></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> theta <span class="op">=</span> omega_param <span class="op">*</span> t<span class="op">;</span></span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> a_scale <span class="op">=</span> <span class="fl">1.0</span><span class="op">;</span></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> r <span class="op">=</span> a_scale <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>(k_param <span class="op">*</span> theta)<span class="op">;</span></span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> x <span class="op">=</span> r <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">cos</span>(theta)<span class="op">;</span></span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> y <span class="op">=</span> r <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sin</span>(theta)<span class="op">;</span></span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> {t<span class="op">,</span> theta<span class="op">,</span> r<span class="op">,</span> x<span class="op">,</span> y<span class="op">,</span> a_scale}<span class="op">;</span></span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="co">// キャンバス設定</span></span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>canvas_width <span class="op">=</span> <span class="dv">400</span></span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>canvas_height <span class="op">=</span> <span class="dv">400</span></span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>center_x <span class="op">=</span> canvas_width <span class="op">/</span> <span class="dv">2</span></span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>center_y <span class="op">=</span> canvas_height <span class="op">/</span> <span class="dv">2</span></span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>scale_factor <span class="op">=</span> <span class="dv">20</span></span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="co">// これまでの軌跡を描画するためのパス生成</span></span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>path_points <span class="op">=</span> {</span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> pts <span class="op">=</span> []<span class="op">;</span></span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(<span class="kw">let</span> th <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> th <span class="op">&lt;=</span> spiral_state<span class="op">.</span><span class="at">theta</span><span class="op">;</span> th <span class="op">+=</span> <span class="fl">0.05</span>) {</span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> rad <span class="op">=</span> spiral_state<span class="op">.</span><span class="at">a_scale</span> <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>(k_param <span class="op">*</span> th)<span class="op">;</span></span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Y軸は下向きが正なので反転させる</span></span>
-<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>    pts<span class="op">.</span><span class="fu">push</span>(<span class="vs">`</span><span class="sc">${</span>center_x <span class="op">+</span> rad <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">cos</span>(th) <span class="op">*</span> scale_factor<span class="sc">}</span><span class="vs">,</span><span class="sc">${</span>center_y <span class="op">-</span> rad <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sin</span>(th) <span class="op">*</span> scale_factor<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
-<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> pts<span class="op">.</span><span class="fu">join</span>(<span class="st">" "</span>)<span class="op">;</span></span>
-<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a><span class="fu">html</span><span class="vs">`&lt;svg width="</span><span class="sc">${</span>canvas_width<span class="sc">}</span><span class="vs">" height="</span><span class="sc">${</span>canvas_height<span class="sc">}</span><span class="vs">" style="background-color: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;"&gt;</span></span>
-<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;!-- X/Y軸 --&gt;</span></span>
-<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;line x1="0" y1="</span><span class="sc">${</span>center_y<span class="sc">}</span><span class="vs">" x2="</span><span class="sc">${</span>canvas_width<span class="sc">}</span><span class="vs">" y2="</span><span class="sc">${</span>center_y<span class="sc">}</span><span class="vs">" stroke="#ccc" stroke-dasharray="4" /&gt;</span></span>
-<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;line x1="</span><span class="sc">${</span>center_x<span class="sc">}</span><span class="vs">" y1="0" x2="</span><span class="sc">${</span>center_x<span class="sc">}</span><span class="vs">" y2="</span><span class="sc">${</span>canvas_height<span class="sc">}</span><span class="vs">" stroke="#ccc" stroke-dasharray="4" /&gt;</span></span>
-<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a><span class="vs">  </span></span>
-<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;!-- 軌跡 --&gt;</span></span>
-<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;polyline points="</span><span class="sc">${</span>path_points<span class="sc">}</span><span class="vs">" fill="none" stroke="#666" stroke-width="2" /&gt;</span></span>
-<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a><span class="vs">  </span></span>
-<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;!-- 動径ベクトル --&gt;</span></span>
-<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;line x1="</span><span class="sc">${</span>center_x<span class="sc">}</span><span class="vs">" y1="</span><span class="sc">${</span>center_y<span class="sc">}</span><span class="vs">" </span></span>
-<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a><span class="vs">        x2="</span><span class="sc">${</span>center_x <span class="op">+</span> spiral_state<span class="op">.</span><span class="at">x</span> <span class="op">*</span> scale_factor<span class="sc">}</span><span class="vs">" </span></span>
-<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a><span class="vs">        y2="</span><span class="sc">${</span>center_y <span class="op">-</span> spiral_state<span class="op">.</span><span class="at">y</span> <span class="op">*</span> scale_factor<span class="sc">}</span><span class="vs">" </span></span>
-<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a><span class="vs">        stroke="blue" stroke-width="1.5" opacity="0.5" /&gt;</span></span>
-<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a><span class="vs">        </span></span>
-<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;!-- 質点 --&gt;</span></span>
-<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;circle cx="</span><span class="sc">${</span>center_x <span class="op">+</span> spiral_state<span class="op">.</span><span class="at">x</span> <span class="op">*</span> scale_factor<span class="sc">}</span><span class="vs">" </span></span>
-<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a><span class="vs">          cy="</span><span class="sc">${</span>center_y <span class="op">-</span> spiral_state<span class="op">.</span><span class="at">y</span> <span class="op">*</span> scale_factor<span class="sc">}</span><span class="vs">" </span></span>
-<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a><span class="vs">          r="6" fill="#e63946" /&gt;</span></span>
-<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;/svg&gt;`</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-2-1" data-nodetype="declaration">
+# --- UI（ユーザーインターフェース）の定義 ---
+app_ui = ui.page_fluid(
+    ui.layout_sidebar(
+        ui.sidebar(
+            ui.input_slider("k", "パラメータ k", -0.5, 0.5, 0.15, step=0.05),
+            ui.input_slider("omega", "角速度 ω", 0.5, 5.0, 1.5, step=0.1),
+            ui.input_slider("t", "時間 t (s)", 0.0, 5.0, 0.0, step=0.1, 
+                            animate=ui.AnimationOptions(interval=100, loop=True))
+        ),
+        ui.output_plot("spiral_plot"),
+    )
+)
 
-</div>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-2-2" data-nodetype="declaration">
+# --- サーバー（計算ロジック）の定義 ---
+def server(input, output, session):
+    @render.plot(alt="等角螺旋のシミュレーション")
+    def spiral_plot():
+        k = input.k()
+        omega = input.omega()
+        t = input.t()
+        a = 1.0 # スケール係数
+        
+        # 軌跡を描画するための細かい角度配列
+        # 時間が進むにつれて角度の最大値が増え、軌道が伸びる
+        theta_max = omega * t
+        if theta_max == 0:
+            theta_max = 0.01 # 描画エラー回避
+            
+        theta_array = np.linspace(0, theta_max, 200)
+        
+        # 極座標 (r, theta) から直交座標 (x, y) への変換
+        r_array = a * np.exp(k * theta_array)
+        x_array = r_array * np.cos(theta_array)
+        y_array = r_array * np.sin(theta_array)
+        
+        # 現在時刻の質点の位置
+        x_current = x_array[-1]
+        y_current = y_array[-1]
+        
+        # --- 描画処理 ---
+        fig, ax = plt.subplots(figsize=(6, 6))
+        
+        # 最大半径を計算してグラフの描画枠を固定する
+        max_r = max(a, a * np.exp(k * omega * 5.0))
+        ax.set_xlim(-max_r*1.1, max_r*1.1)
+        ax.set_ylim(-max_r*1.1, max_r*1.1)
+        ax.set_aspect('equal')
+        ax.grid(True, linestyle='--', alpha=0.7)
+        ax.set_title(f"等角螺旋の軌道 (時間 t = {t:.1f})")
+        
+        # 軌跡の描画
+        ax.plot(x_array, y_array, 'k-', alpha=0.5, label='軌跡')
+        # 動径ベクトルの描画
+        ax.plot([0, x_current], [0, y_current], 'b-', lw=1.5, label='動径ベクトル $\\vec{r}$')
+        # 質点の描画
+        ax.plot(x_current, y_current, 'ro', markersize=8)
+        
+        ax.legend(loc='upper left')
+        return fig
 
-</div>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-2-3" data-nodetype="declaration">
-
-</div>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-2-4" data-nodetype="declaration">
-
-</div>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-2-5" data-nodetype="declaration">
-
-</div>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-2-6" data-nodetype="declaration">
-
-</div>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-2-7" data-nodetype="declaration">
-
-</div>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-2-8" data-nodetype="declaration">
-
-</div>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-2-9" data-nodetype="expression">
-
-</div>
-</div>
-</div>
-</div>
+# アプリの起動
+app = App(app_ui, server)</code></pre>
 <hr>
 </section>
 <section id="解答と計算過程の解説" class="level2">
@@ -514,17 +446,6 @@ window.Quarto = {
 
 </main> <!-- /main -->
 <script src="../../../templates/sidebar-toggle.js"></script>
-<script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBrX3BhcmFtID0gSW5wdXRzLnJhbmdlKFstMC41LCAwLjVdLCB7dmFsdWU6IDAuMTUsIGxhYmVsOiBcIuODkeODqeODoeODvOOCvyBrXCIsIHN0ZXA6IDAuMDV9KVxudmlld29mIG9tZWdhX3BhcmFtID0gSW5wdXRzLnJhbmdlKFswLjUsIDVdLCB7dmFsdWU6IDEuNSwgbGFiZWw6IFwi6KeS6YCf5bqmIM+JXCIsIHN0ZXA6IDAuMX0pXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTIiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJpbXBvcnQgeyBub3cgfSBmcm9tIFwiQG9ic2VydmFibGVocS9zdGRsaWJcIlxuXG4vLyDnirbmhYvjga7mm7TmlrBcbnNwaXJhbF9zdGF0ZSA9IHtcbiAgLy8g44Ki44OL44Oh44O844K344On44Oz44GM5aSn44GN44GP44Gq44KK44GZ44GO44Gq44GE44KI44GG44Gr5pmC6ZaT44KS44Or44O844OX44GV44Gb44KLXG4gIGNvbnN0IHJhd190ID0gKG5vdyAvIDEwMDApO1xuICBjb25zdCB0ID0gcmF3X3QgJSA4OyAvLyA456eS44Gn44Oq44K744OD44OIXG4gIFxuICBjb25zdCB0aGV0YSA9IG9tZWdhX3BhcmFtICogdDtcbiAgY29uc3QgYV9zY2FsZSA9IDEuMDtcbiAgY29uc3QgciA9IGFfc2NhbGUgKiBNYXRoLmV4cChrX3BhcmFtICogdGhldGEpO1xuICBjb25zdCB4ID0gciAqIE1hdGguY29zKHRoZXRhKTtcbiAgY29uc3QgeSA9IHIgKiBNYXRoLnNpbih0aGV0YSk7XG4gIFxuICByZXR1cm4ge3QsIHRoZXRhLCByLCB4LCB5LCBhX3NjYWxlfTtcbn1cblxuLy8g44Kt44Oj44Oz44OQ44K56Kit5a6aXG5jYW52YXNfd2lkdGggPSA0MDBcbmNhbnZhc19oZWlnaHQgPSA0MDBcbmNlbnRlcl94ID0gY2FudmFzX3dpZHRoIC8gMlxuY2VudGVyX3kgPSBjYW52YXNfaGVpZ2h0IC8gMlxuc2NhbGVfZmFjdG9yID0gMjBcblxuLy8g44GT44KM44G+44Gn44Gu6LuM6Leh44KS5o+P55S744GZ44KL44Gf44KB44Gu44OR44K555Sf5oiQXG5wYXRoX3BvaW50cyA9IHtcbiAgbGV0IHB0cyA9IFtdO1xuICBmb3IobGV0IHRoID0gMDsgdGggPD0gc3BpcmFsX3N0YXRlLnRoZXRhOyB0aCArPSAwLjA1KSB7XG4gICAgbGV0IHJhZCA9IHNwaXJhbF9zdGF0ZS5hX3NjYWxlICogTWF0aC5leHAoa19wYXJhbSAqIHRoKTtcbiAgICAvLyBZ6Lu444Gv5LiL5ZCR44GN44GM5q2j44Gq44Gu44Gn5Y+N6Lui44GV44Gb44KLXG4gICAgcHRzLnB1c2goYCR7Y2VudGVyX3ggKyByYWQgKiBNYXRoLmNvcyh0aCkgKiBzY2FsZV9mYWN0b3J9LCR7Y2VudGVyX3kgLSByYWQgKiBNYXRoLnNpbih0aCkgKiBzY2FsZV9mYWN0b3J9YCk7XG4gIH1cbiAgcmV0dXJuIHB0cy5qb2luKFwiIFwiKTtcbn1cblxuaHRtbGA8c3ZnIHdpZHRoPVwiJHtjYW52YXNfd2lkdGh9XCIgaGVpZ2h0PVwiJHtjYW52YXNfaGVpZ2h0fVwiIHN0eWxlPVwiYmFja2dyb3VuZC1jb2xvcjogI2Y4ZjlmYTsgYm9yZGVyOiAxcHggc29saWQgI2RkZDsgYm9yZGVyLXJhZGl1czogOHB4O1wiPlxuICA8IS0tIFgvWei7uCAtLT5cbiAgPGxpbmUgeDE9XCIwXCIgeTE9XCIke2NlbnRlcl95fVwiIHgyPVwiJHtjYW52YXNfd2lkdGh9XCIgeTI9XCIke2NlbnRlcl95fVwiIHN0cm9rZT1cIiNjY2NcIiBzdHJva2UtZGFzaGFycmF5PVwiNFwiIC8+XG4gIDxsaW5lIHgxPVwiJHtjZW50ZXJfeH1cIiB5MT1cIjBcIiB4Mj1cIiR7Y2VudGVyX3h9XCIgeTI9XCIke2NhbnZhc19oZWlnaHR9XCIgc3Ryb2tlPVwiI2NjY1wiIHN0cm9rZS1kYXNoYXJyYXk9XCI0XCIgLz5cbiAgXG4gIDwhLS0g6LuM6LehIC0tPlxuICA8cG9seWxpbmUgcG9pbnRzPVwiJHtwYXRoX3BvaW50c31cIiBmaWxsPVwibm9uZVwiIHN0cm9rZT1cIiM2NjZcIiBzdHJva2Utd2lkdGg9XCIyXCIgLz5cbiAgXG4gIDwhLS0g5YuV5b6E44OZ44Kv44OI44OrIC0tPlxuICA8bGluZSB4MT1cIiR7Y2VudGVyX3h9XCIgeTE9XCIke2NlbnRlcl95fVwiIFxuICAgICAgICB4Mj1cIiR7Y2VudGVyX3ggKyBzcGlyYWxfc3RhdGUueCAqIHNjYWxlX2ZhY3Rvcn1cIiBcbiAgICAgICAgeTI9XCIke2NlbnRlcl95IC0gc3BpcmFsX3N0YXRlLnkgKiBzY2FsZV9mYWN0b3J9XCIgXG4gICAgICAgIHN0cm9rZT1cImJsdWVcIiBzdHJva2Utd2lkdGg9XCIxLjVcIiBvcGFjaXR5PVwiMC41XCIgLz5cbiAgICAgICAgXG4gIDwhLS0g6LOq54K5IC0tPlxuICA8Y2lyY2xlIGN4PVwiJHtjZW50ZXJfeCArIHNwaXJhbF9zdGF0ZS54ICogc2NhbGVfZmFjdG9yfVwiIFxuICAgICAgICAgIGN5PVwiJHtjZW50ZXJfeSAtIHNwaXJhbF9zdGF0ZS55ICogc2NhbGVfZmFjdG9yfVwiIFxuICAgICAgICAgIHI9XCI2XCIgZmlsbD1cIiNlNjM5NDZcIiAvPlxuPC9zdmc+YFxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdrX3BhcmFtJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ29tZWdhX3BhcmFtJykifV19
-</script>
-<script type="module">
-if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
-window._ojs.paths.runtimeToDoc = "../../theory/topics/exercises";
-window._ojs.paths.runtimeToRoot = "../..";
-window._ojs.paths.docToRoot = "../../..";
-window._ojs.selfContained = false;
-window._ojs.runtime.interpretFromScriptTags();
-</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
@@ -990,171 +911,180 @@ window._ojs.runtime.interpretFromScriptTags();
   <div class="nav-page nav-page-next">
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">ソースコード</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "演習：極座標系における速度と加速度"</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> html</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">## 問題</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>等角螺旋 $r = ae^{k\theta} \ (\theta &gt; 0)$ の上を、角速度 $\dot{\theta} = \omega = \text{const}$ で運動する点があります。</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>この点の速度と加速度の極座標成分 $v_r, v_\theta, a_r, a_\theta$ を求めよ。</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>また、$a &gt; 0$ のとき、求めた加速度の動径成分 $a_r$ が $k$ に対してどのように変化するか、定性的なグラフと共に簡潔に説明せよ。</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## インタラクティブ・シミュレーション</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>螺旋上の質点の動きをイメージするためのシミュレーションです。スライダーを動かして、パラメータ $k$ が軌道にどう影響するか確認してください。</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co">//| panel: input</span></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>viewof k_param <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="fl">0.5</span><span class="op">,</span> <span class="fl">0.5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="fl">0.15</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"パラメータ k"</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.05</span>})</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>viewof omega_param <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="fl">1.5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"角速度 ω"</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span>})</span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="co">//| echo: false</span></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { now } <span class="im">from</span> <span class="st">"@observablehq/stdlib"</span></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="co">// 状態の更新</span></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>spiral_state <span class="op">=</span> {</span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>  <span class="co">// アニメーションが大きくなりすぎないように時間をループさせる</span></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> raw_t <span class="op">=</span> (now <span class="op">/</span> <span class="dv">1000</span>)<span class="op">;</span></span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> t <span class="op">=</span> raw_t <span class="op">%</span> <span class="dv">8</span><span class="op">;</span> <span class="co">// 8秒でリセット</span></span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> theta <span class="op">=</span> omega_param <span class="op">*</span> t<span class="op">;</span></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> a_scale <span class="op">=</span> <span class="fl">1.0</span><span class="op">;</span></span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> r <span class="op">=</span> a_scale <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>(k_param <span class="op">*</span> theta)<span class="op">;</span></span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> x <span class="op">=</span> r <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">cos</span>(theta)<span class="op">;</span></span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> y <span class="op">=</span> r <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sin</span>(theta)<span class="op">;</span></span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> {t<span class="op">,</span> theta<span class="op">,</span> r<span class="op">,</span> x<span class="op">,</span> y<span class="op">,</span> a_scale}<span class="op">;</span></span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a><span class="co">// キャンバス設定</span></span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>canvas_width <span class="op">=</span> <span class="dv">400</span></span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>canvas_height <span class="op">=</span> <span class="dv">400</span></span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>center_x <span class="op">=</span> canvas_width <span class="op">/</span> <span class="dv">2</span></span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>center_y <span class="op">=</span> canvas_height <span class="op">/</span> <span class="dv">2</span></span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>scale_factor <span class="op">=</span> <span class="dv">20</span></span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a><span class="co">// これまでの軌跡を描画するためのパス生成</span></span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>path_points <span class="op">=</span> {</span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> pts <span class="op">=</span> []<span class="op">;</span></span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(<span class="kw">let</span> th <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> th <span class="op">&lt;=</span> spiral_state<span class="op">.</span><span class="at">theta</span><span class="op">;</span> th <span class="op">+=</span> <span class="fl">0.05</span>) {</span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> rad <span class="op">=</span> spiral_state<span class="op">.</span><span class="at">a_scale</span> <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>(k_param <span class="op">*</span> th)<span class="op">;</span></span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Y軸は下向きが正なので反転させる</span></span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>    pts<span class="op">.</span><span class="fu">push</span>(<span class="vs">`</span><span class="sc">${</span>center_x <span class="op">+</span> rad <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">cos</span>(th) <span class="op">*</span> scale_factor<span class="sc">}</span><span class="vs">,</span><span class="sc">${</span>center_y <span class="op">-</span> rad <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sin</span>(th) <span class="op">*</span> scale_factor<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
-<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> pts<span class="op">.</span><span class="fu">join</span>(<span class="st">" "</span>)<span class="op">;</span></span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a><span class="fu">html</span><span class="vs">`&lt;svg width="</span><span class="sc">${</span>canvas_width<span class="sc">}</span><span class="vs">" height="</span><span class="sc">${</span>canvas_height<span class="sc">}</span><span class="vs">" style="background-color: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;"&gt;</span></span>
-<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;!-- X/Y軸 --&gt;</span></span>
-<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;line x1="0" y1="</span><span class="sc">${</span>center_y<span class="sc">}</span><span class="vs">" x2="</span><span class="sc">${</span>canvas_width<span class="sc">}</span><span class="vs">" y2="</span><span class="sc">${</span>center_y<span class="sc">}</span><span class="vs">" stroke="#ccc" stroke-dasharray="4" /&gt;</span></span>
-<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;line x1="</span><span class="sc">${</span>center_x<span class="sc">}</span><span class="vs">" y1="0" x2="</span><span class="sc">${</span>center_x<span class="sc">}</span><span class="vs">" y2="</span><span class="sc">${</span>canvas_height<span class="sc">}</span><span class="vs">" stroke="#ccc" stroke-dasharray="4" /&gt;</span></span>
-<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a><span class="vs">  </span></span>
-<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;!-- 軌跡 --&gt;</span></span>
-<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;polyline points="</span><span class="sc">${</span>path_points<span class="sc">}</span><span class="vs">" fill="none" stroke="#666" stroke-width="2" /&gt;</span></span>
-<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a><span class="vs">  </span></span>
-<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;!-- 動径ベクトル --&gt;</span></span>
-<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;line x1="</span><span class="sc">${</span>center_x<span class="sc">}</span><span class="vs">" y1="</span><span class="sc">${</span>center_y<span class="sc">}</span><span class="vs">" </span></span>
-<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a><span class="vs">        x2="</span><span class="sc">${</span>center_x <span class="op">+</span> spiral_state<span class="op">.</span><span class="at">x</span> <span class="op">*</span> scale_factor<span class="sc">}</span><span class="vs">" </span></span>
-<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a><span class="vs">        y2="</span><span class="sc">${</span>center_y <span class="op">-</span> spiral_state<span class="op">.</span><span class="at">y</span> <span class="op">*</span> scale_factor<span class="sc">}</span><span class="vs">" </span></span>
-<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a><span class="vs">        stroke="blue" stroke-width="1.5" opacity="0.5" /&gt;</span></span>
-<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a><span class="vs">        </span></span>
-<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;!-- 質点 --&gt;</span></span>
-<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;circle cx="</span><span class="sc">${</span>center_x <span class="op">+</span> spiral_state<span class="op">.</span><span class="at">x</span> <span class="op">*</span> scale_factor<span class="sc">}</span><span class="vs">" </span></span>
-<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a><span class="vs">          cy="</span><span class="sc">${</span>center_y <span class="op">-</span> spiral_state<span class="op">.</span><span class="at">y</span> <span class="op">*</span> scale_factor<span class="sc">}</span><span class="vs">" </span></span>
-<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a><span class="vs">          r="6" fill="#e63946" /&gt;</span></span>
-<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;/svg&gt;`</span></span>
-<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a><span class="fu">## 解答と計算過程の解説</span></span>
-<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a><span class="fu">### 1. 速度と加速度の極座標成分の公式の導出（復習）</span></span>
-<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a>まず、極座標系における基底ベクトルの微分の性質（詳細は <span class="co">[</span><span class="ot">理論体系ノートの極座標系のセクション</span><span class="co">](../../textbook.qmd#polar-coordinates)</span> を参照してください）から出発します。</span>
-<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a>位置ベクトル $\vec{r} = r \hat{e}_r$ を時間 $t$ で微分します。ここで関数の積を微分する**積の微分公式** $(AB)' = A'B + AB'$ を用います。</span>
-<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a>$$ \vec{v} = \frac{d\vec{r}}{dt} = \frac{d}{dt}(r \hat{e}_r) = \dot{r} \hat{e}_r + r \dot{\hat{e}}_r $$</span>
-<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a>前述のノートで確認したように、基底ベクトルが時間とともに回転するため $\dot{\hat{e}}_r = \dot{\theta} \hat{e}_\theta$ となります。これを代入すると、</span>
-<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a>$$ \vec{v} = \dot{r} \hat{e}_r + r \dot{\theta} \hat{e}_\theta $$</span>
-<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a>したがって、速度成分は $v_r = \dot{r}, v_\theta = r\dot{\theta}$ となります。</span>
-<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a>さらにこれをもう一度微分して加速度を求めます。3つの積の微分 $(ABC)' = A'BC + AB'C + ABC'$ も使います。</span>
-<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a>$$ \vec{a} = \frac{d\vec{v}}{dt} = \frac{d}{dt}(\dot{r} \hat{e}_r) + \frac{d}{dt}(r \dot{\theta} \hat{e}_\theta) $$</span>
-<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a>$$ = (\ddot{r} \hat{e}_r + \dot{r} \dot{\hat{e}}_r) + (\dot{r} \dot{\theta} \hat{e}_\theta + r \ddot{\theta} \hat{e}_\theta + r \dot{\theta} \dot{\hat{e}}_\theta) $$</span>
-<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a>ここで $\dot{\hat{e}}_r = \dot{\theta} \hat{e}_\theta$ と $\dot{\hat{e}}_\theta = -\dot{\theta} \hat{e}_r$ を代入して整理すると、</span>
-<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a>$$ \vec{a} = (\ddot{r} - r\dot{\theta}^2)\hat{e}_r + (r\ddot{\theta} + 2\dot{r}\dot{\theta})\hat{e}_\theta $$</span>
-<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a>これが加速度の極座標成分 $a_r, a_\theta$ の公式です。</span>
-<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a><span class="fu">### 2. 本問の計算過程</span></span>
-<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a>問題の条件より、以下の関係式が与えられています。</span>
-<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>$r = ae^{k\theta}$</span>
-<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>$\dot{\theta} = \omega \quad (\text{一定})$</span>
-<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>$\ddot{\theta} = \frac{d}{dt}(\omega) = 0$</span>
-<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a>まず、$r$ の時間微分 $\dot{r}$ を計算します。ここでも**合成関数の微分法則**（チェインルール）を用います。</span>
-<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a>$\theta$ は時間 $t$ の関数であるため、$r(t) = a e^{k\theta(t)}$ を $t$ で微分するには、一度全体を $\theta$ で微分してから中身の微分 $\dot{\theta}$ を掛けます。</span>
-<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a>$$ \dot{r} = \frac{dr}{d\theta} \cdot \frac{d\theta}{dt} = \frac{d}{d\theta}(ae^{k\theta}) \cdot \omega = (ake^{k\theta}) \cdot \omega = ak\omega e^{k\theta} $$</span>
-<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a>ここで、$ae^{k\theta} = r$ であることに着目すると、</span>
-<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a>$$ \dot{r} = k\omega r $$</span>
-<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a>とスッキリ書くこともできます。</span>
-<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a>さらに、もう一度時間微分して $\ddot{r}$ を求めます。**定数倍の微分** $\frac{d}{dt}(C \cdot f(t)) = C \cdot \dot{f}(t)$ に注意して、積の公式を使わずに計算します。</span>
-<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a>$$ \ddot{r} = \frac{d}{dt}(k\omega r) = k\omega \cdot \dot{r} $$</span>
-<span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a>先ほど求めた $\dot{r} = ak\omega e^{k\theta}$ を代入すると、</span>
-<span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a>$$ \ddot{r} = k\omega (ak\omega e^{k\theta}) = ak^2\omega^2 e^{k\theta} $$</span>
-<span id="cb3-128"><a href="#cb3-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-129"><a href="#cb3-129" aria-hidden="true" tabindex="-1"></a>これらを先ほど復習した公式に代入して、各成分を求めます。</span>
-<span id="cb3-130"><a href="#cb3-130" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-131"><a href="#cb3-131" aria-hidden="true" tabindex="-1"></a>**速度成分:**</span>
-<span id="cb3-132"><a href="#cb3-132" aria-hidden="true" tabindex="-1"></a>$$ v_r = \dot{r} = \boldsymbol{ak\omega e^{k\theta}} $$</span>
-<span id="cb3-133"><a href="#cb3-133" aria-hidden="true" tabindex="-1"></a>$$ v_\theta = r\dot{\theta} = (ae^{k\theta})\omega = \boldsymbol{a\omega e^{k\theta}} $$</span>
-<span id="cb3-134"><a href="#cb3-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-135"><a href="#cb3-135" aria-hidden="true" tabindex="-1"></a>**加速度成分:**</span>
-<span id="cb3-136"><a href="#cb3-136" aria-hidden="true" tabindex="-1"></a>$$ a_r = \ddot{r} - r\dot{\theta}^2 = ak^2\omega^2 e^{k\theta} - (ae^{k\theta})\omega^2 = \boldsymbol{a\omega^2(k^2 - 1)e^{k\theta}} $$</span>
-<span id="cb3-137"><a href="#cb3-137" aria-hidden="true" tabindex="-1"></a>$$ a_\theta = r\ddot{\theta} + 2\dot{r}\dot{\theta} = (ae^{k\theta})(0) + 2(ak\omega e^{k\theta})\omega = \boldsymbol{2ak\omega^2 e^{k\theta}} $$</span>
-<span id="cb3-138"><a href="#cb3-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-139"><a href="#cb3-139" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb3-140"><a href="#cb3-140" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-141"><a href="#cb3-141" aria-hidden="true" tabindex="-1"></a><span class="fu">### 3. 加速度の動径成分 $a_r$ の $k$ に対する依存性</span></span>
-<span id="cb3-142"><a href="#cb3-142" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-143"><a href="#cb3-143" aria-hidden="true" tabindex="-1"></a>求めた動径加速度は $a_r(k) = a\omega^2(k^2 - 1)e^{k\theta}$ です。</span>
-<span id="cb3-144"><a href="#cb3-144" aria-hidden="true" tabindex="-1"></a>$a &gt; 0$ かつ $\theta &gt; 0$ を固定した場合に、この値がパラメータ $k$ によってどのように変化するかを考察します。定数部分 $a\omega^2 &gt; 0$ なので、関数 $f(k) = (k^2 - 1)e^{k\theta}$ の振る舞いを調べればよいことになります。</span>
-<span id="cb3-145"><a href="#cb3-145" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-146"><a href="#cb3-146" aria-hidden="true" tabindex="-1"></a>微分して極値を求めます。ここでも積の微分公式を用いています。</span>
-<span id="cb3-147"><a href="#cb3-147" aria-hidden="true" tabindex="-1"></a>$$ f'(k) = 2ke^{k\theta} + (k^2 - 1) \cdot \theta e^{k\theta} = (\theta k^2 + 2k - \theta)e^{k\theta} $$</span>
-<span id="cb3-148"><a href="#cb3-148" aria-hidden="true" tabindex="-1"></a>$f'(k) = 0$ となる $k$ は、2次方程式 $\theta k^2 + 2k - \theta = 0$ の解であり、解の公式より</span>
-<span id="cb3-149"><a href="#cb3-149" aria-hidden="true" tabindex="-1"></a>$$ k_{\pm} = \frac{-1 \pm \sqrt{1 + \theta^2}}{\theta} $$</span>
-<span id="cb3-150"><a href="#cb3-150" aria-hidden="true" tabindex="-1"></a>となります。$\theta &gt; 0$ のため、$k_+ &gt; 0$（極小値を与える）、$k_- &lt; -1$（極大値を与える）となります。</span>
-<span id="cb3-151"><a href="#cb3-151" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-152"><a href="#cb3-152" aria-hidden="true" tabindex="-1"></a>以下が、その定性的なグラフです。</span>
-<span id="cb3-153"><a href="#cb3-153" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-154"><a href="#cb3-154" aria-hidden="true" tabindex="-1"></a><span class="al">![動径加速度 a_r の k に対する依存性](../../../assets/images/exercises/ar_graph.png)</span></span>
-<span id="cb3-155"><a href="#cb3-155" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-156"><a href="#cb3-156" aria-hidden="true" tabindex="-1"></a><span class="fu">#### グラフから読み取れる物理的・定性的な振る舞い</span></span>
-<span id="cb3-157"><a href="#cb3-157" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-158"><a href="#cb3-158" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**$a_r$ の符号（力の向き）**:</span>
-<span id="cb3-159"><a href="#cb3-159" aria-hidden="true" tabindex="-1"></a>    $e^{k\theta}$ は常に正なので、$a_r$ の符号は $(k^2 - 1)$ だけで決まります。</span>
-<span id="cb3-160"><a href="#cb3-160" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**$|k| &lt; 1$ のとき**: $a_r &lt; 0$ となり、質点は原点に向かって引かれるような実効的な力（向心力）を感じます。</span>
-<span id="cb3-161"><a href="#cb3-161" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**$|k| &gt; 1$ のとき**: $a_r &gt; 0$ となり、遠心力が勝り、原点から遠ざかる方向へ加速（斥力）します。</span>
-<span id="cb3-162"><a href="#cb3-162" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**$k = \pm 1$ のとき**: $a_r = 0$ となり、動径方向の力と遠心力が釣り合って、動径方向の加速度を持たなくなります。</span>
-<span id="cb3-163"><a href="#cb3-163" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**$k \to \infty$ のとき**: </span>
-<span id="cb3-164"><a href="#cb3-164" aria-hidden="true" tabindex="-1"></a>    指数関数 $e^{k\theta}$ が爆発的に増加するため、正の無限大に発散します。</span>
-<span id="cb3-165"><a href="#cb3-165" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**$k \to -\infty$ のとき**: </span>
-<span id="cb3-166"><a href="#cb3-166" aria-hidden="true" tabindex="-1"></a>    $(k^2 - 1)$ は大きくなりますが、指数関数 $e^{k\theta}$ が $0$ へ急激に減衰する効果が勝るため、$a_r \to 0$ へと漸近します（螺旋が急激に原点に巻き込まれるため、速度自体が急速に0に近づくためです）。</span>
-<span id="cb3-167"><a href="#cb3-167" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**極値の存在**:</span>
-<span id="cb3-168"><a href="#cb3-168" aria-hidden="true" tabindex="-1"></a>    $k &lt; -1$ の領域にただ一つの極大値（正の値）を持ち、$0 &lt; k &lt; 1$ の領域にただ一つの極小値（負の値）を持ちます。</span>
-</code></pre></div><button title="コピー" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "演習：極座標系における速度と加速度"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> html</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="an">filters:</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">  - shinylive</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## 問題</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>等角螺旋 $r = ae^{k\theta} \ (\theta &gt; 0)$ の上を、角速度 $\dot{\theta} = \omega = \text{const}$ で運動する点があります。</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>この点の速度と加速度の極座標成分 $v_r, v_\theta, a_r, a_\theta$ を求めよ。</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>また、$a &gt; 0$ のとき、求めた加速度の動径成分 $a_r$ が $k$ に対してどのように変化するか、定性的なグラフと共に簡潔に説明せよ。</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## インタラクティブ・シミュレーション</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>螺旋上の質点の動きをイメージするためのシミュレーションです。スライダーを動かして、パラメータ $k$ が軌道にどう影響するか確認してください。</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="in">```{shinylive-python}</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#| standalone: true</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">#| components: [editor, viewer]</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="ex">import</span> numpy as np</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="ex">import</span> matplotlib.pyplot as plt</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="ex">from</span> shiny import App, render, ui</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co"># --- UI（ユーザーインターフェース）の定義 ---</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="ex">app_ui</span> = ui.page_fluid<span class="er">(</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="ex">ui.layout_sidebar</span><span class="er">(</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ui.sidebar</span><span class="er">(</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>            <span class="ex">ui.input_slider</span><span class="er">(</span><span class="st">"k"</span><span class="ex">,</span> <span class="st">"パラメータ k"</span>, <span class="at">-0.5,</span> 0.5, 0.15, step=0.05<span class="kw">)</span><span class="ex">,</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>            <span class="ex">ui.input_slider</span><span class="er">(</span><span class="st">"omega"</span><span class="ex">,</span> <span class="st">"角速度 ω"</span>, 0.5, 5.0, 1.5, step=0.1<span class="kw">)</span><span class="ex">,</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>            <span class="ex">ui.input_slider</span><span class="er">(</span><span class="st">"t"</span><span class="ex">,</span> <span class="st">"時間 t (s)"</span>, 0.0, 5.0, 0.0, step=0.1, </span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>                            <span class="va">animate</span><span class="op">=</span>ui.AnimationOptions<span class="kw">(</span><span class="va">interval</span><span class="op">=</span>100, <span class="va">loop</span><span class="op">=</span>True<span class="kw">))</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>        <span class="kw">)</span><span class="ex">,</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ui.output_plot</span><span class="er">(</span><span class="st">"spiral_plot"</span><span class="kw">)</span><span class="ex">,</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">)</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="kw">)</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="co"># --- サーバー（計算ロジック）の定義 ---</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="ex">def</span> server<span class="er">(</span><span class="ex">input,</span> output, session<span class="kw">)</span><span class="bu">:</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    <span class="ex">@render.plot</span><span class="er">(</span><span class="va">alt</span><span class="op">=</span><span class="st">"等角螺旋のシミュレーション"</span><span class="kw">)</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>    <span class="ex">def</span> spiral_plot<span class="er">(</span><span class="kw">)</span><span class="bu">:</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>        <span class="ex">k</span> = input.k<span class="er">(</span><span class="kw">)</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>        <span class="ex">omega</span> = input.omega<span class="er">(</span><span class="kw">)</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>        <span class="ex">t</span> = input.t<span class="er">(</span><span class="kw">)</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>        <span class="ex">a</span> = 1.0 <span class="co"># スケール係数</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 軌跡を描画するための細かい角度配列</span></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 時間が進むにつれて角度の最大値が増え、軌道が伸びる</span></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>        <span class="ex">theta_max</span> = omega <span class="pp">*</span> t</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="ex">theta_max</span> == 0:</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>            <span class="ex">theta_max</span> = 0.01 <span class="co"># 描画エラー回避</span></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>        <span class="ex">theta_array</span> = np.linspace<span class="er">(</span><span class="ex">0,</span> theta_max, 200<span class="kw">)</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 極座標 (r, theta) から直交座標 (x, y) への変換</span></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>        <span class="ex">r_array</span> = a <span class="pp">*</span> np.exp<span class="er">(</span><span class="ex">k</span> <span class="pp">*</span> theta_array<span class="kw">)</span></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>        <span class="ex">x_array</span> = r_array <span class="pp">*</span> np.cos<span class="er">(</span><span class="ex">theta_array</span><span class="kw">)</span></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>        <span class="ex">y_array</span> = r_array <span class="pp">*</span> np.sin<span class="er">(</span><span class="ex">theta_array</span><span class="kw">)</span></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 現在時刻の質点の位置</span></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>        <span class="ex">x_current</span> = x_array<span class="pp">[-</span><span class="ss">1</span><span class="pp">]</span></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>        <span class="ex">y_current</span> = y_array<span class="pp">[-</span><span class="ss">1</span><span class="pp">]</span></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>        <span class="co"># --- 描画処理 ---</span></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>        <span class="ex">fig,</span> ax = plt.subplots<span class="er">(</span><span class="va">figsize</span><span class="op">=</span><span class="va">(</span>6, 6<span class="va">)</span><span class="kw">)</span></span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 最大半径を計算してグラフの描画枠を固定する</span></span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>        <span class="ex">max_r</span> = max<span class="er">(</span><span class="ex">a,</span> a <span class="pp">*</span> np.exp<span class="er">(</span><span class="ex">k</span> <span class="pp">*</span> omega <span class="pp">*</span> 5.0<span class="kw">))</span></span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ax.set_xlim</span><span class="er">(</span><span class="ex">-max_r*1.1,</span> max_r<span class="pp">*</span>1.1<span class="kw">)</span></span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ax.set_ylim</span><span class="er">(</span><span class="ex">-max_r*1.1,</span> max_r<span class="pp">*</span>1.1<span class="kw">)</span></span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ax.set_aspect</span><span class="er">(</span><span class="st">'equal'</span><span class="kw">)</span></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ax.grid</span><span class="er">(</span><span class="ex">True,</span> linestyle=<span class="st">'--'</span>, alpha=0.7<span class="kw">)</span></span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ax.set_title</span><span class="er">(</span><span class="ex">f</span><span class="st">"等角螺旋の軌道 (時間 t = {t:.1f})"</span><span class="kw">)</span></span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 軌跡の描画</span></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ax.plot</span><span class="er">(</span><span class="ex">x_array,</span> y_array, <span class="st">'k-'</span>, alpha=0.5, label=<span class="st">'軌跡'</span><span class="kw">)</span></span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 動径ベクトルの描画</span></span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ax.plot</span><span class="er">(</span><span class="ex">[0,</span> x_current], [0, y_current], <span class="st">'b-'</span>, lw=1.5, label=<span class="st">'動径ベクトル $\\vec{r}$'</span><span class="kw">)</span></span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 質点の描画</span></span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ax.plot</span><span class="er">(</span><span class="ex">x_current,</span> y_current, <span class="st">'ro'</span>, markersize=8<span class="kw">)</span></span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ax.legend</span><span class="er">(</span><span class="va">loc</span><span class="op">=</span><span class="st">'upper left'</span><span class="kw">)</span></span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ex">fig</span></span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a><span class="co"># アプリの起動</span></span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a><span class="ex">app</span> = App<span class="er">(</span><span class="ex">app_ui,</span> server<span class="kw">)</span></span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a><span class="fu">## 解答と計算過程の解説</span></span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a><span class="fu">### 1. 速度と加速度の極座標成分の公式の導出（復習）</span></span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a>まず、極座標系における基底ベクトルの微分の性質（詳細は <span class="co">[</span><span class="ot">理論体系ノートの極座標系のセクション</span><span class="co">](../../textbook.qmd#polar-coordinates)</span> を参照してください）から出発します。</span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a>位置ベクトル $\vec{r} = r \hat{e}_r$ を時間 $t$ で微分します。ここで関数の積を微分する**積の微分公式** $(AB)' = A'B + AB'$ を用います。</span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a>$$ \vec{v} = \frac{d\vec{r}}{dt} = \frac{d}{dt}(r \hat{e}_r) = \dot{r} \hat{e}_r + r \dot{\hat{e}}_r $$</span>
+<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a>前述のノートで確認したように、基底ベクトルが時間とともに回転するため $\dot{\hat{e}}_r = \dot{\theta} \hat{e}_\theta$ となります。これを代入すると、</span>
+<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a>$$ \vec{v} = \dot{r} \hat{e}_r + r \dot{\theta} \hat{e}_\theta $$</span>
+<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a>したがって、速度成分は $v_r = \dot{r}, v_\theta = r\dot{\theta}$ となります。</span>
+<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a>さらにこれをもう一度微分して加速度を求めます。3つの積の微分 $(ABC)' = A'BC + AB'C + ABC'$ も使います。</span>
+<span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a>$$ \vec{a} = \frac{d\vec{v}}{dt} = \frac{d}{dt}(\dot{r} \hat{e}_r) + \frac{d}{dt}(r \dot{\theta} \hat{e}_\theta) $$</span>
+<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a>$$ = (\ddot{r} \hat{e}_r + \dot{r} \dot{\hat{e}}_r) + (\dot{r} \dot{\theta} \hat{e}_\theta + r \ddot{\theta} \hat{e}_\theta + r \dot{\theta} \dot{\hat{e}}_\theta) $$</span>
+<span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a>ここで $\dot{\hat{e}}_r = \dot{\theta} \hat{e}_\theta$ と $\dot{\hat{e}}_\theta = -\dot{\theta} \hat{e}_r$ を代入して整理すると、</span>
+<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a>$$ \vec{a} = (\ddot{r} - r\dot{\theta}^2)\hat{e}_r + (r\ddot{\theta} + 2\dot{r}\dot{\theta})\hat{e}_\theta $$</span>
+<span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a>これが加速度の極座標成分 $a_r, a_\theta$ の公式です。</span>
+<span id="cb2-115"><a href="#cb2-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-116"><a href="#cb2-116" aria-hidden="true" tabindex="-1"></a><span class="fu">### 2. 本問の計算過程</span></span>
+<span id="cb2-117"><a href="#cb2-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-118"><a href="#cb2-118" aria-hidden="true" tabindex="-1"></a>問題の条件より、以下の関係式が与えられています。</span>
+<span id="cb2-119"><a href="#cb2-119" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>$r = ae^{k\theta}$</span>
+<span id="cb2-120"><a href="#cb2-120" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>$\dot{\theta} = \omega \quad (\text{一定})$</span>
+<span id="cb2-121"><a href="#cb2-121" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>$\ddot{\theta} = \frac{d}{dt}(\omega) = 0$</span>
+<span id="cb2-122"><a href="#cb2-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-123"><a href="#cb2-123" aria-hidden="true" tabindex="-1"></a>まず、$r$ の時間微分 $\dot{r}$ を計算します。ここでも**合成関数の微分法則**（チェインルール）を用います。</span>
+<span id="cb2-124"><a href="#cb2-124" aria-hidden="true" tabindex="-1"></a>$\theta$ は時間 $t$ の関数であるため、$r(t) = a e^{k\theta(t)}$ を $t$ で微分するには、一度全体を $\theta$ で微分してから中身の微分 $\dot{\theta}$ を掛けます。</span>
+<span id="cb2-125"><a href="#cb2-125" aria-hidden="true" tabindex="-1"></a>$$ \dot{r} = \frac{dr}{d\theta} \cdot \frac{d\theta}{dt} = \frac{d}{d\theta}(ae^{k\theta}) \cdot \omega = (ake^{k\theta}) \cdot \omega = ak\omega e^{k\theta} $$</span>
+<span id="cb2-126"><a href="#cb2-126" aria-hidden="true" tabindex="-1"></a>ここで、$ae^{k\theta} = r$ であることに着目すると、</span>
+<span id="cb2-127"><a href="#cb2-127" aria-hidden="true" tabindex="-1"></a>$$ \dot{r} = k\omega r $$</span>
+<span id="cb2-128"><a href="#cb2-128" aria-hidden="true" tabindex="-1"></a>とスッキリ書くこともできます。</span>
+<span id="cb2-129"><a href="#cb2-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-130"><a href="#cb2-130" aria-hidden="true" tabindex="-1"></a>さらに、もう一度時間微分して $\ddot{r}$ を求めます。**定数倍の微分** $\frac{d}{dt}(C \cdot f(t)) = C \cdot \dot{f}(t)$ に注意して、積の公式を使わずに計算します。</span>
+<span id="cb2-131"><a href="#cb2-131" aria-hidden="true" tabindex="-1"></a>$$ \ddot{r} = \frac{d}{dt}(k\omega r) = k\omega \cdot \dot{r} $$</span>
+<span id="cb2-132"><a href="#cb2-132" aria-hidden="true" tabindex="-1"></a>先ほど求めた $\dot{r} = ak\omega e^{k\theta}$ を代入すると、</span>
+<span id="cb2-133"><a href="#cb2-133" aria-hidden="true" tabindex="-1"></a>$$ \ddot{r} = k\omega (ak\omega e^{k\theta}) = ak^2\omega^2 e^{k\theta} $$</span>
+<span id="cb2-134"><a href="#cb2-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-135"><a href="#cb2-135" aria-hidden="true" tabindex="-1"></a>これらを先ほど復習した公式に代入して、各成分を求めます。</span>
+<span id="cb2-136"><a href="#cb2-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-137"><a href="#cb2-137" aria-hidden="true" tabindex="-1"></a>**速度成分:**</span>
+<span id="cb2-138"><a href="#cb2-138" aria-hidden="true" tabindex="-1"></a>$$ v_r = \dot{r} = \boldsymbol{ak\omega e^{k\theta}} $$</span>
+<span id="cb2-139"><a href="#cb2-139" aria-hidden="true" tabindex="-1"></a>$$ v_\theta = r\dot{\theta} = (ae^{k\theta})\omega = \boldsymbol{a\omega e^{k\theta}} $$</span>
+<span id="cb2-140"><a href="#cb2-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-141"><a href="#cb2-141" aria-hidden="true" tabindex="-1"></a>**加速度成分:**</span>
+<span id="cb2-142"><a href="#cb2-142" aria-hidden="true" tabindex="-1"></a>$$ a_r = \ddot{r} - r\dot{\theta}^2 = ak^2\omega^2 e^{k\theta} - (ae^{k\theta})\omega^2 = \boldsymbol{a\omega^2(k^2 - 1)e^{k\theta}} $$</span>
+<span id="cb2-143"><a href="#cb2-143" aria-hidden="true" tabindex="-1"></a>$$ a_\theta = r\ddot{\theta} + 2\dot{r}\dot{\theta} = (ae^{k\theta})(0) + 2(ak\omega e^{k\theta})\omega = \boldsymbol{2ak\omega^2 e^{k\theta}} $$</span>
+<span id="cb2-144"><a href="#cb2-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-145"><a href="#cb2-145" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb2-146"><a href="#cb2-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-147"><a href="#cb2-147" aria-hidden="true" tabindex="-1"></a><span class="fu">### 3. 加速度の動径成分 $a_r$ の $k$ に対する依存性</span></span>
+<span id="cb2-148"><a href="#cb2-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-149"><a href="#cb2-149" aria-hidden="true" tabindex="-1"></a>求めた動径加速度は $a_r(k) = a\omega^2(k^2 - 1)e^{k\theta}$ です。</span>
+<span id="cb2-150"><a href="#cb2-150" aria-hidden="true" tabindex="-1"></a>$a &gt; 0$ かつ $\theta &gt; 0$ を固定した場合に、この値がパラメータ $k$ によってどのように変化するかを考察します。定数部分 $a\omega^2 &gt; 0$ なので、関数 $f(k) = (k^2 - 1)e^{k\theta}$ の振る舞いを調べればよいことになります。</span>
+<span id="cb2-151"><a href="#cb2-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-152"><a href="#cb2-152" aria-hidden="true" tabindex="-1"></a>微分して極値を求めます。ここでも積の微分公式を用いています。</span>
+<span id="cb2-153"><a href="#cb2-153" aria-hidden="true" tabindex="-1"></a>$$ f'(k) = 2ke^{k\theta} + (k^2 - 1) \cdot \theta e^{k\theta} = (\theta k^2 + 2k - \theta)e^{k\theta} $$</span>
+<span id="cb2-154"><a href="#cb2-154" aria-hidden="true" tabindex="-1"></a>$f'(k) = 0$ となる $k$ は、2次方程式 $\theta k^2 + 2k - \theta = 0$ の解であり、解の公式より</span>
+<span id="cb2-155"><a href="#cb2-155" aria-hidden="true" tabindex="-1"></a>$$ k_{\pm} = \frac{-1 \pm \sqrt{1 + \theta^2}}{\theta} $$</span>
+<span id="cb2-156"><a href="#cb2-156" aria-hidden="true" tabindex="-1"></a>となります。$\theta &gt; 0$ のため、$k_+ &gt; 0$（極小値を与える）、$k_- &lt; -1$（極大値を与える）となります。</span>
+<span id="cb2-157"><a href="#cb2-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-158"><a href="#cb2-158" aria-hidden="true" tabindex="-1"></a>以下が、その定性的なグラフです。</span>
+<span id="cb2-159"><a href="#cb2-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-160"><a href="#cb2-160" aria-hidden="true" tabindex="-1"></a><span class="al">![動径加速度 a_r の k に対する依存性](../../../assets/images/exercises/ar_graph.png)</span></span>
+<span id="cb2-161"><a href="#cb2-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-162"><a href="#cb2-162" aria-hidden="true" tabindex="-1"></a><span class="fu">#### グラフから読み取れる物理的・定性的な振る舞い</span></span>
+<span id="cb2-163"><a href="#cb2-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-164"><a href="#cb2-164" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**$a_r$ の符号（力の向き）**:</span>
+<span id="cb2-165"><a href="#cb2-165" aria-hidden="true" tabindex="-1"></a>    $e^{k\theta}$ は常に正なので、$a_r$ の符号は $(k^2 - 1)$ だけで決まります。</span>
+<span id="cb2-166"><a href="#cb2-166" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**$|k| &lt; 1$ のとき**: $a_r &lt; 0$ となり、質点は原点に向かって引かれるような実効的な力（向心力）を感じます。</span>
+<span id="cb2-167"><a href="#cb2-167" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**$|k| &gt; 1$ のとき**: $a_r &gt; 0$ となり、遠心力が勝り、原点から遠ざかる方向へ加速（斥力）します。</span>
+<span id="cb2-168"><a href="#cb2-168" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**$k = \pm 1$ のとき**: $a_r = 0$ となり、動径方向の力と遠心力が釣り合って、動径方向の加速度を持たなくなります。</span>
+<span id="cb2-169"><a href="#cb2-169" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**$k \to \infty$ のとき**: </span>
+<span id="cb2-170"><a href="#cb2-170" aria-hidden="true" tabindex="-1"></a>    指数関数 $e^{k\theta}$ が爆発的に増加するため、正の無限大に発散します。</span>
+<span id="cb2-171"><a href="#cb2-171" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**$k \to -\infty$ のとき**: </span>
+<span id="cb2-172"><a href="#cb2-172" aria-hidden="true" tabindex="-1"></a>    $(k^2 - 1)$ は大きくなりますが、指数関数 $e^{k\theta}$ が $0$ へ急激に減衰する効果が勝るため、$a_r \to 0$ へと漸近します（螺旋が急激に原点に巻き込まれるため、速度自体が急速に0に近づくためです）。</span>
+<span id="cb2-173"><a href="#cb2-173" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**極値の存在**:</span>
+<span id="cb2-174"><a href="#cb2-174" aria-hidden="true" tabindex="-1"></a>    $k &lt; -1$ の領域にただ一つの極大値（正の値）を持ち、$0 &lt; k &lt; 1$ の領域にただ一つの極小値（負の値）を持ちます。</span></code></pre></div><button title="コピー" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

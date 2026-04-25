@@ -80,6 +80,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../../site_libs/bootstrap/bootstrap-f57d11532290d8ef44d35aa1dbbccd91.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<meta name="shinylive:serviceworker_dir" content="../../..">
+<script src="../../../site_libs/quarto-contrib/shinylive-0.10.8/shinylive/load-shinylive-sw.js" type="module"></script>
+<script src="../../../site_libs/quarto-contrib/shinylive-0.10.8/shinylive/run-python-blocks.js" type="module"></script>
+<link href="../../../site_libs/quarto-contrib/shinylive-0.10.8/shinylive/shinylive.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-contrib/shinylive-quarto-css/shinylive-quarto.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -108,8 +113,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
-<script type="module" src="../../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
-<link href="../../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
@@ -274,7 +277,7 @@ window.Quarto = {
     <h2 id="toc-title">目次</h2>
    
   <ul>
-  <li><a href="#シミュレーション" id="toc-シミュレーション" class="nav-link active" data-scroll-target="#シミュレーション">シミュレーション</a></li>
+  <li><a href="#インタラクティブシミュレーション" id="toc-インタラクティブシミュレーション" class="nav-link active" data-scroll-target="#インタラクティブシミュレーション">インタラクティブ・シミュレーション</a></li>
   <li><a href="#理論的背景" id="toc-理論的背景" class="nav-link" data-scroll-target="#理論的背景">理論的背景</a></li>
   </ul>
 </nav>
@@ -284,7 +287,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../theory/topics/simulations/sample.html">シミュレーション</a></li><li class="breadcrumb-item"><a href="../../../theory/topics/simulations/sample.html"><span class="chapter-title">単振り子のシミュレーション</span></a></li></ol></nav>
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-title">単振り子のシミュレーション</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> コード</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">すべてのコードを表示</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">すべてのコードを非表示</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">ソースコードを表示</a></li></ul></div></div>
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-title">単振り子のシミュレーション</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> コード</button></div></div>
 </div>
 
 
@@ -301,204 +304,70 @@ window.Quarto = {
 </header>
 
 
-<p>このページは力学（物理学基礎論A）のデモ用シミュレーションです。Quartoの標準機能であるObservable JS (OJS) を使用して、ブラウザ上で動作するインタラクティブなアニメーションを実装しています。</p>
-<section id="シミュレーション" class="level2">
-<h2 class="anchored" data-anchor-id="シミュレーション">シミュレーション</h2>
-<p>パラメータを変更して、単振り子の運動がどのように変化するか観察してください。</p>
-<div class="cell panel-input card bg-light p-2">
-<details class="code-fold">
-<summary>コード</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" data-startfrom="14" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 13;"><span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>viewof length <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.1</span><span class="op">,</span> <span class="fl">2.0</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="fl">1.0</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"振り子の長さ (m)"</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span>})</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>viewof initialAngle <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span><span class="op">/</span><span class="dv">2</span><span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span><span class="op">/</span><span class="dv">2</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span><span class="op">/</span><span class="dv">4</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"初期角度 (rad)"</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span>})</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>viewof gravity <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">1.0</span><span class="op">,</span> <span class="fl">20.0</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="fl">9.8</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"重力加速度 (m/s²)"</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span>})</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-1-1" data-nodetype="declaration">
+<p>このページでは、<strong>ShinyLive</strong> を用いたPythonシミュレーションコードを解説します。 以下のコードは、サーバーを立てることなく完全にブラウザ上のWebAssembly（Pyodide）で実行されています。コードの数式やパラメータをその場で書き換えて再実行することも可能です。</p>
+<section id="インタラクティブシミュレーション" class="level2">
+<h2 class="anchored" data-anchor-id="インタラクティブシミュレーション">インタラクティブ・シミュレーション</h2>
+<p>スライダーを動かしたり、時間スライダーの横にある「再生ボタン」を押してアニメーションを確認してください。</p>
+<pre class="shinylive-python" data-engine="python"><code>#| '!! shinylive warning !!': |
+#|   shinylive does not work in self-contained HTML documents.
+#|   Please set `embed-resources: false` in your metadata.
+#| standalone: true
+#| components: [editor, viewer]
 
-</div>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-1-2" data-nodetype="declaration">
+import numpy as np
+import matplotlib.pyplot as plt
+from shiny import App, render, ui
 
-</div>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-1-3" data-nodetype="declaration">
+# --- UI（ユーザーインターフェース）の定義 ---
+app_ui = ui.page_fluid(
+    ui.layout_sidebar(
+        ui.sidebar(
+            ui.input_slider("length", "振り子の長さ L (m)", 0.1, 2.0, 1.0, step=0.1),
+            ui.input_slider("initial_angle", "初期角度 θ0 (rad)", -np.pi/2, np.pi/2, np.pi/4, step=0.1),
+            ui.input_slider("gravity", "重力加速度 g (m/s²)", 1.0, 20.0, 9.8, step=0.1),
+            # アニメーション可能な時間スライダー
+            ui.input_slider("time", "時間 t (s)", 0.0, 10.0, 0.0, step=0.1, 
+                            animate=ui.AnimationOptions(interval=100, loop=True))
+        ),
+        ui.output_plot("pendulum_plot"),
+    )
+)
 
-</div>
-</div>
-</div>
-</div>
-<div class="cell">
-<details class="code-fold hidden">
-<summary>コード</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="24" data-source-offset="-19"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 23;"><span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { now } <span class="im">from</span> <span class="st">"@observablehq/stdlib"</span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co">// シミュレーションの状態更新</span></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>state <span class="op">=</span> {</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> t <span class="op">=</span> now <span class="op">/</span> <span class="dv">1000</span><span class="op">;</span> <span class="co">// 秒に変換</span></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ω = √(g/l)</span></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> omega <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(gravity <span class="op">/</span> length)<span class="op">;</span></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  <span class="co">// θ(t) = θ0 * cos(ωt)</span></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> angle <span class="op">=</span> initialAngle <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">cos</span>(omega <span class="op">*</span> t)<span class="op">;</span></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> {</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    <span class="dt">time</span><span class="op">:</span> t<span class="op">,</span></span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    <span class="dt">angle</span><span class="op">:</span> angle<span class="op">,</span></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    <span class="dt">x</span><span class="op">:</span> length <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sin</span>(angle)<span class="op">,</span></span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="dt">y</span><span class="op">:</span> length <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">cos</span>(angle)</span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="co">// 描画キャンバスの設定</span></span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>width <span class="op">=</span> <span class="dv">400</span></span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>height <span class="op">=</span> <span class="dv">300</span></span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>cx <span class="op">=</span> width <span class="op">/</span> <span class="dv">2</span></span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>cy <span class="op">=</span> <span class="dv">50</span></span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>scale <span class="op">=</span> <span class="dv">100</span> <span class="co">// 1m = 100px</span></span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="co">// SVGによる描画</span></span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="fu">html</span><span class="vs">`&lt;svg width="</span><span class="sc">${</span>width<span class="sc">}</span><span class="vs">" height="</span><span class="sc">${</span>height<span class="sc">}</span><span class="vs">" style="background-color: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;"&gt;</span></span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;!-- 支持点 --&gt;</span></span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;circle cx="</span><span class="sc">${</span>cx<span class="sc">}</span><span class="vs">" cy="</span><span class="sc">${</span>cy<span class="sc">}</span><span class="vs">" r="5" fill="#333" /&gt;</span></span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="vs">  </span></span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;!-- 紐 --&gt;</span></span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;line x1="</span><span class="sc">${</span>cx<span class="sc">}</span><span class="vs">" y1="</span><span class="sc">${</span>cy<span class="sc">}</span><span class="vs">" </span></span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="vs">        x2="</span><span class="sc">${</span>cx <span class="op">+</span> state<span class="op">.</span><span class="at">x</span> <span class="op">*</span> scale<span class="sc">}</span><span class="vs">" y2="</span><span class="sc">${</span>cy <span class="op">+</span> state<span class="op">.</span><span class="at">y</span> <span class="op">*</span> scale<span class="sc">}</span><span class="vs">" </span></span>
-<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="vs">        stroke="#666" stroke-width="2" /&gt;</span></span>
-<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a><span class="vs">        </span></span>
-<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;!-- おもり --&gt;</span></span>
-<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;circle cx="</span><span class="sc">${</span>cx <span class="op">+</span> state<span class="op">.</span><span class="at">x</span> <span class="op">*</span> scale<span class="sc">}</span><span class="vs">" cy="</span><span class="sc">${</span>cy <span class="op">+</span> state<span class="op">.</span><span class="at">y</span> <span class="op">*</span> scale<span class="sc">}</span><span class="vs">" </span></span>
-<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a><span class="vs">          r="15" fill="#e63946" stroke="#333" stroke-width="2" /&gt;</span></span>
-<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;/svg&gt;`</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div id="fig-ojs-cell-2" class="cell quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-ojs-cell-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display">
-<div id="fig-ojs-cell-2-1" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-ojs-cell-2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div id="ojs-cell-2-1" data-nodetype="declaration">
+# --- サーバー（計算ロジック）の定義 ---
+def server(input, output, session):
+    @render.plot(alt="単振り子のシミュレーション")
+    def pendulum_plot():
+        # スライダーから入力値を取得
+        L = input.length()
+        g = input.gravity()
+        theta0 = input.initial_angle()
+        t = input.time()
+        
+        # 単振動の角振動数と角度の計算
+        omega = np.sqrt(g / L)
+        theta = theta0 * np.cos(omega * t)
+        
+        # (x, y) 座標へ変換（下向きを負とする）
+        x = L * np.sin(theta)
+        y = -L * np.cos(theta)
+        
+        # プロットの初期化
+        fig, ax = plt.subplots(figsize=(6, 6))
+        ax.set_xlim(-2.5, 2.5)
+        ax.set_ylim(-2.5, 0.5)
+        ax.set_aspect('equal')
+        ax.grid(True)
+        ax.set_title(f"時間 t = {t:.1f} s における単振り子の位置")
+        
+        # 支点、紐、おもりを描画
+        ax.plot(0, 0, 'ko', markersize=8)        # 支点
+        ax.plot([0, x], [0, y], 'k-', lw=2)      # 紐
+        ax.plot(x, y, 'ro', markersize=20)       # おもり
+        
+        return fig
 
-</div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-ojs-cell-2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(a)
-</figcaption>
-</figure>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div id="fig-ojs-cell-2-2" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-ojs-cell-2-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div id="ojs-cell-2-2" data-nodetype="declaration">
-
-</div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-ojs-cell-2-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(b)
-</figcaption>
-</figure>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div id="fig-ojs-cell-2-3" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-ojs-cell-2-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div id="ojs-cell-2-3" data-nodetype="declaration">
-
-</div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-ojs-cell-2-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(c)
-</figcaption>
-</figure>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div id="fig-ojs-cell-2-4" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-ojs-cell-2-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div id="ojs-cell-2-4" data-nodetype="declaration">
-
-</div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-ojs-cell-2-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(d)
-</figcaption>
-</figure>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div id="fig-ojs-cell-2-5" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-ojs-cell-2-5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div id="ojs-cell-2-5" data-nodetype="declaration">
-
-</div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-ojs-cell-2-5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(e)
-</figcaption>
-</figure>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div id="fig-ojs-cell-2-6" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-ojs-cell-2-6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div id="ojs-cell-2-6" data-nodetype="declaration">
-
-</div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-ojs-cell-2-6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(f)
-</figcaption>
-</figure>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div id="fig-ojs-cell-2-7" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-ojs-cell-2-7-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div id="ojs-cell-2-7" data-nodetype="declaration">
-
-</div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-ojs-cell-2-7-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(g)
-</figcaption>
-</figure>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div id="fig-ojs-cell-2-8" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-ojs-cell-2-8-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div id="ojs-cell-2-8" data-nodetype="expression">
-
-</div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-ojs-cell-2-8-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(h)
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ojs-cell-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-図&nbsp;2.1: 単振り子のアニメーション
-</figcaption>
-</figure>
-</div>
-</div>
+# アプリの起動
+app = App(app_ui, server)</code></pre>
 </section>
 <section id="理論的背景" class="level2">
 <h2 class="anchored" data-anchor-id="理論的背景">理論的背景</h2>
@@ -522,17 +391,6 @@ window.Quarto = {
 
 </main> <!-- /main -->
 <script src="../../../templates/sidebar-toggle.js"></script>
-<script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBsZW5ndGggPSBJbnB1dHMucmFuZ2UoWzAuMSwgMi4wXSwge3ZhbHVlOiAxLjAsIGxhYmVsOiBcIuaMr+OCiuWtkOOBrumVt+OBlSAobSlcIiwgc3RlcDogMC4xfSlcbnZpZXdvZiBpbml0aWFsQW5nbGUgPSBJbnB1dHMucmFuZ2UoWy1NYXRoLlBJLzIsIE1hdGguUEkvMl0sIHt2YWx1ZTogTWF0aC5QSS80LCBsYWJlbDogXCLliJ3mnJ/op5LluqYgKHJhZClcIiwgc3RlcDogMC4xfSlcbnZpZXdvZiBncmF2aXR5ID0gSW5wdXRzLnJhbmdlKFsxLjAsIDIwLjBdLCB7dmFsdWU6IDkuOCwgbGFiZWw6IFwi6YeN5Yqb5Yqg6YCf5bqmIChtL3PCsilcIiwgc3RlcDogMC4xfSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMiIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IlxuLy8g5pmC6ZaT44Gu57WM6YGO77yINjBmcHPnm7jlvZPvvIlcbmltcG9ydCB7IG5vdyB9IGZyb20gXCJAb2JzZXJ2YWJsZWhxL3N0ZGxpYlwiXG5cbi8vIOOCt+ODn+ODpeODrOODvOOCt+ODp+ODs+OBrueKtuaFi+abtOaWsFxuc3RhdGUgPSB7XG4gIGNvbnN0IHQgPSBub3cgLyAxMDAwOyAvLyDnp5LjgavlpInmj5tcbiAgLy8gz4kgPSDiiJooZy9sKVxuICBjb25zdCBvbWVnYSA9IE1hdGguc3FydChncmF2aXR5IC8gbGVuZ3RoKTtcbiAgLy8gzrgodCkgPSDOuDAgKiBjb3Moz4l0KVxuICBjb25zdCBhbmdsZSA9IGluaXRpYWxBbmdsZSAqIE1hdGguY29zKG9tZWdhICogdCk7XG4gIFxuICByZXR1cm4ge1xuICAgIHRpbWU6IHQsXG4gICAgYW5nbGU6IGFuZ2xlLFxuICAgIHg6IGxlbmd0aCAqIE1hdGguc2luKGFuZ2xlKSxcbiAgICB5OiBsZW5ndGggKiBNYXRoLmNvcyhhbmdsZSlcbiAgfTtcbn1cblxuLy8g5o+P55S744Kt44Oj44Oz44OQ44K544Gu6Kit5a6aXG53aWR0aCA9IDQwMFxuaGVpZ2h0ID0gMzAwXG5jeCA9IHdpZHRoIC8gMlxuY3kgPSA1MFxuc2NhbGUgPSAxMDAgLy8gMW0gPSAxMDBweFxuXG4vLyBTVkfjgavjgojjgovmj4/nlLtcbmh0bWxgPHN2ZyB3aWR0aD1cIiR7d2lkdGh9XCIgaGVpZ2h0PVwiJHtoZWlnaHR9XCIgc3R5bGU9XCJiYWNrZ3JvdW5kLWNvbG9yOiAjZjhmOWZhOyBib3JkZXI6IDFweCBzb2xpZCAjZGRkOyBib3JkZXItcmFkaXVzOiA4cHg7XCI+XG4gIDwhLS0g5pSv5oyB54K5IC0tPlxuICA8Y2lyY2xlIGN4PVwiJHtjeH1cIiBjeT1cIiR7Y3l9XCIgcj1cIjVcIiBmaWxsPVwiIzMzM1wiIC8+XG4gIFxuICA8IS0tIOe0kCAtLT5cbiAgPGxpbmUgeDE9XCIke2N4fVwiIHkxPVwiJHtjeX1cIiBcbiAgICAgICAgeDI9XCIke2N4ICsgc3RhdGUueCAqIHNjYWxlfVwiIHkyPVwiJHtjeSArIHN0YXRlLnkgKiBzY2FsZX1cIiBcbiAgICAgICAgc3Ryb2tlPVwiIzY2NlwiIHN0cm9rZS13aWR0aD1cIjJcIiAvPlxuICAgICAgICBcbiAgPCEtLSDjgYrjgoLjgoogLS0+XG4gIDxjaXJjbGUgY3g9XCIke2N4ICsgc3RhdGUueCAqIHNjYWxlfVwiIGN5PVwiJHtjeSArIHN0YXRlLnkgKiBzY2FsZX1cIiBcbiAgICAgICAgICByPVwiMTVcIiBmaWxsPVwiI2U2Mzk0NlwiIHN0cm9rZT1cIiMzMzNcIiBzdHJva2Utd2lkdGg9XCIyXCIgLz5cbjwvc3ZnPmBcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnbGVuZ3RoJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2luaXRpYWxBbmdsZScpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdncmF2aXR5JykifV19
-</script>
-<script type="module">
-if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
-window._ojs.paths.runtimeToDoc = "../../theory/topics/simulations";
-window._ojs.paths.runtimeToRoot = "../..";
-window._ojs.paths.docToRoot = "../../..";
-window._ojs.selfContained = false;
-window._ojs.runtime.interpretFromScriptTags();
-</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
@@ -1001,90 +859,99 @@ window._ojs.runtime.interpretFromScriptTags();
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">ソースコード</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "単振り子のシミュレーション"</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> html</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>このページは力学（物理学基礎論A）のデモ用シミュレーションです。Quartoの標準機能であるObservable JS (OJS) を使用して、ブラウザ上で動作するインタラクティブなアニメーションを実装しています。</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## シミュレーション</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>パラメータを変更して、単振り子の運動がどのように変化するか観察してください。</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">//| panel: input</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>viewof length <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.1</span><span class="op">,</span> <span class="fl">2.0</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="fl">1.0</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"振り子の長さ (m)"</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span>})</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>viewof initialAngle <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span><span class="op">/</span><span class="dv">2</span><span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span><span class="op">/</span><span class="dv">2</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span><span class="op">/</span><span class="dv">4</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"初期角度 (rad)"</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span>})</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>viewof gravity <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">1.0</span><span class="op">,</span> <span class="fl">20.0</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="fl">9.8</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"重力加速度 (m/s²)"</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span>})</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co">//| echo: false</span></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co">//| fig-cap: "単振り子のアニメーション"</span></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="co">// 時間の経過（60fps相当）</span></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { now } <span class="im">from</span> <span class="st">"@observablehq/stdlib"</span></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="co">// シミュレーションの状態更新</span></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>state <span class="op">=</span> {</span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> t <span class="op">=</span> now <span class="op">/</span> <span class="dv">1000</span><span class="op">;</span> <span class="co">// 秒に変換</span></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ω = √(g/l)</span></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> omega <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(gravity <span class="op">/</span> length)<span class="op">;</span></span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>  <span class="co">// θ(t) = θ0 * cos(ωt)</span></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> angle <span class="op">=</span> initialAngle <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">cos</span>(omega <span class="op">*</span> t)<span class="op">;</span></span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> {</span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>    <span class="dt">time</span><span class="op">:</span> t<span class="op">,</span></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    <span class="dt">angle</span><span class="op">:</span> angle<span class="op">,</span></span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    <span class="dt">x</span><span class="op">:</span> length <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sin</span>(angle)<span class="op">,</span></span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>    <span class="dt">y</span><span class="op">:</span> length <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">cos</span>(angle)</span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a><span class="co">// 描画キャンバスの設定</span></span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>width <span class="op">=</span> <span class="dv">400</span></span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>height <span class="op">=</span> <span class="dv">300</span></span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>cx <span class="op">=</span> width <span class="op">/</span> <span class="dv">2</span></span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>cy <span class="op">=</span> <span class="dv">50</span></span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>scale <span class="op">=</span> <span class="dv">100</span> <span class="co">// 1m = 100px</span></span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="co">// SVGによる描画</span></span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a><span class="fu">html</span><span class="vs">`&lt;svg width="</span><span class="sc">${</span>width<span class="sc">}</span><span class="vs">" height="</span><span class="sc">${</span>height<span class="sc">}</span><span class="vs">" style="background-color: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;"&gt;</span></span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;!-- 支持点 --&gt;</span></span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;circle cx="</span><span class="sc">${</span>cx<span class="sc">}</span><span class="vs">" cy="</span><span class="sc">${</span>cy<span class="sc">}</span><span class="vs">" r="5" fill="#333" /&gt;</span></span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a><span class="vs">  </span></span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;!-- 紐 --&gt;</span></span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;line x1="</span><span class="sc">${</span>cx<span class="sc">}</span><span class="vs">" y1="</span><span class="sc">${</span>cy<span class="sc">}</span><span class="vs">" </span></span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a><span class="vs">        x2="</span><span class="sc">${</span>cx <span class="op">+</span> state<span class="op">.</span><span class="at">x</span> <span class="op">*</span> scale<span class="sc">}</span><span class="vs">" y2="</span><span class="sc">${</span>cy <span class="op">+</span> state<span class="op">.</span><span class="at">y</span> <span class="op">*</span> scale<span class="sc">}</span><span class="vs">" </span></span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a><span class="vs">        stroke="#666" stroke-width="2" /&gt;</span></span>
-<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a><span class="vs">        </span></span>
-<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;!-- おもり --&gt;</span></span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;circle cx="</span><span class="sc">${</span>cx <span class="op">+</span> state<span class="op">.</span><span class="at">x</span> <span class="op">*</span> scale<span class="sc">}</span><span class="vs">" cy="</span><span class="sc">${</span>cy <span class="op">+</span> state<span class="op">.</span><span class="at">y</span> <span class="op">*</span> scale<span class="sc">}</span><span class="vs">" </span></span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a><span class="vs">          r="15" fill="#e63946" stroke="#333" stroke-width="2" /&gt;</span></span>
-<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;/svg&gt;`</span></span>
-<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a><span class="fu">## 理論的背景</span></span>
-<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>長さ $l$ の軽い糸に質量 $m$ のおもりをつるした単振り子の運動方程式は、以下のようになります。</span>
-<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>\frac{d^2 \theta}{dt^2} = -\frac{g}{l} \sin \theta</span>
-<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>微小振動（$\theta \ll 1$）の近似を用いると、$\sin \theta \approx \theta$ となり、方程式は単振動の形になります。</span>
-<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>\frac{d^2 \theta}{dt^2} = -\frac{g}{l} \theta</span>
-<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>この方程式の一般解は以下の通りです。</span>
-<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a>\theta(t) = \theta_0 \cos\left(\sqrt{\frac{g}{l}} t + \phi \right)</span>
-<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a>$$</span>
-</code></pre></div><button title="コピー" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "単振り子のシミュレーション"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> html</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="an">filters:</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">  - shinylive</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>このページでは、**ShinyLive** を用いたPythonシミュレーションコードを解説します。</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>以下のコードは、サーバーを立てることなく完全にブラウザ上のWebAssembly（Pyodide）で実行されています。コードの数式やパラメータをその場で書き換えて再実行することも可能です。</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">## インタラクティブ・シミュレーション</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>スライダーを動かしたり、時間スライダーの横にある「再生ボタン」を押してアニメーションを確認してください。</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="in">```{shinylive-python}</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#| standalone: true</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#| components: [editor, viewer]</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="ex">import</span> numpy as np</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="ex">import</span> matplotlib.pyplot as plt</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="ex">from</span> shiny import App, render, ui</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co"># --- UI（ユーザーインターフェース）の定義 ---</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="ex">app_ui</span> = ui.page_fluid<span class="er">(</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="ex">ui.layout_sidebar</span><span class="er">(</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ui.sidebar</span><span class="er">(</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>            <span class="ex">ui.input_slider</span><span class="er">(</span><span class="st">"length"</span><span class="ex">,</span> <span class="st">"振り子の長さ L (m)"</span>, 0.1, 2.0, 1.0, step=0.1<span class="kw">)</span><span class="ex">,</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>            <span class="ex">ui.input_slider</span><span class="er">(</span><span class="st">"initial_angle"</span><span class="ex">,</span> <span class="st">"初期角度 θ0 (rad)"</span>, <span class="at">-np.pi</span>/2, np.pi/2, np.pi/4, step=0.1<span class="kw">)</span><span class="ex">,</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>            <span class="ex">ui.input_slider</span><span class="er">(</span><span class="st">"gravity"</span><span class="ex">,</span> <span class="st">"重力加速度 g (m/s²)"</span>, 1.0, 20.0, 9.8, step=0.1<span class="kw">)</span><span class="ex">,</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>            <span class="co"># アニメーション可能な時間スライダー</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>            <span class="ex">ui.input_slider</span><span class="er">(</span><span class="st">"time"</span><span class="ex">,</span> <span class="st">"時間 t (s)"</span>, 0.0, 10.0, 0.0, step=0.1, </span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>                            <span class="va">animate</span><span class="op">=</span>ui.AnimationOptions<span class="kw">(</span><span class="va">interval</span><span class="op">=</span>100, <span class="va">loop</span><span class="op">=</span>True<span class="kw">))</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>        <span class="kw">)</span><span class="ex">,</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ui.output_plot</span><span class="er">(</span><span class="st">"pendulum_plot"</span><span class="kw">)</span><span class="ex">,</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">)</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="kw">)</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="co"># --- サーバー（計算ロジック）の定義 ---</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="ex">def</span> server<span class="er">(</span><span class="ex">input,</span> output, session<span class="kw">)</span><span class="bu">:</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    <span class="ex">@render.plot</span><span class="er">(</span><span class="va">alt</span><span class="op">=</span><span class="st">"単振り子のシミュレーション"</span><span class="kw">)</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    <span class="ex">def</span> pendulum_plot<span class="er">(</span><span class="kw">)</span><span class="bu">:</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>        <span class="co"># スライダーから入力値を取得</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>        <span class="ex">L</span> = input.length<span class="er">(</span><span class="kw">)</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>        <span class="ex">g</span> = input.gravity<span class="er">(</span><span class="kw">)</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>        <span class="ex">theta0</span> = input.initial_angle<span class="er">(</span><span class="kw">)</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>        <span class="ex">t</span> = input.time<span class="er">(</span><span class="kw">)</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 単振動の角振動数と角度の計算</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>        <span class="ex">omega</span> = np.sqrt<span class="er">(</span><span class="ex">g</span> / L<span class="kw">)</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>        <span class="ex">theta</span> = theta0 <span class="pp">*</span> np.cos<span class="er">(</span><span class="ex">omega</span> <span class="pp">*</span> t<span class="kw">)</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>        <span class="co"># (x, y) 座標へ変換（下向きを負とする）</span></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>        <span class="ex">x</span> = L <span class="pp">*</span> np.sin<span class="er">(</span><span class="ex">theta</span><span class="kw">)</span></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>        <span class="ex">y</span> = <span class="at">-L</span> <span class="pp">*</span> np.cos<span class="er">(</span><span class="ex">theta</span><span class="kw">)</span></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>        <span class="co"># プロットの初期化</span></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>        <span class="ex">fig,</span> ax = plt.subplots<span class="er">(</span><span class="va">figsize</span><span class="op">=</span><span class="va">(</span>6, 6<span class="va">)</span><span class="kw">)</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ax.set_xlim</span><span class="er">(</span><span class="ex">-2.5,</span> 2.5<span class="kw">)</span></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ax.set_ylim</span><span class="er">(</span><span class="ex">-2.5,</span> 0.5<span class="kw">)</span></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ax.set_aspect</span><span class="er">(</span><span class="st">'equal'</span><span class="kw">)</span></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ax.grid</span><span class="er">(</span><span class="ex">True</span><span class="kw">)</span></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ax.set_title</span><span class="er">(</span><span class="ex">f</span><span class="st">"時間 t = {t:.1f} s における単振り子の位置"</span><span class="kw">)</span></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 支点、紐、おもりを描画</span></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ax.plot</span><span class="er">(</span><span class="ex">0,</span> 0, <span class="st">'ko'</span>, markersize=8<span class="kw">)</span>        <span class="co"># 支点</span></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ax.plot</span><span class="er">(</span><span class="ex">[0,</span> x], [0, y], <span class="st">'k-'</span>, lw=2<span class="kw">)</span>      <span class="co"># 紐</span></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ax.plot</span><span class="er">(</span><span class="ex">x,</span> y, <span class="st">'ro'</span>, markersize=20<span class="kw">)</span>       <span class="co"># おもり</span></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ex">fig</span></span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a><span class="co"># アプリの起動</span></span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a><span class="ex">app</span> = App<span class="er">(</span><span class="ex">app_ui,</span> server<span class="kw">)</span></span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a><span class="fu">## 理論的背景</span></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>長さ $l$ の軽い糸に質量 $m$ のおもりをつるした単振り子の運動方程式は、以下のようになります。</span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>\frac{d^2 \theta}{dt^2} = -\frac{g}{l} \sin \theta</span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>微小振動（$\theta \ll 1$）の近似を用いると、$\sin \theta \approx \theta$ となり、方程式は単振動の形になります。</span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>\frac{d^2 \theta}{dt^2} = -\frac{g}{l} \theta</span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a>この方程式の一般解は以下の通りです。</span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a>\theta(t) = \theta_0 \cos\left(\sqrt{\frac{g}{l}} t + \phi \right)</span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>$$</span></code></pre></div><button title="コピー" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
