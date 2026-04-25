@@ -1,6 +1,8 @@
 ---
 title: "演習：極座標系における速度と加速度"
 format: html
+filters:
+  - shinylive
 ---
 
 ## 問題
@@ -16,68 +18,76 @@ format: html
 
 螺旋上の質点の動きをイメージするためのシミュレーションです。スライダーを動かして、パラメータ $k$ が軌道にどう影響するか確認してください。
 
-```{ojs}
-//| panel: input
-viewof k_param = Inputs.range([-0.5, 0.5], {value: 0.15, label: "パラメータ k", step: 0.05})
-viewof omega_param = Inputs.range([0.5, 5], {value: 1.5, label: "角速度 ω", step: 0.1})
-```
+```{shinylive-python}
+#| standalone: true
+#| components: [editor, viewer]
 
-```{ojs}
-//| echo: false
-import { now } from "@observablehq/stdlib"
+import numpy as np
+import matplotlib.pyplot as plt
+from shiny import App, render, ui
 
-// 状態の更新
-spiral_state = {
-  // アニメーションが大きくなりすぎないように時間をループさせる
-  const raw_t = (now / 1000);
-  const t = raw_t % 8; // 8秒でリセット
-  
-  const theta = omega_param * t;
-  const a_scale = 1.0;
-  const r = a_scale * Math.exp(k_param * theta);
-  const x = r * Math.cos(theta);
-  const y = r * Math.sin(theta);
-  
-  return {t, theta, r, x, y, a_scale};
-}
+# --- UI（ユーザーインターフェース）の定義 ---
+app_ui = ui.page_fluid(
+    ui.layout_sidebar(
+        ui.sidebar(
+            ui.input_slider("k", "パラメータ k", -0.5, 0.5, 0.15, step=0.05),
+            ui.input_slider("omega", "角速度 ω", 0.5, 5.0, 1.5, step=0.1),
+            ui.input_slider("t", "時間 t (s)", 0.0, 5.0, 0.0, step=0.1, 
+                            animate=ui.AnimationOptions(interval=100, loop=True))
+        ),
+        ui.output_plot("spiral_plot"),
+    )
+)
 
-// キャンバス設定
-canvas_width = 400
-canvas_height = 400
-center_x = canvas_width / 2
-center_y = canvas_height / 2
-scale_factor = 20
-
-// これまでの軌跡を描画するためのパス生成
-path_points = {
-  let pts = [];
-  for(let th = 0; th <= spiral_state.theta; th += 0.05) {
-    let rad = spiral_state.a_scale * Math.exp(k_param * th);
-    // Y軸は下向きが正なので反転させる
-    pts.push(`${center_x + rad * Math.cos(th) * scale_factor},${center_y - rad * Math.sin(th) * scale_factor}`);
-  }
-  return pts.join(" ");
-}
-
-html`<svg width="${canvas_width}" height="${canvas_height}" style="background-color: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
-  <!-- X/Y軸 -->
-  <line x1="0" y1="${center_y}" x2="${canvas_width}" y2="${center_y}" stroke="#ccc" stroke-dasharray="4" />
-  <line x1="${center_x}" y1="0" x2="${center_x}" y2="${canvas_height}" stroke="#ccc" stroke-dasharray="4" />
-  
-  <!-- 軌跡 -->
-  <polyline points="${path_points}" fill="none" stroke="#666" stroke-width="2" />
-  
-  <!-- 動径ベクトル -->
-  <line x1="${center_x}" y1="${center_y}" 
-        x2="${center_x + spiral_state.x * scale_factor}" 
-        y2="${center_y - spiral_state.y * scale_factor}" 
-        stroke="blue" stroke-width="1.5" opacity="0.5" />
+# --- サーバー（計算ロジック）の定義 ---
+def server(input, output, session):
+    @render.plot(alt="等角螺旋のシミュレーション")
+    def spiral_plot():
+        k = input.k()
+        omega = input.omega()
+        t = input.t()
+        a = 1.0 # スケール係数
         
-  <!-- 質点 -->
-  <circle cx="${center_x + spiral_state.x * scale_factor}" 
-          cy="${center_y - spiral_state.y * scale_factor}" 
-          r="6" fill="#e63946" />
-</svg>`
+        # 軌跡を描画するための細かい角度配列
+        # 時間が進むにつれて角度の最大値が増え、軌道が伸びる
+        theta_max = omega * t
+        if theta_max == 0:
+            theta_max = 0.01 # 描画エラー回避
+            
+        theta_array = np.linspace(0, theta_max, 200)
+        
+        # 極座標 (r, theta) から直交座標 (x, y) への変換
+        r_array = a * np.exp(k * theta_array)
+        x_array = r_array * np.cos(theta_array)
+        y_array = r_array * np.sin(theta_array)
+        
+        # 現在時刻の質点の位置
+        x_current = x_array[-1]
+        y_current = y_array[-1]
+        
+        # --- 描画処理 ---
+        fig, ax = plt.subplots(figsize=(6, 6))
+        
+        # 最大半径を計算してグラフの描画枠を固定する
+        max_r = max(a, a * np.exp(k * omega * 5.0))
+        ax.set_xlim(-max_r*1.1, max_r*1.1)
+        ax.set_ylim(-max_r*1.1, max_r*1.1)
+        ax.set_aspect('equal')
+        ax.grid(True, linestyle='--', alpha=0.7)
+        ax.set_title(f"等角螺旋の軌道 (時間 t = {t:.1f})")
+        
+        # 軌跡の描画
+        ax.plot(x_array, y_array, 'k-', alpha=0.5, label='軌跡')
+        # 動径ベクトルの描画
+        ax.plot([0, x_current], [0, y_current], 'b-', lw=1.5, label='動径ベクトル $\\vec{r}$')
+        # 質点の描画
+        ax.plot(x_current, y_current, 'ro', markersize=8)
+        
+        ax.legend(loc='upper left')
+        return fig
+
+# アプリの起動
+app = App(app_ui, server)
 ```
 
 ---

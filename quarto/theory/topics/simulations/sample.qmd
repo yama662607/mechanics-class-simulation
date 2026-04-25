@@ -1,65 +1,75 @@
 ---
 title: "単振り子のシミュレーション"
 format: html
+filters:
+  - shinylive
 ---
 
-このページは力学（物理学基礎論A）のデモ用シミュレーションです。Quartoの標準機能であるObservable JS (OJS) を使用して、ブラウザ上で動作するインタラクティブなアニメーションを実装しています。
+このページでは、**ShinyLive** を用いたPythonシミュレーションコードを解説します。
+以下のコードは、サーバーを立てることなく完全にブラウザ上のWebAssembly（Pyodide）で実行されています。コードの数式やパラメータをその場で書き換えて再実行することも可能です。
 
-## シミュレーション
+## インタラクティブ・シミュレーション
 
-パラメータを変更して、単振り子の運動がどのように変化するか観察してください。
+スライダーを動かしたり、時間スライダーの横にある「再生ボタン」を押してアニメーションを確認してください。
 
-```{ojs}
-//| panel: input
-viewof length = Inputs.range([0.1, 2.0], {value: 1.0, label: "振り子の長さ (m)", step: 0.1})
-viewof initialAngle = Inputs.range([-Math.PI/2, Math.PI/2], {value: Math.PI/4, label: "初期角度 (rad)", step: 0.1})
-viewof gravity = Inputs.range([1.0, 20.0], {value: 9.8, label: "重力加速度 (m/s²)", step: 0.1})
-```
+```{shinylive-python}
+#| standalone: true
+#| components: [editor, viewer]
 
-```{ojs}
-//| echo: false
-//| fig-cap: "単振り子のアニメーション"
+import numpy as np
+import matplotlib.pyplot as plt
+from shiny import App, render, ui
 
-// 時間の経過（60fps相当）
-import { now } from "@observablehq/stdlib"
+# --- UI（ユーザーインターフェース）の定義 ---
+app_ui = ui.page_fluid(
+    ui.layout_sidebar(
+        ui.sidebar(
+            ui.input_slider("length", "振り子の長さ L (m)", 0.1, 2.0, 1.0, step=0.1),
+            ui.input_slider("initial_angle", "初期角度 θ0 (rad)", -np.pi/2, np.pi/2, np.pi/4, step=0.1),
+            ui.input_slider("gravity", "重力加速度 g (m/s²)", 1.0, 20.0, 9.8, step=0.1),
+            # アニメーション可能な時間スライダー
+            ui.input_slider("time", "時間 t (s)", 0.0, 10.0, 0.0, step=0.1, 
+                            animate=ui.AnimationOptions(interval=100, loop=True))
+        ),
+        ui.output_plot("pendulum_plot"),
+    )
+)
 
-// シミュレーションの状態更新
-state = {
-  const t = now / 1000; // 秒に変換
-  // ω = √(g/l)
-  const omega = Math.sqrt(gravity / length);
-  // θ(t) = θ0 * cos(ωt)
-  const angle = initialAngle * Math.cos(omega * t);
-  
-  return {
-    time: t,
-    angle: angle,
-    x: length * Math.sin(angle),
-    y: length * Math.cos(angle)
-  };
-}
-
-// 描画キャンバスの設定
-width = 400
-height = 300
-cx = width / 2
-cy = 50
-scale = 100 // 1m = 100px
-
-// SVGによる描画
-html`<svg width="${width}" height="${height}" style="background-color: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
-  <!-- 支持点 -->
-  <circle cx="${cx}" cy="${cy}" r="5" fill="#333" />
-  
-  <!-- 紐 -->
-  <line x1="${cx}" y1="${cy}" 
-        x2="${cx + state.x * scale}" y2="${cy + state.y * scale}" 
-        stroke="#666" stroke-width="2" />
+# --- サーバー（計算ロジック）の定義 ---
+def server(input, output, session):
+    @render.plot(alt="単振り子のシミュレーション")
+    def pendulum_plot():
+        # スライダーから入力値を取得
+        L = input.length()
+        g = input.gravity()
+        theta0 = input.initial_angle()
+        t = input.time()
         
-  <!-- おもり -->
-  <circle cx="${cx + state.x * scale}" cy="${cy + state.y * scale}" 
-          r="15" fill="#e63946" stroke="#333" stroke-width="2" />
-</svg>`
+        # 単振動の角振動数と角度の計算
+        omega = np.sqrt(g / L)
+        theta = theta0 * np.cos(omega * t)
+        
+        # (x, y) 座標へ変換（下向きを負とする）
+        x = L * np.sin(theta)
+        y = -L * np.cos(theta)
+        
+        # プロットの初期化
+        fig, ax = plt.subplots(figsize=(6, 6))
+        ax.set_xlim(-2.5, 2.5)
+        ax.set_ylim(-2.5, 0.5)
+        ax.set_aspect('equal')
+        ax.grid(True)
+        ax.set_title(f"時間 t = {t:.1f} s における単振り子の位置")
+        
+        # 支点、紐、おもりを描画
+        ax.plot(0, 0, 'ko', markersize=8)        # 支点
+        ax.plot([0, x], [0, y], 'k-', lw=2)      # 紐
+        ax.plot(x, y, 'ro', markersize=20)       # おもり
+        
+        return fig
+
+# アプリの起動
+app = App(app_ui, server)
 ```
 
 ## 理論的背景
