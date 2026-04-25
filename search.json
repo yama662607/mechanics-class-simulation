@@ -1,0 +1,106 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "物理学基礎論A (力学) 補足ノート",
+    "section": "",
+    "text": "目次",
+    "crumbs": [
+      "ホーム",
+      "目次"
+    ]
+  },
+  {
+    "objectID": "index.html#理論体系ロードマップ",
+    "href": "index.html#理論体系ロードマップ",
+    "title": "物理学基礎論A (力学) 補足ノート",
+    "section": "理論体系ロードマップ",
+    "text": "理論体系ロードマップ\n\n\n\n項目名\n素材\nノート\n\n\n\n\n導入と記法\nraw / PDF / images\n理論体系ノート\n\n\n質点の力学\nraw / PDF / images\n理論体系ノート\n\n\n剛体の力学\nraw / PDF / images\n理論体系ノート\n\n\n解析力学\nraw / PDF / images\n理論体系ノート",
+    "crumbs": [
+      "ホーム",
+      "目次"
+    ]
+  },
+  {
+    "objectID": "index.html#素材置き場",
+    "href": "index.html#素材置き場",
+    "title": "物理学基礎論A (力学) 補足ノート",
+    "section": "素材置き場",
+    "text": "素材置き場\n\nquarto/assets/raw/lectures/: その日の講義資料、未整理の写真、手書きノート。\nquarto/assets/pdf/lectures/: qmd から参照する整理済み PDF。\nquarto/assets/images/lectures/: qmd から参照する整理済み画像。",
+    "crumbs": [
+      "ホーム",
+      "目次"
+    ]
+  },
+  {
+    "objectID": "index.html#執筆ルール",
+    "href": "index.html#執筆ルール",
+    "title": "物理学基礎論A (力学) 補足ノート",
+    "section": "執筆ルール",
+    "text": "執筆ルール\n\n本文は講義回単位ではなく、理論トピック単位で整理します。\nシミュレーションコード（Python 等）を積極的に取り入れ、理論の視覚的理解を目指します。\n定義、命題、証明、直感、計算例を分け、講義で曖昧だった箇所を明示します。",
+    "crumbs": [
+      "ホーム",
+      "目次"
+    ]
+  },
+  {
+    "objectID": "theory/textbook.html",
+    "href": "theory/textbook.html",
+    "title": "物理学基礎論A (力学): 理論体系ノート",
+    "section": "",
+    "text": "はじめに\nこのノートは、物理学基礎論A（力学）の講義内容を、理論体系およびシミュレーション学習の観点から再構成するための作業文書です。 定義・定理・証明・計算例、そしてそれらを検証するためのシミュレーションコードを優先して整理します。\n\n\n導入と記法\nここでは力学で用いるベクトル解析、微分方程式の記法などを整理します。\n\n\n質点の力学\nニュートンの運動方程式、保存則、振動現象などを扱います。\n\n\n剛体の力学\n剛体の回転運動、慣性テンソル、オイラー方程式などを扱います。\n\n\n解析力学\n最小作用の原理、ラグランジュ形式、ハミルトン形式などを扱います。",
+    "crumbs": [
+      "ホーム",
+      "理論体系ノート",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>物理学基礎論A (力学): 理論体系ノート</span>"
+    ]
+  },
+  {
+    "objectID": "theory/topics/simulations/sample.html",
+    "href": "theory/topics/simulations/sample.html",
+    "title": "単振り子のシミュレーション",
+    "section": "",
+    "text": "シミュレーション\nこのページは力学（物理学基礎論A）のデモ用シミュレーションです。Quartoの標準機能であるObservable JS (OJS) を使用して、ブラウザ上で動作するインタラクティブなアニメーションを実装しています。\nパラメータを変更して、単振り子の運動がどのように変化するか観察してください。\nコード\nviewof length = Inputs.range([0.1, 2.0], {value: 1.0, label: \"振り子の長さ (m)\", step: 0.1})\nviewof initialAngle = Inputs.range([-Math.PI/2, Math.PI/2], {value: Math.PI/4, label: \"初期角度 (rad)\", step: 0.1})\nviewof gravity = Inputs.range([1.0, 20.0], {value: 9.8, label: \"重力加速度 (m/s²)\", step: 0.1})\nコード\nimport { now } from \"@observablehq/stdlib\"\n\n// シミュレーションの状態更新\nstate = {\n  const t = now / 1000; // 秒に変換\n  // ω = √(g/l)\n  const omega = Math.sqrt(gravity / length);\n  // θ(t) = θ0 * cos(ωt)\n  const angle = initialAngle * Math.cos(omega * t);\n  \n  return {\n    time: t,\n    angle: angle,\n    x: length * Math.sin(angle),\n    y: length * Math.cos(angle)\n  };\n}\n\n// 描画キャンバスの設定\nwidth = 400\nheight = 300\ncx = width / 2\ncy = 50\nscale = 100 // 1m = 100px\n\n// SVGによる描画\nhtml`&lt;svg width=\"${width}\" height=\"${height}\" style=\"background-color: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;\"&gt;\n  &lt;!-- 支持点 --&gt;\n  &lt;circle cx=\"${cx}\" cy=\"${cy}\" r=\"5\" fill=\"#333\" /&gt;\n  \n  &lt;!-- 紐 --&gt;\n  &lt;line x1=\"${cx}\" y1=\"${cy}\" \n        x2=\"${cx + state.x * scale}\" y2=\"${cy + state.y * scale}\" \n        stroke=\"#666\" stroke-width=\"2\" /&gt;\n        \n  &lt;!-- おもり --&gt;\n  &lt;circle cx=\"${cx + state.x * scale}\" cy=\"${cy + state.y * scale}\" \n          r=\"15\" fill=\"#e63946\" stroke=\"#333\" stroke-width=\"2\" /&gt;\n&lt;/svg&gt;`\n\n\n\n\n\n\n\n\n\n\n\n\n\n(a)\n\n\n\n\n\n\n\n\n\n\n\n\n\n(b)\n\n\n\n\n\n\n\n\n\n\n\n\n\n(c)\n\n\n\n\n\n\n\n\n\n\n\n\n\n(d)\n\n\n\n\n\n\n\n\n\n\n\n\n\n(e)\n\n\n\n\n\n\n\n\n\n\n\n\n\n(f)\n\n\n\n\n\n\n\n\n\n\n\n\n\n(g)\n\n\n\n\n\n\n\n\n\n\n\n\n\n(h)\n\n\n\n\n\n\n図 2.1: 単振り子のアニメーション",
+    "crumbs": [
+      "ホーム",
+      "シミュレーション",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>単振り子のシミュレーション</span>"
+    ]
+  },
+  {
+    "objectID": "theory/topics/simulations/sample.html#理論的背景",
+    "href": "theory/topics/simulations/sample.html#理論的背景",
+    "title": "単振り子のシミュレーション",
+    "section": "理論的背景",
+    "text": "理論的背景\n長さ l の軽い糸に質量 m のおもりをつるした単振り子の運動方程式は、以下のようになります。\n\n\\frac{d^2 \\theta}{dt^2} = -\\frac{g}{l} \\sin \\theta\n\n微小振動（\\theta \\ll 1）の近似を用いると、\\sin \\theta \\approx \\theta となり、方程式は単振動の形になります。\n\n\\frac{d^2 \\theta}{dt^2} = -\\frac{g}{l} \\theta\n\nこの方程式の一般解は以下の通りです。\n\n\\theta(t) = \\theta_0 \\cos\\left(\\sqrt{\\frac{g}{l}} t + \\phi \\right)",
+    "crumbs": [
+      "ホーム",
+      "シミュレーション",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>単振り子のシミュレーション</span>"
+    ]
+  },
+  {
+    "objectID": "theory/topics/exercises/polar_kinematics.html",
+    "href": "theory/topics/exercises/polar_kinematics.html",
+    "title": "演習：極座標系における速度と加速度",
+    "section": "",
+    "text": "問題\n等角螺旋 r = ae^{k\\theta} \\ (\\theta &gt; 0) の上を、角速度 \\dot{\\theta} = \\omega = \\text{const} で運動する点があります。 この点の速度と加速度の極座標成分 v_r, v_\\theta, a_r, a_\\theta を求めよ。\nまた、a &gt; 0 のとき、求めた加速度の動径成分 a_r が k に対してどのように変化するか、定性的なグラフと共に簡潔に説明せよ。",
+    "crumbs": [
+      "ホーム",
+      "演習問題",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>演習：極座標系における速度と加速度</span>"
+    ]
+  },
+  {
+    "objectID": "theory/topics/exercises/polar_kinematics.html#解答と解説",
+    "href": "theory/topics/exercises/polar_kinematics.html#解答と解説",
+    "title": "演習：極座標系における速度と加速度",
+    "section": "解答と解説",
+    "text": "解答と解説\n\n1. 速度と加速度の極座標成分の導出\n極座標 (r, \\theta) における速度と加速度の各成分の公式は以下の通りです。\n\n速度: v_r = \\dot{r}, \\quad v_\\theta = r\\dot{\\theta}\n加速度: a_r = \\ddot{r} - r\\dot{\\theta}^2, \\quad a_\\theta = r\\ddot{\\theta} + 2\\dot{r}\\dot{\\theta}\n\n問題の条件より、以下の関係式が与えられています。\n\nr = ae^{k\\theta}\n\\dot{\\theta} = \\omega \\quad (\\text{一定})\n\\ddot{\\theta} = 0\n\nまず、r の時間微分を計算します。合成関数の微分により、\\dot{\\theta} = \\omega を用います。\n \\dot{r} = \\frac{dr}{d\\theta} \\cdot \\frac{d\\theta}{dt} = \\left( ake^{k\\theta} \\right) \\cdot \\omega = ak\\omega e^{k\\theta} = k\\omega r \nさらに、もう一度時間微分して \\ddot{r} を求めます。\n \\ddot{r} = \\frac{d}{dt}(k\\omega r) = k\\omega\\dot{r} = k\\omega(ak\\omega e^{k\\theta}) = ak^2\\omega^2 e^{k\\theta} \nこれらを公式に代入して、各成分を求めます。\n速度成分: \n\\begin{align*}\nv_r &= \\dot{r} = \\boldsymbol{ak\\omega e^{k\\theta}} \\\\\nv_\\theta &= r\\dot{\\theta} = (ae^{k\\theta})\\omega = \\boldsymbol{a\\omega e^{k\\theta}}\n\\end{align*}\n\n加速度成分: \n\\begin{align*}\na_r &= \\ddot{r} - r\\dot{\\theta}^2 = ak^2\\omega^2 e^{k\\theta} - (ae^{k\\theta})\\omega^2 = \\boldsymbol{a\\omega^2(k^2 - 1)e^{k\\theta}} \\\\\na_\\theta &= r\\ddot{\\theta} + 2\\dot{r}\\dot{\\theta} = (ae^{k\\theta})(0) + 2(ak\\omega e^{k\\theta})\\omega = \\boldsymbol{2ak\\omega^2 e^{k\\theta}}\n\\end{align*}\n\n\n\n\n2. 加速度の動径成分 a_r の k に対する依存性\n求めた動径加速度は a_r(k) = a\\omega^2(k^2 - 1)e^{k\\theta} です。 a &gt; 0 かつ \\theta &gt; 0 を固定した場合に、この値がパラメータ k によってどのように変化するかを考察します。定数部分 a\\omega^2 &gt; 0 なので、関数 f(k) = (k^2 - 1)e^{k\\theta} の振る舞いを調べればよいことになります。\n微分して極値を求めます。  f'(k) = 2ke^{k\\theta} + \\theta(k^2 - 1)e^{k\\theta} = (\\theta k^2 + 2k - \\theta)e^{k\\theta}  f'(k) = 0 となる k は、2次方程式 \\theta k^2 + 2k - \\theta = 0 の解であり、解の公式より  k_{\\pm} = \\frac{-1 \\pm \\sqrt{1 + \\theta^2}}{\\theta}  となります。\\theta &gt; 0 のため、k_+ &gt; 0（極小値を与える）、k_- &lt; -1（極大値を与える）となります。\n以下が、その定性的なグラフです。\n\n\n\n動径加速度 a_r の k に対する依存性\n\n\n\nグラフから読み取れる物理的・定性的な振る舞い\n\na_r の符号（力の向き）: e^{k\\theta} は常に正なので、a_r の符号は (k^2 - 1) だけで決まります。\n\n|k| &lt; 1 のとき: a_r &lt; 0 となり、質点は原点に向かって引かれるような実効的な力（向心力）を感じます。\n|k| &gt; 1 のとき: a_r &gt; 0 となり、遠心力が勝り、原点から遠ざかる方向へ加速（斥力）します。\nk = \\pm 1 のとき: a_r = 0 となり、動径方向の力と遠心力が釣り合って、動径方向の加速度を持たなくなります。\n\nk \\to \\infty のとき: 指数関数 e^{k\\theta} が爆発的に増加するため、正の無限大に発散します。\nk \\to -\\infty のとき: (k^2 - 1) は大きくなりますが、指数関数 e^{k\\theta} が 0 へ急激に減衰する効果が勝るため、a_r \\to 0 へと漸近します（螺旋が急激に原点に巻き込まれるため、速度自体が急速に0に近づくためです）。\n極値の存在: k &lt; -1 の領域にただ一つの極大値（正の値）を持ち、0 &lt; k &lt; 1 の領域にただ一つの極小値（負の値）を持ちます。",
+    "crumbs": [
+      "ホーム",
+      "演習問題",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>演習：極座標系における速度と加速度</span>"
+    ]
+  }
+]

@@ -1,0 +1,98 @@
+/* Field Theory note styles */
+
+.callout {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-left-width: 5px;
+}
+
+body {
+  font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", "Segoe UI", sans-serif;
+  line-height: 1.85;
+}
+
+p {
+  margin-bottom: 1.5rem;
+}
+
+ul,
+ol {
+  margin-bottom: 1.5rem;
+  line-height: 1.85;
+}
+
+li {
+  margin-bottom: 0.5rem;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: #111827;
+  line-height: 1.25;
+}
+
+.math-display {
+  margin: 1.5rem 0;
+}
+
+.physics-note {
+  background-color: rgba(6, 78, 59, 0.06);
+  border-left: 5px solid #064e3b;
+  padding: 1rem;
+  margin: 1.5rem 0;
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.physics-note::before {
+  content: "Physics Perspective";
+  display: block;
+  font-weight: 700;
+  color: #064e3b;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04rem;
+}
+
+.important-point {
+  background-color: rgba(127, 29, 29, 0.06);
+  border-left: 5px solid #7f1d1d;
+  padding: 1rem;
+  margin: 1.5rem 0;
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.important-point::before {
+  content: "Key Point";
+  display: block;
+  font-weight: 700;
+  color: #7f1d1d;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04rem;
+}
+
+.aside {
+  font-size: 0.9rem;
+  color: #4b5563;
+  line-height: 1.5;
+  border-left: 2px solid #d1d5db;
+  padding-left: 0.75rem;
+}
+
+.proof::after {
+  content: "■";
+  float: right;
+  color: #9ca3af;
+}
+
+h1 .header-section-number,
+h2 .header-section-number,
+h3 .header-section-number,
+h4 .header-section-number,
+#TOC .header-section-number {
+  display: none;
+}
