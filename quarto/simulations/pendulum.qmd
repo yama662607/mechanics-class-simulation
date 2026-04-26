@@ -1,0 +1,123 @@
+---
+title: "単振り子のシミュレーション"
+filters:
+  - r-wasm/live
+---
+
+長さ $\ell$ の軽い糸の先端に質量 $m$ のおもりをつけた単振り子の運動を、`matplotlib.animation.FuncAnimation` で時間発展アニメーションとして可視化します。下のコードはブラウザ上の Pyodide で実行されますが、純粋な NumPy + Matplotlib で書かれているので、Jupyter Notebook や VSCode にコピーしてもそのまま動きます。
+
+## 理論的背景
+
+長さ $\ell$ の単振り子の運動方程式は
+
+$$ \ell \ddot{\theta} = -g \sin\theta $$ {#eq-pendulum-eom}
+
+微小振動 ($|\theta| \ll 1$) の近似 $\sin\theta \approx \theta$ を用いると単振動
+
+$$ \ddot{\theta} = -\omega^2 \theta, \qquad \omega = \sqrt{g/\ell} $$ {#eq-pendulum-linear}
+
+の形になり、解は $\theta(t) = \theta_0 \cos\omega t$ (初速度 0 の場合)。下のシミュレーションは [@eq-pendulum-eom] を Euler-Cromer 法で **そのまま数値積分** しているので、振幅が大きくても (近似なしで) 動きます。
+
+## アニメーション (コード)
+
+```{pyodide}
+#| autorun: true
+#| edit: false
+# --- 日本語フォントを matplotlib に登録 ---
+import os
+import warnings
+import matplotlib
+from matplotlib import font_manager
+from pyodide.http import pyfetch
+
+warnings.simplefilter("ignore")
+
+if not os.path.exists("/tmp/NotoSansJP.ttf"):
+    resp = await pyfetch("../../../assets/fonts/NotoSansJP-Regular.ttf")
+    with open("/tmp/NotoSansJP.ttf", "wb") as f:
+        f.write(await resp.bytes())
+font_manager.fontManager.addfont("/tmp/NotoSansJP.ttf")
+matplotlib.rcParams["font.family"] = "Noto Sans JP"
+matplotlib.rcParams["axes.unicode_minus"] = False
+
+# --- 物理パラメータ ---
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+from IPython.display import HTML
+
+g = 9.8                   # 重力加速度 [m/s^2]
+L = 1.0                   # 振り子の長さ [m]
+theta0 = np.deg2rad(60)   # 初期角度 (大きめにとって非線形性を見せる)
+omega0 = 0.0              # 初期角速度
+dt = 0.02                 # 時間刻み [s]
+t_end = 6.0               # 終了時刻 [s]
+n_steps = int(t_end / dt)
+
+# --- Euler-Cromer 法で運動方程式を直接積分 ---
+# (sin θ ≈ θ の線形近似は使わない)
+theta = np.empty(n_steps)
+omega = np.empty(n_steps)
+t = np.arange(n_steps) * dt
+theta[0], omega[0] = theta0, omega0
+for i in range(n_steps - 1):
+    omega[i + 1] = omega[i] - (g / L) * np.sin(theta[i]) * dt
+    theta[i + 1] = theta[i] + omega[i + 1] * dt
+
+# おもりの直交座標 (支点 = 原点、下向きを負)
+x = L * np.sin(theta)
+y = -L * np.cos(theta)
+
+# --- 描画準備 ---
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11, 4.5))
+
+# 左: 振り子そのもの
+ax1.set_xlim(-1.3 * L, 1.3 * L)
+ax1.set_ylim(-1.3 * L, 0.3 * L)
+ax1.set_aspect("equal")
+ax1.grid(True, linestyle="--", alpha=0.4)
+ax1.set_title("単振り子の運動")
+ax1.plot(0, 0, "ko", markersize=6)  # 支点
+line, = ax1.plot([], [], "k-", lw=2)
+bob, = ax1.plot([], [], "ro", markersize=18)
+trail, = ax1.plot([], [], "r-", alpha=0.25, lw=1)
+
+# 右: 角度の時系列
+ax2.set_xlim(0, t_end)
+ax2.set_ylim(-1.1 * theta0, 1.1 * theta0)
+ax2.grid(True, linestyle="--", alpha=0.4)
+ax2.set_xlabel("時間 t [s]")
+ax2.set_ylabel(r"角度 $\theta$ [rad]")
+ax2.set_title(r"$\theta(t)$ の時間発展")
+theta_line, = ax2.plot([], [], "b-", lw=1.5)
+theta_dot, = ax2.plot([], [], "bo", markersize=6)
+
+def init():
+    line.set_data([], [])
+    bob.set_data([], [])
+    trail.set_data([], [])
+    theta_line.set_data([], [])
+    theta_dot.set_data([], [])
+    return line, bob, trail, theta_line, theta_dot
+
+def update(i):
+    line.set_data([0, x[i]], [0, y[i]])
+    bob.set_data([x[i]], [y[i]])
+    trail.set_data(x[: i + 1], y[: i + 1])
+    theta_line.set_data(t[: i + 1], theta[: i + 1])
+    theta_dot.set_data([t[i]], [theta[i]])
+    return line, bob, trail, theta_line, theta_dot
+
+ani = FuncAnimation(fig, update, frames=n_steps, init_func=init,
+                    interval=20, blit=True)
+plt.close(fig)
+HTML(ani.to_jshtml())
+```
+
+::: {.callout-tip}
+**読み解きヒント**
+
+- 数値積分は `omega[i+1] = omega[i] - (g/L) * sin(θ[i]) * dt` の 1 行が `\dot{\theta} = -(g/\ell)\sin\theta$` の Euler-Cromer 離散化です。
+- 初期角度 $60^\circ$ は微小ではないので、振動周期が線形理論の $T = 2\pi\sqrt{\ell/g}$ よりわずかに長くなります。コード中の `theta0` を $10^\circ$ などに変えて比較してみてください。
+- `FuncAnimation` の `interval` はミリ秒単位の再生間隔。`to_jshtml()` で生成された JS プレイヤーは再生・一時停止・コマ送り・スライダー操作ができ、Quarto Live 専用ではないので Jupyter にそのまま貼り付けても動きます。
+:::
