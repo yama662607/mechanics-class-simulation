@@ -1,14 +1,10 @@
 ---
-title: "本編"
+title: "理論体系ノート"
 engine: markdown
 filters:
   - r-wasm/live
 # Quarto Live が Pyodide 起動時に直列インストールするパッケージ。
-# `{pyodide}` セルの中で `await micropip.install(...)` を使うと、
-# 別セルが await 中に並列で動き出し、Pyodide ワーカ内の固定名環境 "result" を
-# 上書きして display 出力先が混線する (未報告の上流バグ)。
-# packages: にまとめて宣言すれば、どのセルも走る前に install が完了するので
-# セル内コードに await が一切残らず、race の余地がなくなる。
+# `{pyodide}` セル内で `await micropip.install(...)` は使わない (上流の race を回避)。
 pyodide:
   packages:
     - plotly
@@ -16,19 +12,14 @@ pyodide:
     - jsonschema
 ---
 
-このファイルが教科書本体の **唯一の信頼できる情報源 (single source of truth)** です。
-章ごとのコンテンツは `_*.qmd` ファイル (アンダースコア接頭辞 = Quarto がレンダリング対象から除外) に分割し、
-ここから `{{< include >}}` でまとめます。
-
-`filters: [r-wasm/live]` をこのファイルに付けることで、配下のすべてのパーシャルで
-`{ojs}` / `{pyodide}` ブロックが有効になります (Quarto Live 拡張)。
+このページは京都大学「物理学基礎論A」(力学) の講義内容を、講義回ではなく **理論トピック単位** で再構成したノートです。図・アニメーションは可能な限り Python ソースから生成し、読者がコードを見て学習に使えるようにしています。
 
 ---
 
-{{< include _01_introduction.qmd >}}
+{{< include _01_intro_notation.qmd >}}
 
-{{< include _02_chapter.qmd >}}
+{{< include _02_particle_mechanics.qmd >}}
 
-{{< include _03_interactive_demo.qmd >}}
+{{< include _03_rigid_body.qmd >}}
 
-{{< include _04_plotly_demo.qmd >}}
+{{< include _04_analytical_mechanics.qmd >}}

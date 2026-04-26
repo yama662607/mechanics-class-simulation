@@ -1,0 +1,19 @@
+# 質点の力学 {#sec-particle-mechanics}
+
+ニュートンの運動方程式、保存則 (運動量・エネルギー・角運動量)、振動現象、中心力場などを扱う章です。
+
+::: {.callout-note}
+このセクションは骨組みです。講義の進行に合わせて節を追加していきます。具体的なシミュレーション (単振り子・調和振動子) は [シミュレーション](../simulations/pendulum.qmd) を参照してください。
+:::
+
+## ニュートンの運動方程式 {#sec-newton-eom}
+
+(TODO)
+
+## 保存則 {#sec-conservation-laws}
+
+(TODO)
+
+## 一次元振動 {#sec-1d-oscillation}
+
+(TODO)
