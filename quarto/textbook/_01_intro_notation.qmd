@@ -18,9 +18,10 @@ $$ \vec{r} = r \hat{e}_r $$ {#eq-position}
 
 ```{ojs}
 //| echo: false
+//| output: false
 // Quarto Live は OJS runtime のロードを {ojs} セルの存在で判定する。
-// {pyodide} セルしかないページではこのダミーが必要。
-1
+// {pyodide} セルしかないページではこのダミーが必要 (代入式 + output:false で非表示)。
+_quarto_live_loader = 1
 ```
 
 ```{pyodide}

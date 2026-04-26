@@ -23,7 +23,8 @@ $$ \ddot{\theta} = -\omega^2 \theta, \qquad \omega = \sqrt{g/\ell} $$ {#eq-pendu
 
 ```{ojs}
 //| echo: false
-1
+//| output: false
+_quarto_live_loader = 1
 ```
 
 ```{pyodide}
