@@ -52,6 +52,7 @@ format:
   html:
     theme: cosmo
     css: templates/styles.css
+    include-in-header: templates/cleanup-shinylive-sw.html
     include-after-body: templates/sidebar-toggle.html
     toc: true
     toc-depth: 3
