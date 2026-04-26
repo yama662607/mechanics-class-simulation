@@ -1,0 +1,196 @@
+---
+title: "演習：極座標系における速度と加速度"
+filters:
+  - r-wasm/live
+---
+
+## 問題
+
+等角螺旋 $r = a e^{k\theta} \ (\theta > 0)$ の上を、角速度 $\dot{\theta} = \omega = \text{const}$ で運動する点があります。この点の速度と加速度の極座標成分 $v_r,\ v_\theta,\ a_r,\ a_\theta$ を求めよ。
+
+また、$a > 0$ のとき、求めた加速度の動径成分 $a_r$ が $k$ に対してどのように変化するかを、定性的なグラフと共に簡潔に説明せよ。
+
+---
+
+## 軌道アニメーション (コード)
+
+質点が等角螺旋上をどう動くかを `FuncAnimation` で可視化します。$k$ の符号で内向き/外向きが切り替わることを観察してください。
+
+```{pyodide}
+#| autorun: true
+#| edit: false
+import os
+import warnings
+import matplotlib
+from matplotlib import font_manager
+from pyodide.http import pyfetch
+
+warnings.simplefilter("ignore")
+
+if not os.path.exists("/tmp/NotoSansJP.ttf"):
+    resp = await pyfetch("../../../assets/fonts/NotoSansJP-Regular.ttf")
+    with open("/tmp/NotoSansJP.ttf", "wb") as f:
+        f.write(await resp.bytes())
+font_manager.fontManager.addfont("/tmp/NotoSansJP.ttf")
+matplotlib.rcParams["font.family"] = "Noto Sans JP"
+matplotlib.rcParams["axes.unicode_minus"] = False
+
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+from IPython.display import HTML
+
+# --- 物理パラメータ ---
+a = 1.0       # スケール係数
+k = 0.15      # 螺旋の伸縮率 (正で外向き螺旋、負で内向き螺旋)
+omega = 1.5   # 角速度 [rad/s]
+t_end = 5.0
+n_frames = 150
+t = np.linspace(0, t_end, n_frames)
+
+theta = omega * t
+r = a * np.exp(k * theta)
+x = r * np.cos(theta)
+y = r * np.sin(theta)
+
+# 描画範囲は終端の最大半径で固定
+max_r = a * np.exp(abs(k) * omega * t_end)
+
+fig, ax = plt.subplots(figsize=(6, 6))
+ax.set_xlim(-1.1 * max_r, 1.1 * max_r)
+ax.set_ylim(-1.1 * max_r, 1.1 * max_r)
+ax.set_aspect("equal")
+ax.grid(True, linestyle="--", alpha=0.4)
+ax.set_title(rf"等角螺旋 $r = a e^{{k\theta}}$  (k = {k},  $\omega$ = {omega})")
+
+trail, = ax.plot([], [], "k-", alpha=0.5, lw=1)
+radius_line, = ax.plot([], [], "b-", lw=1.5)
+bob, = ax.plot([], [], "ro", markersize=10)
+
+def init():
+    trail.set_data([], [])
+    radius_line.set_data([], [])
+    bob.set_data([], [])
+    return trail, radius_line, bob
+
+def update(i):
+    trail.set_data(x[: i + 1], y[: i + 1])
+    radius_line.set_data([0, x[i]], [0, y[i]])
+    bob.set_data([x[i]], [y[i]])
+    return trail, radius_line, bob
+
+ani = FuncAnimation(fig, update, frames=n_frames, init_func=init,
+                    interval=40, blit=True)
+plt.close(fig)
+HTML(ani.to_jshtml())
+```
+
+::: {.callout-tip}
+コード中の `k` を `-0.2` や `0.3` に変えて再実行すると、内向き渦/外向き渦の振る舞いが変わります。`k = 0` なら半径一定の円運動です。
+:::
+
+---
+
+## 解答と計算過程の解説
+
+### 1. 速度と加速度の極座標成分の公式の導出 (復習)
+
+極座標系における基底ベクトルの微分の性質 ([@eq-basis-derivative](../textbook/textbook.qmd#sec-polar-coordinates) 参照) から出発します。位置ベクトル $\vec{r} = r \hat{e}_r$ を時間 $t$ で微分します。**積の微分公式** $(AB)' = A'B + AB'$ を用いると
+
+$$ \vec{v} = \frac{d\vec{r}}{dt} = \dot{r}\, \hat{e}_r + r\, \dot{\hat{e}}_r $$
+
+ノートで確認したように $\dot{\hat{e}}_r = \dot{\theta}\, \hat{e}_\theta$ なので
+
+$$ \vec{v} = \dot{r}\, \hat{e}_r + r\dot{\theta}\, \hat{e}_\theta $$
+
+したがって速度成分は $v_r = \dot{r}$、$v_\theta = r\dot{\theta}$。
+
+さらに微分して加速度を求めます。3 つの積の微分 $(ABC)' = A'BC + AB'C + ABC'$ も使います。
+
+$$ \vec{a} = \frac{d\vec{v}}{dt} = (\ddot{r}\hat{e}_r + \dot{r}\dot{\hat{e}}_r) + (\dot{r}\dot{\theta}\hat{e}_\theta + r\ddot{\theta}\hat{e}_\theta + r\dot{\theta}\dot{\hat{e}}_\theta) $$
+
+$\dot{\hat{e}}_r = \dot{\theta}\hat{e}_\theta$ と $\dot{\hat{e}}_\theta = -\dot{\theta}\hat{e}_r$ を代入して整理すると
+
+$$ \vec{a} = (\ddot{r} - r\dot{\theta}^2)\hat{e}_r + (r\ddot{\theta} + 2\dot{r}\dot{\theta})\hat{e}_\theta $$ {#eq-polar-acceleration}
+
+これが加速度の極座標成分 $a_r,\ a_\theta$ の公式です。
+
+### 2. 本問の計算過程
+
+問題の条件より
+
+- $r = a e^{k\theta}$
+- $\dot{\theta} = \omega \quad (\text{一定})$
+- $\ddot{\theta} = 0$
+
+$r$ の時間微分 $\dot{r}$ は **合成関数の微分法則** より
+
+$$ \dot{r} = \frac{dr}{d\theta}\cdot\frac{d\theta}{dt} = (ake^{k\theta})\cdot\omega = ak\omega e^{k\theta} = k\omega r $$
+
+もう一度時間微分すると、定数倍の微分により
+
+$$ \ddot{r} = k\omega \dot{r} = ak^2\omega^2 e^{k\theta} $$
+
+これらを [@eq-polar-acceleration] と $v_r = \dot{r}$、$v_\theta = r\dot{\theta}$ に代入すると
+
+**速度成分:**
+$$ v_r = ak\omega e^{k\theta}, \qquad v_\theta = a\omega e^{k\theta} $$
+
+**加速度成分:**
+$$ a_r = \ddot{r} - r\dot{\theta}^2 = a\omega^2(k^2 - 1)e^{k\theta} $$ {#eq-ar-result}
+$$ a_\theta = r\ddot{\theta} + 2\dot{r}\dot{\theta} = 2ak\omega^2 e^{k\theta} $$
+
+---
+
+### 3. 動径加速度 $a_r$ の $k$ 依存性 (コード生成グラフ)
+
+[@eq-ar-result] より、$a > 0$、$\theta > 0$ を固定したとき関数 $f(k) = (k^2 - 1) e^{k\theta}$ の振る舞いを調べれば足ります。以下のグラフはコードから直接生成しています。
+
+```{pyodide}
+#| autorun: true
+#| edit: false
+# (フォントは前のセルで登録済)
+import numpy as np
+import matplotlib.pyplot as plt
+
+theta_fixed = 2.0  # 視認用に固定 (任意)
+k = np.linspace(-3.5, 3.0, 400)
+f = (k**2 - 1) * np.exp(k * theta_fixed)
+
+# 解析的な極値: θk^2 + 2k - θ = 0
+disc = 1 + theta_fixed**2
+k_minus = (-1 - np.sqrt(disc)) / theta_fixed   # 極大 (k < -1)
+k_plus  = (-1 + np.sqrt(disc)) / theta_fixed   # 極小 (0 < k < 1)
+
+fig, ax = plt.subplots(figsize=(8, 4.5))
+ax.axhline(0, color="gray", lw=0.5)
+ax.axvline(0, color="gray", lw=0.5)
+ax.plot(k, f, "b-", lw=2, label=r"$f(k) = (k^2 - 1)e^{k\theta}$")
+ax.axvline(-1, color="red", ls="--", alpha=0.5, label=r"$k = \pm 1$ (符号反転点)")
+ax.axvline( 1, color="red", ls="--", alpha=0.5)
+ax.plot([k_minus, k_plus],
+        [(k_minus**2 - 1) * np.exp(k_minus * theta_fixed),
+         (k_plus**2  - 1) * np.exp(k_plus  * theta_fixed)],
+        "go", markersize=8, label="極値")
+
+ax.set_xlabel(r"パラメータ $k$")
+ax.set_ylabel(r"$f(k) \propto a_r$")
+ax.set_title(rf"動径加速度の $k$ 依存性  ($\theta$ = {theta_fixed} で固定)")
+ax.set_ylim(-3, 8)
+ax.legend(loc="upper left")
+ax.grid(True, linestyle="--", alpha=0.4)
+plt.tight_layout()
+plt.show()
+```
+
+#### グラフから読み取れる振る舞い
+
+1. **$a_r$ の符号 (力の向き)**: $e^{k\theta} > 0$ なので $a_r$ の符号は $(k^2 - 1)$ で決まる。
+   - $|k| < 1$: $a_r < 0$ で、原点向きの実効的な向心力。
+   - $|k| > 1$: $a_r > 0$ で、原点から遠ざかる向き。
+   - $k = \pm 1$: $a_r = 0$。
+2. **$k \to +\infty$**: 指数関数の発散が支配し、$a_r \to +\infty$。
+3. **$k \to -\infty$**: $(k^2 - 1)$ は大きくなるが $e^{k\theta} \to 0$ の方が圧倒的に強く、$a_r \to 0$ に漸近 (螺旋が急激に原点へ巻き込まれるため速度自体が 0 に近づく)。
+4. **極値**: $f'(k) = (\theta k^2 + 2k - \theta)e^{k\theta} = 0$ より
+   $$ k_{\pm} = \frac{-1 \pm \sqrt{1 + \theta^2}}{\theta} $$
+   $\theta > 0$ より $k_+ \in (0, 1)$ (極小)、$k_- < -1$ (極大)。
