@@ -120,4 +120,5 @@ HTML(ani.to_jshtml())
 - 数値積分は `omega[i+1] = omega[i] - (g/L) * sin(θ[i]) * dt` の 1 行が `\dot{\theta} = -(g/\ell)\sin\theta$` の Euler-Cromer 離散化です。
 - 初期角度 $60^\circ$ は微小ではないので、振動周期が線形理論の $T = 2\pi\sqrt{\ell/g}$ よりわずかに長くなります。コード中の `theta0` を $10^\circ$ などに変えて比較してみてください。
 - `FuncAnimation` の `interval` はミリ秒単位の再生間隔。`to_jshtml()` で生成された JS プレイヤーは再生・一時停止・コマ送り・スライダー操作ができ、Quarto Live 専用ではないので Jupyter にそのまま貼り付けても動きます。
+
 :::
