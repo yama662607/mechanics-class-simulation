@@ -1,5 +1,6 @@
 ---
 title: "単振り子のシミュレーション"
+engine: markdown
 filters:
   - r-wasm/live
 ---
