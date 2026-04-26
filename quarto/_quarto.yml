@@ -13,23 +13,14 @@ project:
     watch-inputs: true
 
 book:
-  title: "Your Textbook Title"
-  author: "Your Name"
+  title: "物理学基礎論A (力学) 補足ノート"
+  author: "Daisuke Yamashiki"
   date: last-modified
 
-  # GitHub 連携 (utilizes book.repo-url + repo-actions for "Edit" / "Issue" links)
-  # テンプレ利用時は your-org/your-repo を書き換えてください。
-  repo-url: https://github.com/your-org/your-repo
+  repo-url: https://github.com/yama662607/mechanics-class-simulation
   repo-branch: main
   repo-actions: [edit, issue]
 
-  # PDF ダウンロードボタン (uv sync --extra notebook 等で計算ブロックを使う場合)
-  # downloads: [pdf]
-
-  # 引用情報 (Cite this book → BibTeX 出力)
-  # citation: true
-
-  # 検索を有効化
   search: true
 
   navbar:
@@ -41,12 +32,18 @@ book:
     collapse-level: 4
   chapters:
     - index.qmd
-    - part: "本編"
+    - part: "理論体系ノート"
       chapters:
         - textbook/textbook.qmd
+    - part: "シミュレーション"
+      chapters:
+        - simulations/pendulum.qmd
+    - part: "演習問題"
+      chapters:
+        - exercises/polar_kinematics.qmd
   page-navigation: true
   page-footer:
-    left: "© Your Name"
+    left: "物理学基礎論A (力学) 学習ノート"
     right:
       - text: "ホーム"
         href: index.qmd
@@ -68,7 +65,9 @@ format:
   html:
     theme: cosmo
     css: templates/styles.css
-    include-in-header: templates/plotly-loader.html
+    include-in-header:
+      - templates/plotly-loader.html
+      - templates/cleanup-shinylive-sw.html
     include-after-body: templates/sidebar-toggle.html
     toc: true
     toc-depth: 3
