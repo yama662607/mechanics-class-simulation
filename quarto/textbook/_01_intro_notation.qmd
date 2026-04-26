@@ -16,6 +16,13 @@ $$ \vec{r} = r \hat{e}_r $$ {#eq-position}
 
 以下の図は、角度が $\theta$ から $\theta + d\theta$ へ微小に変化したときの基底ベクトルの変化 $d\hat{e}_r, d\hat{e}_\theta$ を matplotlib で描いたものです。コードを直接読んで、どのベクトルがどの式に対応するかを確認してください。
 
+```{ojs}
+//| echo: false
+// Quarto Live は OJS runtime のロードを {ojs} セルの存在で判定する。
+// {pyodide} セルしかないページではこのダミーが必要。
+1
+```
+
 ```{pyodide}
 #| autorun: true
 #| edit: false

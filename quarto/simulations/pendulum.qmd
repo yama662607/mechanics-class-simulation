@@ -21,6 +21,11 @@ $$ \ddot{\theta} = -\omega^2 \theta, \qquad \omega = \sqrt{g/\ell} $$ {#eq-pendu
 
 ## アニメーション (コード)
 
+```{ojs}
+//| echo: false
+1
+```
+
 ```{pyodide}
 #| autorun: true
 #| edit: false

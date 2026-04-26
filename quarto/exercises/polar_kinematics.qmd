@@ -17,6 +17,11 @@ filters:
 
 質点が等角螺旋上をどう動くかを `FuncAnimation` で可視化します。$k$ の符号で内向き/外向きが切り替わることを観察してください。
 
+```{ojs}
+//| echo: false
+1
+```
+
 ```{pyodide}
 #| autorun: true
 #| edit: false
