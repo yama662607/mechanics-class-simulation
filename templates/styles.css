@@ -1,98 +1,311 @@
-/* Field Theory note styles */
+/* ========================================
+ * Custom styles for the documentation
+ * ========================================
+ *
+ * このCSSファイルは、Quartoで生成されるドキュメントの見た目をカスタマイズします
+ * V-S-V サイクルの学習体験を向上させるためのスタイル定義です
+ *
+ * 主な用途：
+ * - コールアウトボックスの余白調整
+ * - コードブロックの強調
+ * - レスポンシブデザインの最適化
+ * - 独自コンポーネントのスタイル定義
+ */
 
+/* コールアウトボックスのスタイル調整
+ * ========================================
+ * コールアウト（情報、ヒント、警告などのボックス）の
+ * 上下の余白を調整して、読みやすさを向上させます
+ */
 .callout {
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
   border-left-width: 5px;
 }
 
-body {
-  font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", "Segoe UI", sans-serif;
-  line-height: 1.85;
-}
-
-p {
-  margin-bottom: 1.5rem;
-}
-
-ul,
-ol {
-  margin-bottom: 1.5rem;
-  line-height: 1.85;
-}
-
-li {
-  margin-bottom: 0.5rem;
-}
-
-h1,
-h2,
-h3,
-h4 {
-  color: #111827;
-  line-height: 1.25;
-}
-
-.math-display {
-  margin: 1.5rem 0;
-}
-
-.physics-note {
-  background-color: rgba(6, 78, 59, 0.06);
+/* 物理学的記法/注釈用のカスタムスタイル */
+.physics-notes {
+  background-color: rgba(6, 78, 59, 0.05);
+  /* 深緑の極めて薄い背景 */
   border-left: 5px solid #064e3b;
   padding: 1rem;
   margin: 1.5rem 0;
   border-radius: 0 0.5rem 0.5rem 0;
 }
 
-.physics-note::before {
-  content: "Physics Perspective";
+.physics-notes::before {
+  content: " Physics Perspective";
   display: block;
-  font-weight: 700;
+  font-weight: bold;
+  font-family: 'Outfit', sans-serif;
   color: #064e3b;
   margin-bottom: 0.5rem;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   text-transform: uppercase;
-  letter-spacing: 0.04rem;
+  letter-spacing: 0.05rem;
 }
 
+/* 重要ポイント強調 */
 .important-point {
-  background-color: rgba(127, 29, 29, 0.06);
-  border-left: 5px solid #7f1d1d;
+  background-color: rgba(185, 28, 28, 0.05);
+  /* 赤系の薄い背景 */
+  border-left: 5px solid #b91c1c;
   padding: 1rem;
   margin: 1.5rem 0;
   border-radius: 0 0.5rem 0.5rem 0;
 }
 
 .important-point::before {
-  content: "Key Point";
+  content: " Key Point";
   display: block;
-  font-weight: 700;
-  color: #7f1d1d;
+  font-weight: bold;
+  font-family: 'Outfit', sans-serif;
+  color: #b91c1c;
   margin-bottom: 0.5rem;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04rem;
-}
-
-.aside {
   font-size: 0.9rem;
-  color: #4b5563;
-  line-height: 1.5;
-  border-left: 2px solid #d1d5db;
-  padding-left: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
 }
 
+/* マージンノートのプレミアム化 */
+.aside {
+  font-size: 0.85rem;
+  color: #4b5563;
+  line-height: 1.4;
+  border-left: 2px solid #e5e7eb;
+  padding-left: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+/* 数式参照のスタイル */
+.quarto-figure-center>figure>p {
+  text-align: center;
+}
+
+/* タイポグラフィ（モダンフォントへのフォールバック） */
+body {
+  font-family: 'Inter', 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.7;
+}
+
+/* ドキュメント全体の余白調整 */
+.quarto-title,
+.quarto-title-block {
+  margin-bottom: 1rem;
+}
+
+/* 空のメタ情報ブロックを非表示 */
+.quarto-title-meta:empty,
+.quarto-title-meta:not(:has(*:not(:empty))) {
+  display: none !important;
+}
+
+/* パラグラフの間隔 */
+p {
+  margin-bottom: 2rem;
+  line-height: 2.0;
+}
+
+/* リストの間隔 */
+ul,
+ol {
+  margin-bottom: 2rem;
+  line-height: 2.0;
+}
+
+li {
+  margin-bottom: 0.8rem;
+}
+
+/* コンテンツブロックの間隔 */
+div.cell,
+div.section {
+  margin-bottom: 2rem;
+}
+
+/* 表の余白 */
+table {
+  margin: 1.5rem 0;
+}
+
+/* 数式の余白 */
+.math-display {
+  margin: 1.5rem 0;
+}
+
+/* 見出しの可読性を軽く改善 */
+h1,
+h2,
+h3 {
+  font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: #111827;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+}
+
+/* レベル4見出しを強調 */
+h4 {
+  font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: #374151;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  font-weight: 600;
+}
+
+/* 証明ブロックの記号 */
 .proof::after {
   content: "■";
   float: right;
   color: #9ca3af;
 }
 
+.scenario-note {
+  position: relative;
+  border-left: 4px solid #2563eb;
+  background: #eff6ff;
+  padding: 1rem 1.2rem 0.9rem 1.2rem;
+  border-radius: 0.35rem;
+  margin: 1.25rem 0;
+}
+
+.scenario-note::before {
+  content: " " attr(title);
+  font-weight: 700;
+  color: #1d4ed8;
+  display: block;
+  margin-bottom: 0.35rem;
+  letter-spacing: 0.01em;
+}
+
+/* 見出し番号を全レベルで非表示 */
 h1 .header-section-number,
 h2 .header-section-number,
 h3 .header-section-number,
-h4 .header-section-number,
+h4 .header-section-number {
+  display: none;
+}
+
 #TOC .header-section-number {
   display: none;
+}
+
+/* PDF原文ページリンク（見出しの右端に同じ行で表示） */
+h1+.pdf-source,
+h2+.pdf-source,
+h3+.pdf-source,
+h4+.pdf-source {
+  float: right;
+  margin-top: -3rem;
+  margin-right: 1rem;
+  margin-bottom: 0;
+}
+
+.pdf-source {
+  margin-bottom: 1.4rem;
+}
+
+.pdf-source p {
+  margin-bottom: 0;
+}
+
+.pdf-source a {
+  font-size: 1.1rem;
+  color: #1d4ed8 !important;
+  background: none;
+  padding: 0;
+  border: none;
+  text-decoration: underline !important;
+  font-family: 'SFMono-Regular', Consolas, monospace;
+}
+
+.pdf-source a:hover {
+  color: #1e40af !important;
+}
+
+/* コードツールボタンをタイトル右上に配置 */
+.quarto-title-block>div:first-child {
+  position: relative;
+}
+
+.quarto-title-block .code-tools-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  white-space: nowrap;
+  font-size: 0.8rem;
+}
+
+/* リンクを青色＋下線に統一 */
+main a,
+.breadcrumb a {
+  color: #1d4ed8 !important;
+  text-decoration: underline !important;
+}
+
+main a:hover,
+.breadcrumb a:hover {
+  color: #1e40af !important;
+}
+
+/* ナビ・ボタン・バッジ系は除外 */
+main a.nav-link,
+main a.dropdown-item,
+main a.btn,
+#TOC a {
+  text-decoration: none !important;
+  color: inherit;
+}
+
+/* コンテナを中央寄せ（大きい画面で左寄りになるのを防ぐ） */
+#quarto-content.page-columns {
+  max-width: 1440px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* 左サイドバーは空で残す（グリッドの幅を確保して本文を中央配置） */
+#quarto-sidebar {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+#quarto-sidebar>* {
+  display: none !important;
+}
+
+#quarto-sidebar-glass {
+  display: none !important;
+}
+
+/* サイドバー折りたたみボタン */
+#right-sidebar-toggle {
+  position: fixed;
+  top: 5rem;
+  z-index: 1050;
+  width: 18px;
+  height: 32px;
+  padding: 0;
+  background: #e5e7eb;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: #6b7280;
+  line-height: 1;
+  transition: background 0.15s, left 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#right-sidebar-toggle:hover {
+  background: #d1d5db;
+  color: #374151;
+}
+
+/* 右サイドバーのアニメーション */
+#quarto-margin-sidebar {
+  transition: width 0.25s ease, min-width 0.25s ease, padding 0.25s ease;
 }

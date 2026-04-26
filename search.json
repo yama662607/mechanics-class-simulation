@@ -15,18 +15,18 @@
     "href": "index.html#理論体系ロードマップ",
     "title": "物理学基礎論A (力学) 補足ノート",
     "section": "理論体系ロードマップ",
-    "text": "理論体系ロードマップ\n\n\n\n項目名\n素材\nノート\n\n\n\n\n導入と記法\nraw / PDF / images\n理論体系ノート\n\n\n質点の力学\nraw / PDF / images\n理論体系ノート\n\n\n剛体の力学\nraw / PDF / images\n理論体系ノート\n\n\n解析力学\nraw / PDF / images\n理論体系ノート",
+    "text": "理論体系ロードマップ\n\n\n\n項目\nノート\n\n\n\n\n導入と記法 (極座標系・基底ベクトルの微分)\n理論体系ノート\n\n\n質点の力学\n理論体系ノート\n\n\n剛体の力学\n理論体系ノート\n\n\n解析力学\n理論体系ノート",
     "crumbs": [
       "ホーム",
       "目次"
     ]
   },
   {
-    "objectID": "index.html#素材置き場",
-    "href": "index.html#素材置き場",
+    "objectID": "index.html#シミュレーションと演習",
+    "href": "index.html#シミュレーションと演習",
     "title": "物理学基礎論A (力学) 補足ノート",
-    "section": "素材置き場",
-    "text": "素材置き場\n\nquarto/assets/raw/lectures/: その日の講義資料、未整理の写真、手書きノート。\nquarto/assets/pdf/lectures/: qmd から参照する整理済み PDF。\nquarto/assets/images/lectures/: qmd から参照する整理済み画像。",
+    "section": "シミュレーションと演習",
+    "text": "シミュレーションと演習\n\n単振り子 — matplotlib.animation.FuncAnimation で時間発展を可視化\n演習：等角螺旋上の運動 — 極座標系での速度・加速度成分",
     "crumbs": [
       "ホーム",
       "目次"
@@ -37,42 +37,150 @@
     "href": "index.html#執筆ルール",
     "title": "物理学基礎論A (力学) 補足ノート",
     "section": "執筆ルール",
-    "text": "執筆ルール\n\n本文は講義回単位ではなく、理論トピック単位で整理します。\nシミュレーションコード（Python 等）を積極的に取り入れ、理論の視覚的理解を目指します。\n定義、命題、証明、直感、計算例を分け、講義で曖昧だった箇所を明示します。",
+    "text": "執筆ルール\n\n本文は講義回単位ではなく、理論トピック単位で整理する\n図・グラフ・アニメーションは可能な限り コードから生成 し、読者がソースを見て学習できるようにする\n定義・命題・証明・直感・計算例を分け、講義で曖昧だった箇所を明示する",
     "crumbs": [
       "ホーム",
       "目次"
     ]
   },
   {
-    "objectID": "theory/textbook.html",
-    "href": "theory/textbook.html",
-    "title": "物理学基礎論A (力学): 理論体系ノート",
+    "objectID": "textbook/textbook.html",
+    "href": "textbook/textbook.html",
+    "title": "理論体系ノート",
     "section": "",
-    "text": "はじめに\nこのノートは、物理学基礎論A（力学）の講義内容を、理論体系およびシミュレーション学習の観点から再構成するための作業文書です。 定義・定理・証明・計算例、そしてそれらを検証するためのシミュレーションコードを優先して整理します。",
+    "text": "導入と記法\nこのページは京都大学「物理学基礎論A」(力学) の講義内容を、講義回ではなく 理論トピック単位 で再構成したノートです。図・アニメーションは可能な限り Python ソースから生成し、読者がコードを見て学習に使えるようにしています。\nここでは力学で用いるベクトル解析、特に 極座標系の基底ベクトルの微分 を整理します。これは円運動・中心力場・等角螺旋など多くの問題で出発点になります。",
     "crumbs": [
       "ホーム",
       "理論体系ノート",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>物理学基礎論A (力学): 理論体系ノート</span>"
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>理論体系ノート</span>"
     ]
   },
   {
-    "objectID": "theory/textbook.html#polar-coordinates",
-    "href": "theory/textbook.html#polar-coordinates",
-    "title": "物理学基礎論A (力学): 理論体系ノート",
+    "objectID": "textbook/textbook.html#sec-polar-coordinates",
+    "href": "textbook/textbook.html#sec-polar-coordinates",
+    "title": "理論体系ノート",
     "section": "極座標系と基底ベクトルの微分",
-    "text": "極座標系と基底ベクトルの微分\n平面の極座標 (r, \\theta) では、位置ベクトル \\vec{r} は以下のように表されます。  \\vec{r} = r \\hat{e}_r  ここで、\\hat{e}_r は動径方向の単位ベクトルです。また、これに直交し反時計回りを正とする方向の単位ベクトルを \\hat{e}_\\theta とします。\n直交座標系 (デカルト座標) の基底ベクトル \\hat{i}, \\hat{j} は時間や位置によらず一定ですが、極座標の基底ベクトル \\hat{e}_r, \\hat{e}_\\theta は 質点の位置（角度 \\theta）に依存して向きが変わる ため、時間微分するとゼロにはなりません。\n以下の図は、角度が \\theta から \\theta + d\\theta へ微小に変化したときの基底ベクトルの変化 d\\hat{e}_r, d\\hat{e}_\\theta を示しています。\n\n\n\n\n\n\n図 2.1: 極座標の単位ベクトルの微分（定性的な図解）\n\n\n\n図から定性的に以下のことが分かります： 1. d\\hat{e}_r の向き: \\hat{e}_r が d\\theta だけ回転すると、その変化分 d\\hat{e}_r は元のベクトルと直交する方向、すなわち \\hat{e}_\\theta の方向を向きます。長さは 1 \\cdot d\\theta となります。 2. d\\hat{e}_\\theta の向き: \\hat{e}_\\theta が d\\theta だけ回転すると、その変化分 d\\hat{e}_\\theta は元のベクトルと直交する方向ですが、\\hat{e}_r とは逆向き（中心に向かう方向）となります。長さは 1 \\cdot d\\theta となります。\nこれを時間 dt で割ることで、時間微分の公式が得られます：  \\frac{d\\hat{e}_r}{dt} = \\dot{\\theta} \\hat{e}_\\theta, \\quad \\frac{d\\hat{e}_\\theta}{dt} = -\\dot{\\theta} \\hat{e}_r \nこれらは速度と加速度の極座標成分を計算する上で最も重要な関係式です。",
+    "text": "極座標系と基底ベクトルの微分\n平面の極座標 (r, \\theta) では、位置ベクトル \\vec{r} は以下のように表されます。\n \\vec{r} = r \\hat{e}_r  \\tag{2.1}\nここで、\\hat{e}_r は動径方向の単位ベクトルです。また、これに直交し反時計回りを正とする方向の単位ベクトルを \\hat{e}_\\theta とします。\n直交座標系 (デカルト座標) の基底ベクトル \\hat{i}, \\hat{j} は時間や位置によらず一定ですが、極座標の基底ベクトル \\hat{e}_r, \\hat{e}_\\theta は 質点の位置 (角度 \\theta) に依存して向きが変わる ため、時間微分するとゼロにはなりません。\n\n基底ベクトル変化の図解 (コード生成)\n以下の図は、角度が \\theta から \\theta + d\\theta へ微小に変化したときの基底ベクトルの変化 d\\hat{e}_r, d\\hat{e}_\\theta を matplotlib で描いたものです。コードを直接読んで、どのベクトルがどの式に対応するかを確認してください。\n\n\n\n\n\n\n図から定性的に以下のことが分かります。\n\nd\\hat{e}_r の向き: \\hat{e}_r が d\\theta だけ回転すると、その変化分 d\\hat{e}_r は元のベクトルと直交する方向、すなわち \\hat{e}_\\theta の方向を向きます。長さは 1 \\cdot d\\theta です。\nd\\hat{e}_\\theta の向き: \\hat{e}_\\theta が d\\theta だけ回転すると、その変化分 d\\hat{e}_\\theta は元のベクトルと直交する方向ですが、\\hat{e}_r とは逆向き (中心に向かう方向) となります。長さは 1 \\cdot d\\theta です。\n\n時間 dt で割ることで、時間微分の公式が得られます。\n \\frac{d\\hat{e}_r}{dt} = \\dot{\\theta}\\, \\hat{e}_\\theta, \\qquad \\frac{d\\hat{e}_\\theta}{dt} = -\\dot{\\theta}\\, \\hat{e}_r  \\tag{2.2}\nこれらは速度と加速度の極座標成分を計算する上で最も重要な関係式です。",
     "crumbs": [
       "ホーム",
       "理論体系ノート",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>物理学基礎論A (力学): 理論体系ノート</span>"
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>理論体系ノート</span>"
     ]
   },
   {
-    "objectID": "theory/topics/simulations/sample.html",
-    "href": "theory/topics/simulations/sample.html",
+    "objectID": "textbook/textbook.html#sec-newton-eom",
+    "href": "textbook/textbook.html#sec-newton-eom",
+    "title": "理論体系ノート",
+    "section": "ニュートンの運動方程式",
+    "text": "ニュートンの運動方程式\n(TODO)",
+    "crumbs": [
+      "ホーム",
+      "理論体系ノート",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>理論体系ノート</span>"
+    ]
+  },
+  {
+    "objectID": "textbook/textbook.html#sec-conservation-laws",
+    "href": "textbook/textbook.html#sec-conservation-laws",
+    "title": "理論体系ノート",
+    "section": "保存則",
+    "text": "保存則\n(TODO)",
+    "crumbs": [
+      "ホーム",
+      "理論体系ノート",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>理論体系ノート</span>"
+    ]
+  },
+  {
+    "objectID": "textbook/textbook.html#sec-1d-oscillation",
+    "href": "textbook/textbook.html#sec-1d-oscillation",
+    "title": "理論体系ノート",
+    "section": "一次元振動",
+    "text": "一次元振動\n(TODO)",
+    "crumbs": [
+      "ホーム",
+      "理論体系ノート",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>理論体系ノート</span>"
+    ]
+  },
+  {
+    "objectID": "textbook/textbook.html#sec-rigid-dof",
+    "href": "textbook/textbook.html#sec-rigid-dof",
+    "title": "理論体系ノート",
+    "section": "剛体の自由度と回転の表現",
+    "text": "剛体の自由度と回転の表現\n(TODO)",
+    "crumbs": [
+      "ホーム",
+      "理論体系ノート",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>理論体系ノート</span>"
+    ]
+  },
+  {
+    "objectID": "textbook/textbook.html#sec-inertia-tensor",
+    "href": "textbook/textbook.html#sec-inertia-tensor",
+    "title": "理論体系ノート",
+    "section": "慣性テンソル",
+    "text": "慣性テンソル\n(TODO)",
+    "crumbs": [
+      "ホーム",
+      "理論体系ノート",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>理論体系ノート</span>"
+    ]
+  },
+  {
+    "objectID": "textbook/textbook.html#sec-euler-eom",
+    "href": "textbook/textbook.html#sec-euler-eom",
+    "title": "理論体系ノート",
+    "section": "オイラーの運動方程式",
+    "text": "オイラーの運動方程式\n(TODO)",
+    "crumbs": [
+      "ホーム",
+      "理論体系ノート",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>理論体系ノート</span>"
+    ]
+  },
+  {
+    "objectID": "textbook/textbook.html#sec-least-action",
+    "href": "textbook/textbook.html#sec-least-action",
+    "title": "理論体系ノート",
+    "section": "最小作用の原理",
+    "text": "最小作用の原理\n(TODO)",
+    "crumbs": [
+      "ホーム",
+      "理論体系ノート",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>理論体系ノート</span>"
+    ]
+  },
+  {
+    "objectID": "textbook/textbook.html#sec-lagrange-eq",
+    "href": "textbook/textbook.html#sec-lagrange-eq",
+    "title": "理論体系ノート",
+    "section": "ラグランジュ方程式",
+    "text": "ラグランジュ方程式\n(TODO)",
+    "crumbs": [
+      "ホーム",
+      "理論体系ノート",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>理論体系ノート</span>"
+    ]
+  },
+  {
+    "objectID": "textbook/textbook.html#sec-hamiltonian",
+    "href": "textbook/textbook.html#sec-hamiltonian",
+    "title": "理論体系ノート",
+    "section": "ハミルトン形式",
+    "text": "ハミルトン形式\n(TODO)",
+    "crumbs": [
+      "ホーム",
+      "理論体系ノート",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>理論体系ノート</span>"
+    ]
+  },
+  {
+    "objectID": "simulations/pendulum.html",
+    "href": "simulations/pendulum.html",
     "title": "単振り子のシミュレーション",
     "section": "",
-    "text": "インタラクティブ・シミュレーション\nこのページでは、quarto-live（Pyodide）を用いたPythonシミュレーションコードを解説します。サーバーを立てることなく、完全にブラウザ上のWebAssembly（Pyodide）で実行されます。コードは純粋な NumPy + Matplotlib で書かれており、Jupyter Notebook にそのままコピーして実行することもできます。\nスライダーを動かして、各パラメータが振り子の動きにどう影響するか確認してください。\nコード\nviewof length        = Inputs.range([0.1, 2.0], {step: 0.1,  label: tex`\\text{振り子の長さ } L \\text{ (m)}`,        value: 1.0})\nviewof initial_angle = Inputs.range([-1.57, 1.57], {step: 0.1, label: tex`\\text{初期角度 } \\theta_0 \\text{ (rad)}`,  value: 0.785})\nviewof gravity       = Inputs.range([1.0, 20.0], {step: 0.1,  label: tex`\\text{重力加速度 } g \\text{ (m/s²)}`,      value: 9.8})\nviewof time          = Inputs.range([0.0, 10.0], {step: 0.1,  label: tex`\\text{時間 } t \\text{ (s)}`,              value: 0.0})\nviewof animate       = Inputs.toggle({label: \"アニメーション再生\", value: false})\n\n// アニメーション更新ロジック\nupdate_time = {\n  if (!animate) return;\n  while (animate) {\n    let next_t = time + 0.1;\n    if (next_t &gt; 10.0) next_t = 0.0;\n    viewof time.value = next_t;\n    viewof time.dispatchEvent(new CustomEvent(\"input\"));\n    await Promises.delay(100);\n  }\n}",
+    "text": "理論的背景\n長さ \\ell の軽い糸の先端に質量 m のおもりをつけた単振り子の運動を、matplotlib.animation.FuncAnimation で時間発展アニメーションとして可視化します。下のコードはブラウザ上の Pyodide で実行されますが、純粋な NumPy + Matplotlib で書かれているので、Jupyter Notebook や VSCode にコピーしてもそのまま動きます。\n長さ \\ell の単振り子の運動方程式は\n\\ell \\ddot{\\theta} = -g \\sin\\theta  \\tag{2.1}\n微小振動 (|\\theta| \\ll 1) の近似 \\sin\\theta \\approx \\theta を用いると単振動\n\\ddot{\\theta} = -\\omega^2 \\theta, \\qquad \\omega = \\sqrt{g/\\ell}  \\tag{2.2}\nの形になり、解は \\theta(t) = \\theta_0 \\cos\\omega t (初速度 0 の場合)。下のシミュレーションは 式 2.1 を Euler-Cromer 法で そのまま数値積分 しているので、振幅が大きくても (近似なしで) 動きます。",
     "crumbs": [
       "ホーム",
       "シミュレーション",
@@ -80,11 +188,11 @@
     ]
   },
   {
-    "objectID": "theory/topics/simulations/sample.html#理論的背景",
-    "href": "theory/topics/simulations/sample.html#理論的背景",
+    "objectID": "simulations/pendulum.html#アニメーション-コード",
+    "href": "simulations/pendulum.html#アニメーション-コード",
     "title": "単振り子のシミュレーション",
-    "section": "理論的背景",
-    "text": "理論的背景\n長さ l の軽い糸に質量 m のおもりをつるした単振り子の運動方程式は、以下のようになります。\n\n\\frac{d^2 \\theta}{dt^2} = -\\frac{g}{l} \\sin \\theta\n\n微小振動（\\theta \\ll 1）の近似を用いると、\\sin \\theta \\approx \\theta となり、方程式は単振動の形になります。\n\n\\frac{d^2 \\theta}{dt^2} = -\\frac{g}{l} \\theta\n\nこの方程式の一般解は以下の通りです。\n\n\\theta(t) = \\theta_0 \\cos\\left(\\sqrt{\\frac{g}{l}} t + \\phi \\right)",
+    "section": "アニメーション (コード)",
+    "text": "アニメーション (コード)\n\n\n\n\n\n\n\n\n\n\n\n\nヒント\n\n\n\n読み解きヒント\n\n数値積分は omega[i+1] = omega[i] - (g/L) * sin(θ[i]) * dt の 1 行が \\dot{\\theta} = -(g/\\ell)\\sin\\theta$ の Euler-Cromer 離散化です。\n初期角度 60^\\circ は微小ではないので、振動周期が線形理論の T = 2\\pi\\sqrt{\\ell/g} よりわずかに長くなります。コード中の theta0 を 10^\\circ などに変えて比較してみてください。\nFuncAnimation の interval はミリ秒単位の再生間隔。to_jshtml() で生成された JS プレイヤーは再生・一時停止・コマ送り・スライダー操作ができ、Quarto Live 専用ではないので Jupyter にそのまま貼り付けても動きます。",
     "crumbs": [
       "ホーム",
       "シミュレーション",
@@ -92,11 +200,11 @@
     ]
   },
   {
-    "objectID": "theory/topics/exercises/polar_kinematics.html",
-    "href": "theory/topics/exercises/polar_kinematics.html",
+    "objectID": "exercises/polar_kinematics.html",
+    "href": "exercises/polar_kinematics.html",
     "title": "演習：極座標系における速度と加速度",
     "section": "",
-    "text": "問題\n等角螺旋 r = ae^{k\\theta} \\ (\\theta &gt; 0) の上を、角速度 \\dot{\\theta} = \\omega = \\text{const} で運動する点があります。 この点の速度と加速度の極座標成分 v_r, v_\\theta, a_r, a_\\theta を求めよ。\nまた、a &gt; 0 のとき、求めた加速度の動径成分 a_r が k に対してどのように変化するか、定性的なグラフと共に簡潔に説明せよ。",
+    "text": "問題\n等角螺旋 r = a e^{k\\theta} \\ (\\theta &gt; 0) の上を、角速度 \\dot{\\theta} = \\omega = \\text{const} で運動する点があります。この点の速度と加速度の極座標成分 v_r,\\ v_\\theta,\\ a_r,\\ a_\\theta を求めよ。\nまた、a &gt; 0 のとき、求めた加速度の動径成分 a_r が k に対してどのように変化するかを、定性的なグラフと共に簡潔に説明せよ。",
     "crumbs": [
       "ホーム",
       "演習問題",
@@ -104,11 +212,11 @@
     ]
   },
   {
-    "objectID": "theory/topics/exercises/polar_kinematics.html#インタラクティブシミュレーション",
-    "href": "theory/topics/exercises/polar_kinematics.html#インタラクティブシミュレーション",
+    "objectID": "exercises/polar_kinematics.html#軌道アニメーション-コード",
+    "href": "exercises/polar_kinematics.html#軌道アニメーション-コード",
     "title": "演習：極座標系における速度と加速度",
-    "section": "インタラクティブ・シミュレーション",
-    "text": "インタラクティブ・シミュレーション\n螺旋上の質点の動きをイメージするためのシミュレーションです。スライダーを動かして、パラメータ k が軌道にどう影響するか確認してください。\n\n\nコード\nviewof k     = Inputs.range([-0.5, 0.5], {step: 0.05, label: tex`\\text{パラメータ } k`,  value: 0.15})\nviewof omega = Inputs.range([0.5,  5.0], {step: 0.1,  label: tex`\\text{角速度 } \\omega`,       value: 1.5})\nviewof t     = Inputs.range([0.0,  5.0], {step: 0.05, label: tex`\\text{時間 } t \\text{ (s)}`,     value: 0.0})\nviewof animate = Inputs.toggle({label: \"アニメーション再生\", value: false})\n\n// アニメーション更新ロジック\nupdate_t = {\n  if (!animate) return;\n  while (animate) {\n    let next_t = t + 0.05;\n    if (next_t &gt; 5.0) next_t = 0.0;\n    viewof t.value = next_t;\n    viewof t.dispatchEvent(new CustomEvent(\"input\"));\n    await Promises.delay(50);\n  }\n}",
+    "section": "軌道アニメーション (コード)",
+    "text": "軌道アニメーション (コード)\n質点が等角螺旋上をどう動くかを FuncAnimation で可視化します。k の符号で内向き/外向きが切り替わることを観察してください。\n\n\n\n\n\n\n\n\n\n\n\n\nヒント\n\n\n\nコード中の k を -0.2 や 0.3 に変えて再実行すると、内向き渦/外向き渦の振る舞いが変わります。k = 0 なら半径一定の円運動です。",
     "crumbs": [
       "ホーム",
       "演習問題",
@@ -116,11 +224,11 @@
     ]
   },
   {
-    "objectID": "theory/topics/exercises/polar_kinematics.html#解答と計算過程の解説",
-    "href": "theory/topics/exercises/polar_kinematics.html#解答と計算過程の解説",
+    "objectID": "exercises/polar_kinematics.html#解答と計算過程の解説",
+    "href": "exercises/polar_kinematics.html#解答と計算過程の解説",
     "title": "演習：極座標系における速度と加速度",
     "section": "解答と計算過程の解説",
-    "text": "解答と計算過程の解説\n\n1. 速度と加速度の極座標成分の公式の導出（復習）\nまず、極座標系における基底ベクトルの微分の性質（詳細は 理論体系ノートの極座標系のセクション を参照してください）から出発します。 位置ベクトル \\vec{r} = r \\hat{e}_r を時間 t で微分します。ここで関数の積を微分する積の微分公式 (AB)' = A'B + AB' を用います。\n \\vec{v} = \\frac{d\\vec{r}}{dt} = \\frac{d}{dt}(r \\hat{e}_r) = \\dot{r} \\hat{e}_r + r \\dot{\\hat{e}}_r \n前述のノートで確認したように、基底ベクトルが時間とともに回転するため \\dot{\\hat{e}}_r = \\dot{\\theta} \\hat{e}_\\theta となります。これを代入すると、  \\vec{v} = \\dot{r} \\hat{e}_r + r \\dot{\\theta} \\hat{e}_\\theta  したがって、速度成分は v_r = \\dot{r}, v_\\theta = r\\dot{\\theta} となります。\nさらにこれをもう一度微分して加速度を求めます。3つの積の微分 (ABC)' = A'BC + AB'C + ABC' も使います。  \\vec{a} = \\frac{d\\vec{v}}{dt} = \\frac{d}{dt}(\\dot{r} \\hat{e}_r) + \\frac{d}{dt}(r \\dot{\\theta} \\hat{e}_\\theta)   = (\\ddot{r} \\hat{e}_r + \\dot{r} \\dot{\\hat{e}}_r) + (\\dot{r} \\dot{\\theta} \\hat{e}_\\theta + r \\ddot{\\theta} \\hat{e}_\\theta + r \\dot{\\theta} \\dot{\\hat{e}}_\\theta) \nここで \\dot{\\hat{e}}_r = \\dot{\\theta} \\hat{e}_\\theta と \\dot{\\hat{e}}_\\theta = -\\dot{\\theta} \\hat{e}_r を代入して整理すると、  \\vec{a} = (\\ddot{r} - r\\dot{\\theta}^2)\\hat{e}_r + (r\\ddot{\\theta} + 2\\dot{r}\\dot{\\theta})\\hat{e}_\\theta  これが加速度の極座標成分 a_r, a_\\theta の公式です。\n\n\n2. 本問の計算過程\n問題の条件より、以下の関係式が与えられています。 * r = ae^{k\\theta} * \\dot{\\theta} = \\omega \\quad (\\text{一定}) * \\ddot{\\theta} = \\frac{d}{dt}(\\omega) = 0\nまず、r の時間微分 \\dot{r} を計算します。ここでも合成関数の微分法則（チェインルール）を用います。 \\theta は時間 t の関数であるため、r(t) = a e^{k\\theta(t)} を t で微分するには、一度全体を \\theta で微分してから中身の微分 \\dot{\\theta} を掛けます。  \\dot{r} = \\frac{dr}{d\\theta} \\cdot \\frac{d\\theta}{dt} = \\frac{d}{d\\theta}(ae^{k\\theta}) \\cdot \\omega = (ake^{k\\theta}) \\cdot \\omega = ak\\omega e^{k\\theta}  ここで、ae^{k\\theta} = r であることに着目すると、  \\dot{r} = k\\omega r  とスッキリ書くこともできます。\nさらに、もう一度時間微分して \\ddot{r} を求めます。定数倍の微分 \\frac{d}{dt}(C \\cdot f(t)) = C \\cdot \\dot{f}(t) に注意して、積の公式を使わずに計算します。  \\ddot{r} = \\frac{d}{dt}(k\\omega r) = k\\omega \\cdot \\dot{r}  先ほど求めた \\dot{r} = ak\\omega e^{k\\theta} を代入すると、  \\ddot{r} = k\\omega (ak\\omega e^{k\\theta}) = ak^2\\omega^2 e^{k\\theta} \nこれらを先ほど復習した公式に代入して、各成分を求めます。\n速度成分:  v_r = \\dot{r} = \\boldsymbol{ak\\omega e^{k\\theta}}   v_\\theta = r\\dot{\\theta} = (ae^{k\\theta})\\omega = \\boldsymbol{a\\omega e^{k\\theta}} \n加速度成分:  a_r = \\ddot{r} - r\\dot{\\theta}^2 = ak^2\\omega^2 e^{k\\theta} - (ae^{k\\theta})\\omega^2 = \\boldsymbol{a\\omega^2(k^2 - 1)e^{k\\theta}}   a_\\theta = r\\ddot{\\theta} + 2\\dot{r}\\dot{\\theta} = (ae^{k\\theta})(0) + 2(ak\\omega e^{k\\theta})\\omega = \\boldsymbol{2ak\\omega^2 e^{k\\theta}} \n\n\n\n3. 加速度の動径成分 a_r の k に対する依存性\n求めた動径加速度は a_r(k) = a\\omega^2(k^2 - 1)e^{k\\theta} です。 a &gt; 0 かつ \\theta &gt; 0 を固定した場合に、この値がパラメータ k によってどのように変化するかを考察します。定数部分 a\\omega^2 &gt; 0 なので、関数 f(k) = (k^2 - 1)e^{k\\theta} の振る舞いを調べればよいことになります。\n微分して極値を求めます。ここでも積の微分公式を用いています。  f'(k) = 2ke^{k\\theta} + (k^2 - 1) \\cdot \\theta e^{k\\theta} = (\\theta k^2 + 2k - \\theta)e^{k\\theta}  f'(k) = 0 となる k は、2次方程式 \\theta k^2 + 2k - \\theta = 0 の解であり、解の公式より  k_{\\pm} = \\frac{-1 \\pm \\sqrt{1 + \\theta^2}}{\\theta}  となります。\\theta &gt; 0 のため、k_+ &gt; 0（極小値を与える）、k_- &lt; -1（極大値を与える）となります。\n以下が、その定性的なグラフです。\n\n\n\n動径加速度 a_r の k に対する依存性\n\n\n\nグラフから読み取れる物理的・定性的な振る舞い\n\na_r の符号（力の向き）: e^{k\\theta} は常に正なので、a_r の符号は (k^2 - 1) だけで決まります。\n\n|k| &lt; 1 のとき: a_r &lt; 0 となり、質点は原点に向かって引かれるような実効的な力（向心力）を感じます。\n|k| &gt; 1 のとき: a_r &gt; 0 となり、遠心力が勝り、原点から遠ざかる方向へ加速（斥力）します。\nk = \\pm 1 のとき: a_r = 0 となり、動径方向の力と遠心力が釣り合って、動径方向の加速度を持たなくなります。\n\nk \\to \\infty のとき: 指数関数 e^{k\\theta} が爆発的に増加するため、正の無限大に発散します。\nk \\to -\\infty のとき: (k^2 - 1) は大きくなりますが、指数関数 e^{k\\theta} が 0 へ急激に減衰する効果が勝るため、a_r \\to 0 へと漸近します（螺旋が急激に原点に巻き込まれるため、速度自体が急速に0に近づくためです）。\n極値の存在: k &lt; -1 の領域にただ一つの極大値（正の値）を持ち、0 &lt; k &lt; 1 の領域にただ一つの極小値（負の値）を持ちます。",
+    "text": "解答と計算過程の解説\n\n1. 速度と加速度の極座標成分の公式の導出 (復習)\n極座標系における基底ベクトルの微分の性質 (式 2.2 参照) から出発します。位置ベクトル \\vec{r} = r \\hat{e}_r を時間 t で微分します。積の微分公式 (AB)' = A'B + AB' を用いると\n \\vec{v} = \\frac{d\\vec{r}}{dt} = \\dot{r}\\, \\hat{e}_r + r\\, \\dot{\\hat{e}}_r \nノートで確認したように \\dot{\\hat{e}}_r = \\dot{\\theta}\\, \\hat{e}_\\theta なので\n \\vec{v} = \\dot{r}\\, \\hat{e}_r + r\\dot{\\theta}\\, \\hat{e}_\\theta \nしたがって速度成分は v_r = \\dot{r}、v_\\theta = r\\dot{\\theta}。\nさらに微分して加速度を求めます。3 つの積の微分 (ABC)' = A'BC + AB'C + ABC' も使います。\n \\vec{a} = \\frac{d\\vec{v}}{dt} = (\\ddot{r}\\hat{e}_r + \\dot{r}\\dot{\\hat{e}}_r) + (\\dot{r}\\dot{\\theta}\\hat{e}_\\theta + r\\ddot{\\theta}\\hat{e}_\\theta + r\\dot{\\theta}\\dot{\\hat{e}}_\\theta) \n\\dot{\\hat{e}}_r = \\dot{\\theta}\\hat{e}_\\theta と \\dot{\\hat{e}}_\\theta = -\\dot{\\theta}\\hat{e}_r を代入して整理すると\n \\vec{a} = (\\ddot{r} - r\\dot{\\theta}^2)\\hat{e}_r + (r\\ddot{\\theta} + 2\\dot{r}\\dot{\\theta})\\hat{e}_\\theta  \\tag{3.1}\nこれが加速度の極座標成分 a_r,\\ a_\\theta の公式です。\n\n\n2. 本問の計算過程\n問題の条件より\n\nr = a e^{k\\theta}\n\\dot{\\theta} = \\omega \\quad (\\text{一定})\n\\ddot{\\theta} = 0\n\nr の時間微分 \\dot{r} は 合成関数の微分法則 より\n \\dot{r} = \\frac{dr}{d\\theta}\\cdot\\frac{d\\theta}{dt} = (ake^{k\\theta})\\cdot\\omega = ak\\omega e^{k\\theta} = k\\omega r \nもう一度時間微分すると、定数倍の微分により\n \\ddot{r} = k\\omega \\dot{r} = ak^2\\omega^2 e^{k\\theta} \nこれらを 式 3.1 と v_r = \\dot{r}、v_\\theta = r\\dot{\\theta} に代入すると\n速度成分:  v_r = ak\\omega e^{k\\theta}, \\qquad v_\\theta = a\\omega e^{k\\theta} \n加速度成分:  a_r = \\ddot{r} - r\\dot{\\theta}^2 = a\\omega^2(k^2 - 1)e^{k\\theta}  \\tag{3.2}  a_\\theta = r\\ddot{\\theta} + 2\\dot{r}\\dot{\\theta} = 2ak\\omega^2 e^{k\\theta} \n\n\n\n3. 動径加速度 a_r の k 依存性 (コード生成グラフ)\n式 3.2 より、a &gt; 0、\\theta &gt; 0 を固定したとき関数 f(k) = (k^2 - 1) e^{k\\theta} の振る舞いを調べれば足ります。以下のグラフはコードから直接生成しています。\n\n\n\n\n\n\n\nグラフから読み取れる振る舞い\n\na_r の符号 (力の向き): e^{k\\theta} &gt; 0 なので a_r の符号は (k^2 - 1) で決まる。\n\n|k| &lt; 1: a_r &lt; 0 で、原点向きの実効的な向心力。\n|k| &gt; 1: a_r &gt; 0 で、原点から遠ざかる向き。\nk = \\pm 1: a_r = 0。\n\nk \\to +\\infty: 指数関数の発散が支配し、a_r \\to +\\infty。\nk \\to -\\infty: (k^2 - 1) は大きくなるが e^{k\\theta} \\to 0 の方が圧倒的に強く、a_r \\to 0 に漸近 (螺旋が急激に原点へ巻き込まれるため速度自体が 0 に近づく)。\n極値: f'(k) = (\\theta k^2 + 2k - \\theta)e^{k\\theta} = 0 より  k_{\\pm} = \\frac{-1 \\pm \\sqrt{1 + \\theta^2}}{\\theta}  \\theta &gt; 0 より k_+ \\in (0, 1) (極小)、k_- &lt; -1 (極大)。",
     "crumbs": [
       "ホーム",
       "演習問題",

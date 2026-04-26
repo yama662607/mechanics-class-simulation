@@ -69,7 +69,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./theory/textbook.html" rel="next">
+<link href="./textbook/textbook.html" rel="next">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-f57d11532290d8ef44d35aa1dbbccd91.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-c0f88a11ff41682bc4a68e0c9d566e7e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -108,6 +108,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
+<!--
+  Quarto Live (filter mode) does not auto-load plotly.js even when a
+  {pyodide} cell uses plotly. Load it from CDN once per page so that
+  mime-type renders (`Plotly.newPlot(...)`) work.
+-->
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
 <!--
   One-time cleanup for visitors with a stale Service Worker registered by
   the previous Shinylive build of this site. Safe to remove once enough
@@ -154,6 +160,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
+    <a href="https://github.com/yama662607/mechanics-class-simulation" title="ソースコード" class="quarto-navigation-tool px-1" aria-label="ソースコード"><i class="bi bi-github"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -165,9 +172,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">目次</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="サイドバーを切り替える" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
-      <button type="button" class="btn quarto-search-button" aria-label="サーチ" onclick="window.quartoOpenSearch();">
-        <i class="bi bi-search"></i>
-      </button>
     </div>
   </nav>
 </header>
@@ -175,11 +179,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
-        <div class="mt-2 flex-shrink-0 align-items-center">
-        <div class="sidebar-search">
-        <div id="quarto-search" class="" title="サーチ"></div>
-        </div>
-        </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
@@ -199,7 +198,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./theory/textbook.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">物理学基礎論A (力学): 理論体系ノート</span></a>
+  <a href="./textbook/textbook.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">理論体系ノート</span></a>
   </div>
 </li>
       </ul>
@@ -215,7 +214,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./theory/topics/simulations/sample.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">単振り子のシミュレーション</span></a>
+  <a href="./simulations/pendulum.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">単振り子のシミュレーション</span></a>
   </div>
 </li>
       </ul>
@@ -231,7 +230,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./theory/topics/exercises/polar_kinematics.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">演習：極座標系における速度と加速度</span></a>
+  <a href="./exercises/polar_kinematics.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">演習：極座標系における速度と加速度</span></a>
   </div>
 </li>
       </ul>
@@ -249,11 +248,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#目次" id="toc-目次" class="nav-link active" data-scroll-target="#目次">目次</a>
   <ul class="collapse">
   <li><a href="#理論体系ロードマップ" id="toc-理論体系ロードマップ" class="nav-link" data-scroll-target="#理論体系ロードマップ">理論体系ロードマップ</a></li>
-  <li><a href="#素材置き場" id="toc-素材置き場" class="nav-link" data-scroll-target="#素材置き場">素材置き場</a></li>
+  <li><a href="#シミュレーションと演習" id="toc-シミュレーションと演習" class="nav-link" data-scroll-target="#シミュレーションと演習">シミュレーションと演習</a></li>
   <li><a href="#執筆ルール" id="toc-執筆ルール" class="nav-link" data-scroll-target="#執筆ルール">執筆ルール</a></li>
   </ul></li>
   </ul>
-</nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/yama662607/mechanics-class-simulation/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>編集</a></li><li><a href="https://github.com/yama662607/mechanics-class-simulation/issues/new" class="toc-action"><i class="bi empty"></i>問題を報告</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content column-body" id="quarto-document-content">
@@ -298,7 +297,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>京都大学の「物理学基礎論A」の講義を起点に、力学の概念・定義・計算・シミュレーションを自分の体系として整理するための Quarto ノートです。 講義資料や板書写真は素材として保存し、本文はトピックごとに再構成・シミュレーションコードを交えて整理します。</p>
+<p>京都大学の「物理学基礎論A」の講義を起点に、力学の概念・定義・計算・シミュレーションを自分の体系として整理するための Quarto ノートです。シミュレーションは Pyodide (Quarto Live) でブラウザ上の Python (NumPy + matplotlib) として動かし、図やアニメーションを生成するソースコードを学習者自身が読めるようにしています。</p>
 </div>
 </div>
 </div>
@@ -307,49 +306,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <table class="caption-top table">
 <thead>
 <tr class="header">
-<th style="text-align: left;">項目名</th>
-<th style="text-align: center;">素材</th>
-<th style="text-align: center;">ノート</th>
+<th style="text-align: left;">項目</th>
+<th style="text-align: left;">ノート</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><strong>導入と記法</strong></td>
-<td style="text-align: center;">raw / PDF / images</td>
-<td style="text-align: center;"><a href="./theory/textbook.html#intro-notation">理論体系ノート</a></td>
+<td style="text-align: left;"><strong>導入と記法</strong> (極座標系・基底ベクトルの微分)</td>
+<td style="text-align: left;"><a href="./textbook/textbook.html#sec-intro-notation">理論体系ノート</a></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><strong>質点の力学</strong></td>
-<td style="text-align: center;">raw / PDF / images</td>
-<td style="text-align: center;"><a href="./theory/textbook.html#particle-mechanics">理論体系ノート</a></td>
+<td style="text-align: left;"><a href="./textbook/textbook.html#sec-particle-mechanics">理論体系ノート</a></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><strong>剛体の力学</strong></td>
-<td style="text-align: center;">raw / PDF / images</td>
-<td style="text-align: center;"><a href="./theory/textbook.html#rigid-body">理論体系ノート</a></td>
+<td style="text-align: left;"><a href="./textbook/textbook.html#sec-rigid-body">理論体系ノート</a></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><strong>解析力学</strong></td>
-<td style="text-align: center;">raw / PDF / images</td>
-<td style="text-align: center;"><a href="./theory/textbook.html#analytical-mechanics">理論体系ノート</a></td>
+<td style="text-align: left;"><a href="./textbook/textbook.html#sec-analytical-mechanics">理論体系ノート</a></td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="素材置き場" class="level2">
-<h2 class="anchored" data-anchor-id="素材置き場">素材置き場</h2>
+<section id="シミュレーションと演習" class="level2">
+<h2 class="anchored" data-anchor-id="シミュレーションと演習">シミュレーションと演習</h2>
 <ul>
-<li><code>quarto/assets/raw/lectures/</code>: その日の講義資料、未整理の写真、手書きノート。</li>
-<li><code>quarto/assets/pdf/lectures/</code>: qmd から参照する整理済み PDF。</li>
-<li><code>quarto/assets/images/lectures/</code>: qmd から参照する整理済み画像。</li>
+<li><a href="./simulations/pendulum.html">単振り子</a> — <code>matplotlib.animation.FuncAnimation</code> で時間発展を可視化</li>
+<li><a href="./exercises/polar_kinematics.html">演習：等角螺旋上の運動</a> — 極座標系での速度・加速度成分</li>
 </ul>
 </section>
 <section id="執筆ルール" class="level2">
 <h2 class="anchored" data-anchor-id="執筆ルール">執筆ルール</h2>
 <ul>
-<li>本文は講義回単位ではなく、理論トピック単位で整理します。</li>
-<li>シミュレーションコード（Python 等）を積極的に取り入れ、理論の視覚的理解を目指します。</li>
-<li>定義、命題、証明、直感、計算例を分け、講義で曖昧だった箇所を明示します。</li>
+<li>本文は講義回単位ではなく、理論トピック単位で整理する</li>
+<li>図・グラフ・アニメーションは可能な限り <strong>コードから生成</strong> し、読者がソースを見て学習できるようにする</li>
+<li>定義・命題・証明・直感・計算例を分け、講義で曖昧だった箇所を明示する</li>
 </ul>
 
 
@@ -359,7 +352,52 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 
 </main> <!-- /main -->
-<script src="./templates/sidebar-toggle.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  // ── 右サイドバー（目次）トグル ──────────────────────────
+  const rightSidebar = document.getElementById('quarto-margin-sidebar');
+  if (rightSidebar) {
+    const btn = document.createElement('button');
+    btn.id = 'right-sidebar-toggle';
+    btn.setAttribute('aria-label', '目次を折りたたむ');
+    btn.innerHTML = '&#8250;'; // ›
+
+    document.body.appendChild(btn);
+
+    function positionRightBtn() {
+      const rect = rightSidebar.getBoundingClientRect();
+      const visible = rect.width > 10;
+      btn.innerHTML = visible ? '&#8250;' : '&#8249;';
+      btn.style.left = visible
+        ? (rect.left - 24) + 'px'
+        : (window.innerWidth - 14) + 'px';
+    }
+    positionRightBtn();
+
+    btn.addEventListener('click', function () {
+      const isVisible = rightSidebar.getBoundingClientRect().width > 10;
+      if (isVisible) {
+        rightSidebar.style.width = '0';
+        rightSidebar.style.minWidth = '0';
+        rightSidebar.style.overflow = 'hidden';
+        rightSidebar.style.padding = '0';
+        btn.innerHTML = '&#8249;';
+        btn.style.left = (window.innerWidth - 14) + 'px';
+      } else {
+        rightSidebar.style.width = '';
+        rightSidebar.style.minWidth = '';
+        rightSidebar.style.overflow = '';
+        rightSidebar.style.padding = '';
+        btn.innerHTML = '&#8250;';
+        requestAnimationFrame(() => positionRightBtn());
+      }
+    });
+
+    window.addEventListener('resize', positionRightBtn);
+  }
+});
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
@@ -820,8 +858,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="nav-page nav-page-previous">
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./theory/textbook.html" class="pagination-link" aria-label="物理学基礎論A (力学): 理論体系ノート">
-        <span class="nav-page-text"><span class="chapter-title">物理学基礎論A (力学): 理論体系ノート</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./textbook/textbook.html" class="pagination-link" aria-label="理論体系ノート">
+        <span class="nav-page-text"><span class="chapter-title">理論体系ノート</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">ソースコード</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
@@ -835,31 +873,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu"># 目次 {.unnumbered}</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>::: {.callout-note appearance="simple"}</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>京都大学の「物理学基礎論A」の講義を起点に、力学の概念・定義・計算・シミュレーションを自分の体系として整理するための Quarto ノートです。</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>講義資料や板書写真は素材として保存し、本文はトピックごとに再構成・シミュレーションコードを交えて整理します。</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## 理論体系ロードマップ</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 項目名 <span class="pp">|</span> 素材 <span class="pp">|</span> ノート <span class="pp">|</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="pp">| :---</span> <span class="pp">|</span> :--: <span class="pp">|</span> :--: <span class="pp">|</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **導入と記法** <span class="pp">|</span> raw / PDF / images <span class="pp">|</span> <span class="co">[</span><span class="ot">理論体系ノート</span><span class="co">](theory/textbook.qmd#intro-notation)</span> <span class="pp">|</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **質点の力学** <span class="pp">|</span> raw / PDF / images <span class="pp">|</span> <span class="co">[</span><span class="ot">理論体系ノート</span><span class="co">](theory/textbook.qmd#particle-mechanics)</span> <span class="pp">|</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **剛体の力学** <span class="pp">|</span> raw / PDF / images <span class="pp">|</span> <span class="co">[</span><span class="ot">理論体系ノート</span><span class="co">](theory/textbook.qmd#rigid-body)</span> <span class="pp">|</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **解析力学** <span class="pp">|</span> raw / PDF / images <span class="pp">|</span> <span class="co">[</span><span class="ot">理論体系ノート</span><span class="co">](theory/textbook.qmd#analytical-mechanics)</span> <span class="pp">|</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="fu">## 素材置き場</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`quarto/assets/raw/lectures/`</span>: その日の講義資料、未整理の写真、手書きノート。</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`quarto/assets/pdf/lectures/`</span>: qmd から参照する整理済み PDF。</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`quarto/assets/images/lectures/`</span>: qmd から参照する整理済み画像。</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>京都大学の「物理学基礎論A」の講義を起点に、力学の概念・定義・計算・シミュレーションを自分の体系として整理するための Quarto ノートです。シミュレーションは Pyodide (Quarto Live) でブラウザ上の Python (NumPy + matplotlib) として動かし、図やアニメーションを生成するソースコードを学習者自身が読めるようにしています。</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## 理論体系ロードマップ</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 項目 <span class="pp">|</span> ノート <span class="pp">|</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="pp">| :---</span> <span class="pp">| :---</span> <span class="pp">|</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **導入と記法** (極座標系・基底ベクトルの微分) <span class="pp">|</span> <span class="co">[</span><span class="ot">理論体系ノート</span><span class="co">](textbook/textbook.qmd#sec-intro-notation)</span> <span class="pp">|</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **質点の力学** <span class="pp">|</span> <span class="co">[</span><span class="ot">理論体系ノート</span><span class="co">](textbook/textbook.qmd#sec-particle-mechanics)</span> <span class="pp">|</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **剛体の力学** <span class="pp">|</span> <span class="co">[</span><span class="ot">理論体系ノート</span><span class="co">](textbook/textbook.qmd#sec-rigid-body)</span> <span class="pp">|</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **解析力学** <span class="pp">|</span> <span class="co">[</span><span class="ot">理論体系ノート</span><span class="co">](textbook/textbook.qmd#sec-analytical-mechanics)</span> <span class="pp">|</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">## シミュレーションと演習</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">単振り子</span><span class="co">](simulations/pendulum.qmd)</span> — <span class="in">`matplotlib.animation.FuncAnimation`</span> で時間発展を可視化</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">演習：等角螺旋上の運動</span><span class="co">](exercises/polar_kinematics.qmd)</span> — 極座標系での速度・加速度成分</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="fu">## 執筆ルール</span></span>
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="fu">## 執筆ルール</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>本文は講義回単位ではなく、理論トピック単位で整理します。</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>シミュレーションコード（Python 等）を積極的に取り入れ、理論の視覚的理解を目指します。</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>定義、命題、証明、直感、計算例を分け、講義で曖昧だった箇所を明示します。</span></code></pre></div><button title="コピー" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>本文は講義回単位ではなく、理論トピック単位で整理する</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>図・グラフ・アニメーションは可能な限り **コードから生成** し、読者がソースを見て学習できるようにする</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>定義・命題・証明・直感・計算例を分け、講義で曖昧だった箇所を明示する</span></code></pre></div><button title="コピー" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
@@ -869,7 +905,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    </div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/yama662607/mechanics-class-simulation/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>編集</a></li><li><a href="https://github.com/yama662607/mechanics-class-simulation/issues/new" class="toc-action"><i class="bi empty"></i>問題を報告</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">
