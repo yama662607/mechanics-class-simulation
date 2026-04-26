@@ -356,15 +356,15 @@ window.Quarto = {
 <section id="基底ベクトル変化の図解-コード生成" class="level3">
 <h3 class="anchored" data-anchor-id="基底ベクトル変化の図解-コード生成">基底ベクトル変化の図解 (コード生成)</h3>
 <p>以下の図は、角度が <span class="math inline">\theta</span> から <span class="math inline">\theta + d\theta</span> へ微小に変化したときの基底ベクトルの変化 <span class="math inline">d\hat{e}_r, d\hat{e}_\theta</span> を matplotlib で描いたものです。コードを直接読んで、どのベクトルがどの式に対応するかを確認してください。</p>
-<div class="cell">
+<div class="cell hidden">
 <details class="code-fold hidden">
 <summary>コード</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="0" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line -1;"><span id="cb1-0"><a href="#cb1-0" aria-hidden="true" tabindex="-1"></a><span class="co">// Quarto Live は OJS runtime のロードを {ojs} セルの存在で判定する。</span></span>
-<span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">// {pyodide} セルしかないページではこのダミーが必要。</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="1" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Quarto Live は OJS runtime のロードを {ojs} セルの存在で判定する。</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">// {pyodide} セルしかないページではこのダミーが必要 (代入式 + output:false で非表示)。</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>_quarto_live_loader <span class="op">=</span> <span class="dv">1</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-display">
-<div id="ojs-cell-1" data-nodetype="expression">
+<div class="cell-output cell-output-display hidden">
+<div id="ojs-cell-1" data-nodetype="declaration">
 
 </div>
 </div>
@@ -545,7 +545,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Ii8vIFF1YXJ0byBMaXZlIOOBryBPSlMgcnVudGltZSDjga7jg63jg7zjg4njgpIge29qc30g44K744Or44Gu5a2Y5Zyo44Gn5Yik5a6a44GZ44KL44CCXG4vLyB7cHlvZGlkZX0g44K744Or44GX44GL44Gq44GE44Oa44O844K444Gn44Gv44GT44Gu44OA44Of44O844GM5b+F6KaB44CCXG4xXG4ifV19
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Ii8vIFF1YXJ0byBMaXZlIOOBryBPSlMgcnVudGltZSDjga7jg63jg7zjg4njgpIge29qc30g44K744Or44Gu5a2Y5Zyo44Gn5Yik5a6a44GZ44KL44CCXG4vLyB7cHlvZGlkZX0g44K744Or44GX44GL44Gq44GE44Oa44O844K444Gn44Gv44GT44Gu44OA44Of44O844GM5b+F6KaBICjku6PlhaXlvI8gKyBvdXRwdXQ6ZmFsc2Ug44Gn6Z2e6KGo56S6KeOAglxuX3F1YXJ0b19saXZlX2xvYWRlciA9IDFcbiJ9XX0=
 </script>
 <script type="module">
 if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
