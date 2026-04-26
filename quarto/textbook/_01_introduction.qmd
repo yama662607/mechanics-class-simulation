@@ -1,0 +1,30 @@
+# 第1章 序論 {#sec-introduction}
+
+## この章で学ぶこと
+
+- パーシャルファイル (`_*.qmd`) は **YAML フロントマター禁止**。親 (`textbook.qmd`) に集約します。
+- 数式は LaTeX で記述。インラインは `$E = mc^2$`、ディスプレイは:
+
+$$
+\nabla \times \mathbf{B} - \frac{1}{c}\frac{\partial \mathbf{E}}{\partial t} = \frac{4\pi}{c}\mathbf{J}
+$$ {#eq-maxwell-ampere}
+
+@eq-maxwell-ampere は Maxwell-Ampère の法則です。
+
+## 図表の例
+
+```{mermaid}
+flowchart LR
+    A[原稿] --> B[validate-docs]
+    B --> C{エラー?}
+    C -->|Yes| D[fix]
+    C -->|No| E[render-site]
+    D --> B
+    E --> F[GitHub Pages]
+```
+
+## 元 PDF へのリンク (任意)
+
+教科書 PDF を `quarto/assets/pdf/` に置いた場合の参照例:
+
+[元教科書 §1.2 を見る](../assets/pdf/textbook.pdf#page=12)

@@ -1,0 +1,138 @@
+---
+title: "Chapter XX: [タイトル]"
+subtitle: "Focus: 線形代数的構造と証明のロジック"
+author: "Your Name"
+date: last-modified
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    number-offset: [0, 0]
+    code-fold: true
+    theme: cosmo
+    smooth-scroll: true
+    anchor-sections: true
+bibliography: references.bib
+---
+
+# 概要と目的 (Overview)
+
+::: {.callout-note}
+## この章の数理的ゴール
+1. **定義の理解**: [XX] の数学的定義を正確に記述できる。
+2. **定理の証明**: Theorem [Y] の証明の核心（トリック的な部分）を再現できる。
+3. **構造の把握**: [Z] という概念が、線形代数のどの性質に基づいているか説明できる。
+
+:::
+
+## [節のタイトル]
+
+### [項のタイトル]
+
+::: {#def-main}
+## [概念の名称]
+$$
+\rho \in \mathcal{D}(\mathcal{X}) \iff \rho \geq 0, \text{Tr}(\rho) = 1
+$$
+定義 @def-main は、量子状態の数学的な要件を定めています。
+
+:::
+
+### 定義の背景・モチベーション
+<!-- なぜこのように定義されるのか？物理的な意味要件（確率の保存など）との対応は？ -->
+- 条件1の意味: ...
+- 条件2の意味: ...
+
+# 定理と証明 (Theorems & Proofs)
+
+## 重要定理
+
+::: {#thm-main}
+## [定理名]
+任意のユニタリ行列 $U$ に対しても $U^\dagger U = I$ が成り立つ。
+
+:::
+
+> 定理 @thm-main は量子ゲートの可逆性を保証します。
+
+::: {.proof}
+**証明の概要**:
+証明のアプローチ（背理法、構成的証明、凸解析の利用など）をここに書く。
+
+**証明の詳細**:
+1. まず、...を示す。
+2. 次に、不等式評価 (@eq-bound) を用いる。
+   $$
+   \| A \|_1 \leq \dots
+   $$ {#eq-bound}
+3. したがって、...となる。 $\square$
+
+:::
+
+### 証明のポイント (Key Insights)
+<!-- 証明の中で使われた重要なテクニックや、非自明な飛躍（行間）を解説 -->
+- ここでコーシー・シュワルツの不等式を使っているのがミソ。
+- 行列の正値性を利用して...
+
+# 線形代数からの視点 (Linear Algebra Perspective)
+
+この章の議論を支えている線形代数の基礎知識を整理します。
+
+## Pythonによる計算確認
+抽象的な性質を具体的な行列で確認します。
+
+```{python}
+import numpy as np
+
+# パウリ行列の定義
+sigma_x = np.array([[0, 1], [1, 0]])
+eigenvalues = np.linalg.eigvals(sigma_x)
+print(f"固有値: {eigenvalues}")
+```
+
+# 数学的記述の Tips (Mathematical Writing)
+
+## 定理環境バリエーション
+
+::: {#lem-helper}
+## 補題 (Lemma)
+定理の証明に使われる補助的な命題。
+
+:::
+
+::: {#cor-result}
+## 系 (Corollary)
+定理から直ちに導かれる結果。
+
+:::
+
+## 可換図式 (Commutative Diagrams)
+
+### HTML向け (Array環境)
+$$
+\begin{array}{ccc}
+A & \xrightarrow{f} & B \\
+\downarrow{\pi} & & \downarrow{\pi'} \\
+A/{\sim} & \xrightarrow{\bar{f}} & B/{\sim}
+\end{array}
+$$
+
+### Mermaid
+```{mermaid}
+graph LR
+    A((A)) -- f --> B((B))
+    A -- pi --> As((A/~))
+    B -- pi' --> Bs((B/~))
+    As -- f_bar --> Bs
+```
+
+# 考察とメモ (Remarks)
+
+<!-- 誤解しやすい点や、他の章とのつながり -->
+- [古い概念] との違いは...
+
+---
+
+## 参考文献・参照
+- 参考文献例 [@shannon1948]

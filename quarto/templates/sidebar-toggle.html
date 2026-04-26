@@ -1,1 +1,46 @@
-<script src="/templates/sidebar-toggle.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  // ── 右サイドバー（目次）トグル ──────────────────────────
+  const rightSidebar = document.getElementById('quarto-margin-sidebar');
+  if (rightSidebar) {
+    const btn = document.createElement('button');
+    btn.id = 'right-sidebar-toggle';
+    btn.setAttribute('aria-label', '目次を折りたたむ');
+    btn.innerHTML = '&#8250;'; // ›
+
+    document.body.appendChild(btn);
+
+    function positionRightBtn() {
+      const rect = rightSidebar.getBoundingClientRect();
+      const visible = rect.width > 10;
+      btn.innerHTML = visible ? '&#8250;' : '&#8249;';
+      btn.style.left = visible
+        ? (rect.left - 24) + 'px'
+        : (window.innerWidth - 14) + 'px';
+    }
+    positionRightBtn();
+
+    btn.addEventListener('click', function () {
+      const isVisible = rightSidebar.getBoundingClientRect().width > 10;
+      if (isVisible) {
+        rightSidebar.style.width = '0';
+        rightSidebar.style.minWidth = '0';
+        rightSidebar.style.overflow = 'hidden';
+        rightSidebar.style.padding = '0';
+        btn.innerHTML = '&#8249;';
+        btn.style.left = (window.innerWidth - 14) + 'px';
+      } else {
+        rightSidebar.style.width = '';
+        rightSidebar.style.minWidth = '';
+        rightSidebar.style.overflow = '';
+        rightSidebar.style.padding = '';
+        btn.innerHTML = '&#8250;';
+        requestAnimationFrame(() => positionRightBtn());
+      }
+    });
+
+    window.addEventListener('resize', positionRightBtn);
+  }
+});
+</script>

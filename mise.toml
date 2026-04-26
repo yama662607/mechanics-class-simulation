@@ -1,0 +1,28 @@
+# Tool versions for mise (https://mise.jdx.dev) and asdf (.tool-versions).
+#
+# If you have mise installed:   mise install     (then `uv sync && npm install`)
+# If you have asdf installed:   asdf install     (uses the .tool-versions file)
+#
+# If you want neither, ignore this file — `scripts/bootstrap.sh` / `.ps1`
+# will install the same tools via your OS package manager.
+
+[tools]
+python = "3.12"
+node = "20"
+uv = "latest"
+just = "latest"
+
+# IMPORTANT: Quarto is NOT managed by mise here.
+# mise has no first-party Quarto plugin, so install Quarto separately:
+#   brew install --cask quarto                 (macOS)
+#   sudo apt install quarto / sudo dnf install quarto  (Linux distro packages)
+#   .deb / .rpm / .msi  → https://quarto.org/docs/get-started/
+#   winget install Posit.Quarto                (Windows)
+# If you want mise to manage Quarto too, see the community plugin:
+#   https://github.com/jdx/mise-quarto
+# and uncomment:
+# quarto = "latest"
+
+[env]
+# Help Quarto find the project's Python interpreter.
+QUARTO_PYTHON = "{{config_root}}/.venv/bin/python"

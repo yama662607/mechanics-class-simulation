@@ -1,9 +1,13 @@
 {
-  "name": "mechanics-class-simulation",
+  "name": "quarto-textbook-template",
   "version": "0.1.0",
-  "description": "Quarto notes and simulations for Fundamentals of Physics A",
-  "license": "MIT",
+  "description": "A Quarto-based template for textbook / lecture-note sites.",
   "type": "commonjs",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "test": "echo \"No npm tests — use 'just test' instead.\""
+  },
   "dependencies": {
     "dompurify": "^3.3.1",
     "jsdom": "^27.3.0",

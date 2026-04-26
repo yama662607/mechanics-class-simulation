@@ -1,28 +1,98 @@
 [project]
-name = "mechanics-class-simulation"
+name = "quarto-textbook-template"
 version = "0.1.0"
-description = "Quarto notes and simulations for Fundamentals of Physics A (Mechanics)."
-authors = [
-    { name = "Daisuke Yamashiki" }
-]
+description = "A Quarto-based template for building textbook / lecture-note sites with PDF ingestion, OCR, Mermaid diagrams, and GitHub Pages deployment."
+authors = [{ name = "Your Name" }]
 readme = "README.md"
 requires-python = ">=3.12"
+license = { text = "MIT" }
+
+# ---------------------------------------------------------------------------
+# Base dependencies
+# ---------------------------------------------------------------------------
+# Kept intentionally minimal — every default `uv sync` should stay fast.
+# `pymupdf` is required because the core extract_pdf.py and render_pdf.py
+# helpers rely on it. Heavier optional features live under [project.optional-dependencies].
 dependencies = [
-    "htmltools>=0.6.0",
-    "ipykernel>=7.2.0",
-    "jupyter>=1.1.1",
-    "matplotlib>=3.10.9",
-    "numpy>=2.4.4",
-    "pymupdf>=1.25.0",
+    "pymupdf>=1.27.0",
     "watchdog>=6.0.0",
 ]
 
+# ---------------------------------------------------------------------------
+# Optional features (extras) — installed by end users:  uv sync --extra <name>
+# ---------------------------------------------------------------------------
+# Use extras for things that **must** ship as part of the package surface so
+# downstream consumers (or your CI) can opt in. PEP 631 / PEP 735 compliant.
+[project.optional-dependencies]
+
+# OCR backend for image-only PDFs. Pulls torch — large download.
+ocr = [
+    "easyocr>=1.7.2",
+]
+
+# Math-formula extraction (LaTeX from PDF page images). Pulls heavy ML deps.
+math = [
+    "pix2text>=1.1.6",
+    "pillow>=12.0.0",
+]
+
+# Notebook / scientific stack for embedded computations.
+notebook = [
+    "ipykernel>=7.1.0",
+    "jupyter>=1.1.1",
+    "matplotlib>=3.10.0",
+    "numpy>=2.3.0",
+    "scipy>=1.16.0",
+]
+
+# Quantum computing examples (Qiskit). Optional.
+quantum = [
+    "qiskit>=2.2.3",
+    "qiskit-aer>=0.17.2",
+]
+
+# Interactive ShinyLive (legacy — Quarto Live + Pyodide is the new default;
+# see quarto/textbook/_03_interactive_demo.qmd). Keep this group for users
+# who want server-rendered Shiny prototypes during authoring.
+shiny = [
+    "htmltools>=0.6.0",
+    "shiny>=1.6.0",
+    "shinylive>=0.8.6",
+]
+
+# Visualization extras.
+viz = [
+    "plotly>=6.5.0",
+    "pyvis>=0.3.2",
+]
+
+# Debugging convenience.
+debug = [
+    "icecream>=2.1.8",
+]
+
+# ---------------------------------------------------------------------------
+# Dependency groups (PEP 735) — internal-only; not published as extras.
+# Installed automatically by `uv sync` (the `dev` group is default).
+# Pick them explicitly via:  uv sync --group docs
+# ---------------------------------------------------------------------------
 [dependency-groups]
 dev = [
     "mypy>=1.19.0",
     "pylatexenc>=2.10",
     "pytest>=9.0.2",
     "ruff>=0.14.10",
+    # Cross-platform process / port management used by tools/kill_quarto_process.py
+    # Pure dev convenience — runtime falls back to lsof / netstat when missing.
+    "psutil>=6.0.0",
+]
+
+# Documentation toolchain helpers (reserved — extend as needed).
+docs = []
+
+# Test-only extras kept apart from `dev` for fast CI test jobs.
+test = [
+    "pytest>=9.0.2",
 ]
 
 [tool.mypy]
@@ -31,4 +101,12 @@ ignore_missing_imports = true
 check_untyped_defs = true
 
 [tool.ruff]
-line-length = 88
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["E501"]  # line length handled by formatter
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

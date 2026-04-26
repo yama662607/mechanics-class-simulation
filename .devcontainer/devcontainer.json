@@ -1,0 +1,55 @@
+{
+  // NOTE for template users:
+  //   - Rename "name" to your project's title.
+  //   - Initial container build pulls Python / Node / Quarto / just / uv via
+  //     prebuilt features; expect 5–10 minutes the first time.
+  //   - The `uv` feature uses a community provider (va-h). If you prefer to
+  //     install uv inside postCreateCommand instead, drop that feature line
+  //     and add: `curl -LsSf https://astral.sh/uv/install.sh | sh && ...`
+  "name": "Quarto Textbook Template",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.12"
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20"
+    },
+    "ghcr.io/devcontainers-extra/features/quarto-cli:1": {},
+    "ghcr.io/devcontainers-extra/features/just:1": {},
+    "ghcr.io/va-h/devcontainers-features/uv:1": {}
+  },
+
+  "postCreateCommand": "uv sync && npm install",
+  "postAttachCommand": "echo '\\n Run: just docs   (preview at http://localhost:4312)\\n'",
+
+  "forwardPorts": [4312],
+  "portsAttributes": {
+    "4312": {
+      "label": "Quarto preview",
+      "onAutoForward": "notify"
+    }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "quarto.quarto",
+        "ms-python.python",
+        "charliermarsh.ruff",
+        "skellock.just"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "${containerWorkspaceFolder}/.venv/bin/python",
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff"
+        }
+      }
+    }
+  },
+
+  "remoteEnv": {
+    "QUARTO_PYTHON": "${containerWorkspaceFolder}/.venv/bin/python"
+  }
+}

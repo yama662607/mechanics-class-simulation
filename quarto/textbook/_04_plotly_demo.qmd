@@ -1,0 +1,101 @@
+# 第4章 Plotly によるインタラクティブグラフ {#sec-plotly-demo}
+
+[Plotly](https://plotly.com/python/) は **SVG / Canvas ベース** のインタラクティブ
+グラフライブラリです。matplotlib と比べて以下の特徴があります:
+
+- グラフがブラウザでネイティブに動く (拡大・パン・hover ツールチップが標準)
+- 日本語が **追加フォント設定なし** で表示できる (ブラウザの OS フォントを使う)
+- アニメーションが `animation_frame` 1 行で書ける
+
+Pyodide で必要なパッケージ (`plotly`, `nbformat`, `jsonschema`) は親 `textbook.qmd`
+の YAML `pyodide.packages` で宣言してあり、Quarto Live が Pyodide 起動時に
+直列インストールします。これにより各 `{pyodide}` セルは `await` を持たずに済み、
+Jupyter / VSCode にコピーした際もそのまま動きます。
+
+## 静的グラフ: 3D サーフェス
+
+```{pyodide}
+#| autorun: true
+import numpy as np
+import plotly.graph_objects as go
+
+x = np.linspace(-5, 5, 80)
+y = np.linspace(-5, 5, 80)
+X, Y = np.meshgrid(x, y)
+R = np.sqrt(X**2 + Y**2)
+Z = np.sin(R) / (R + 1e-9)
+
+fig = go.Figure(data=[go.Surface(z=Z, x=x, y=y, colorscale="Viridis")])
+fig.update_layout(
+    title="z = sin(r) / r  (sinc 関数の 3D 表示)",
+    scene=dict(xaxis_title="x", yaxis_title="y", zaxis_title="z"),
+    height=500,
+    margin=dict(l=0, r=0, t=40, b=0),
+)
+fig
+```
+
+ドラッグで回転、スクロールでズーム、右上のツールバーで PNG 保存ができます。
+
+## アニメーション: 減衰振動の時間発展
+
+`animation_frame` を渡すと、Plotly が **再生・一時停止・スライダー UI を自動生成** します。
+matplotlib の `FuncAnimation` よりさらに記述量が少なく、ホバーで値を読めるのが利点。
+
+```{pyodide}
+#| autorun: true
+import numpy as np
+import pandas as pd
+import plotly.express as px
+
+# 減衰振動: y(t) = exp(-γ t) cos(ω t)
+n_frames = 60
+t_axis = np.linspace(0, 4 * np.pi, 400)
+gamma, omega = 0.3, 2.0
+
+records = []
+for i in range(n_frames):
+    t_max = (i + 1) / n_frames * 4 * np.pi
+    mask = t_axis <= t_max
+    for tt, yy in zip(t_axis[mask], np.exp(-gamma * t_axis[mask]) * np.cos(omega * t_axis[mask])):
+        records.append({"frame": i, "t": tt, "y": yy})
+
+df = pd.DataFrame(records)
+
+fig = px.line(
+    df,
+    x="t",
+    y="y",
+    animation_frame="frame",
+    range_x=[0, 4 * np.pi],
+    range_y=[-1.1, 1.1],
+    labels={"t": "時間 t", "y": "変位 y(t)"},
+    title="減衰振動 y(t) = e^{-γt} cos(ωt)  (γ=0.3, ω=2.0)",
+)
+fig.update_layout(height=420, margin=dict(l=40, r=10, t=50, b=40))
+fig
+```
+
+下の **▶ 再生ボタン** を押すと、波形が時間とともに伸びていきます。スライダーを直接
+ドラッグして任意のフレームに飛ぶこともできます。
+
+## このサンプルの仕組み
+
+| 要素 | 役割 |
+| --- | --- |
+| `await micropip.install("plotly")` | Pyodide で plotly を動的取得 (Jupyter では try 節で skip) |
+| `HTML(fig.to_html(include_plotlyjs="cdn"))` | Pyodide / Jupyter / VSCode のどこでも図を HTML として埋め込み (`fig.show()` は Pyodide で renderer 検出に失敗するため避ける) |
+| `animation_frame="frame"` | フレームごとの DataFrame 行を Plotly が拾って自動でスライダー UI を生成 |
+
+## matplotlib と Plotly の使い分け
+
+| | matplotlib (`FuncAnimation`) | Plotly |
+| --- | --- | --- |
+| **コード量** | やや多い (figure / line / update 関数) | 少ない (`animation_frame` 1 引数) |
+| **フォント設定** | 日本語は `addfont` 必須 | OS フォント (追加設定不要) |
+| **インタラクション** | コマ送り / 再生 / 停止 | コマ送り / 再生 / 停止 / **hover / pan / zoom** |
+| **出力形式** | PNG (静止画) または JS プレイヤー | SVG / WebGL ベースの interactive plot |
+| **論文用** | ベクター PDF が綺麗、印刷向き | 印刷用 export はやや弱い |
+| **データ次元** | 2D が中心 | 2D / 3D / 地理 / dashboard も得意 |
+
+紙に載せる図は matplotlib、ウェブで読者が触る図は Plotly、と使い分けるのが標準です。

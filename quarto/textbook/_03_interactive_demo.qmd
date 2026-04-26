@@ -1,0 +1,105 @@
+# 第3章 インタラクティブ・シミュレーション (Quarto Live サンプル) {#sec-interactive-demo}
+
+このページは [Quarto Live](https://r-wasm.github.io/quarto-live/) を使った
+**ブラウザ内 Python (Pyodide) シミュレーション** のサンプルです。サーバー不要、
+読者がスライダーを動かすたびにブラウザだけで再計算 → 再描画されます。
+
+コード自体は素の `numpy` + `matplotlib` で書かれているので、Jupyter Notebook に
+そのままコピーしても動きます。
+
+```{ojs}
+//| echo: false
+viewof amplitude = Inputs.range([0.1, 2.0], {step: 0.1, label: tex`\text{振幅 } A`,         value: 1.0})
+viewof frequency = Inputs.range([0.5, 5.0], {step: 0.1, label: tex`\text{周波数 } f \text{ (Hz)}`, value: 1.0})
+```
+
+スライダーを動かしてグラフが再計算されることを確認したあと、下のアニメーションでは
+位相 `φ` を時間で進めて波が動く様子を `matplotlib.animation.FuncAnimation` で表示します。
+このコードは **Jupyter / VSCode にそのままコピーしても同じように動きます** (Pyodide 固有の
+仕掛けは日本語フォントのロード部分のみ)。
+
+```{pyodide}
+#| autorun: true
+#| input: ["amplitude", "frequency"]
+# --- 日本語フォント (Noto Sans JP) のロード — Pyodide のとき限定 ---
+# Jupyter / VSCode で動かすときはこのブロックは不要 (OS の日本語フォントが使える)。
+import os
+import warnings
+import matplotlib
+from matplotlib import font_manager
+
+warnings.simplefilter("ignore")
+
+try:
+    from pyodide.http import pyfetch  # Pyodide でだけ存在
+    if not os.path.exists("/tmp/NotoSansJP.ttf"):
+        resp = await pyfetch("../../../assets/fonts/NotoSansJP-Regular.ttf")
+        with open("/tmp/NotoSansJP.ttf", "wb") as f:
+            f.write(await resp.bytes())
+    font_manager.fontManager.addfont("/tmp/NotoSansJP.ttf")
+    matplotlib.rcParams["font.family"] = "Noto Sans JP"
+except ImportError:
+    pass  # Pyodide ではないので OS のフォントに任せる
+matplotlib.rcParams["axes.unicode_minus"] = False
+
+# --- ここから先は素の Python — Jupyter / VSCode にコピー可能 ---
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+from IPython.display import HTML
+
+t = np.linspace(0, 2.0, 500)
+n_frames = 60
+
+fig, ax = plt.subplots(figsize=(7, 3.5))
+(line,) = ax.plot([], [], lw=2)
+ax.set_xlim(0, 2.0)
+ax.set_ylim(-2.2, 2.2)
+ax.set_xlabel("時間 $t$ (s)")
+ax.set_ylabel("振幅 $y$")
+ax.grid(True, linestyle="--", alpha=0.5)
+title = ax.set_title("")
+
+def update(i):
+    phase = 2 * np.pi * i / n_frames
+    y = amplitude * np.sin(2 * np.pi * frequency * t + phase)
+    line.set_data(t, y)
+    title.set_text(f"$y = {amplitude:.1f}\\sin(2\\pi\\cdot{frequency:.1f}t + {phase:.2f})$")
+    return line, title
+
+ani = FuncAnimation(fig, update, frames=n_frames, interval=50, blit=False)
+plt.close(fig)  # 静止画 (最終フレーム) が二重表示されるのを防ぐ
+HTML(ani.to_jshtml())
+```
+
+## このサンプルの仕組み
+
+| 要素 | 役割 |
+| --- | --- |
+| `filters: [r-wasm/live]` (YAML) | この qmd で `{ojs}` / `{pyodide}` を有効化 |
+| `{ojs}` ブロック | `Inputs.range(...)` でスライダー UI を生成 |
+| `{pyodide}` ブロック | ブラウザ内 Python で計算と描画 |
+| `#| autorun: true` | ページ表示時に自動実行 |
+| `#| input: ["amplitude", ...]` | スライダー値を Python 変数として受け取り、変更時に再実行 |
+| 日本語フォントブロック | Pyodide のときだけ `pyfetch` で TTF をロード、それ以外は OS フォントに任せる |
+| `FuncAnimation` + `to_jshtml()` | 標準 Python の方法でアニメーションを構築 → JS プレイヤーとして埋め込み |
+
+## なぜスライダーでアニメーションさせないのか
+
+OJS のループでスライダーを高速更新して `{pyodide}` を毎フレーム再実行する方法は **避けています**:
+
+- Pyodide の matplotlib 再描画 (>100ms / frame) が間隔に追いつかず描画が固まる
+- Quarto Live 専用の仕掛け (`viewof.dispatchEvent` など) になり、Jupyter / VSCode に
+  コードをコピーしたときに動かない
+
+**`FuncAnimation` + `to_jshtml()`** はフレームを Python 側で全部計算してから 1 つの
+インタラクティブ HTML プレイヤーとして書き出すので、上記の問題が両方解決します。
+コードは Jupyter / VSCode でもそのまま動きます (Notebook なら最終行 `HTML(ani.to_jshtml())` がそのまま表示される)。
+
+## 新しい章を作るときのコピペ手順
+
+1. このファイル (`_03_interactive_demo.qmd`) と同じパターンの新しい qmd を作る
+2. YAML に `filters: [r-wasm/live]` を含める (パーシャル `_*.qmd` ならスキップ可。親の `textbook.qmd` 側で指定)
+3. 日本語フォントブロック (`try: pyfetch ...`) は描画セルの先頭に置く — 順序が保証される
+4. `pyfetch` の URL は **`../../../assets/fonts/...` で固定** (qmd の階層に合わせて変えない)
+5. アニメーションは `FuncAnimation` で組み、最終行で `HTML(ani.to_jshtml())` を返す

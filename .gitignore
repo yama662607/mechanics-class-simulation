@@ -1,23 +1,40 @@
-# Python-generated files
+# =============================================================================
+# Python
+# =============================================================================
 __pycache__/
 *.py[oc]
 build/
 dist/
 wheels/
 *.egg-info
-
-# Virtual environments and dependency directories
 .venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# =============================================================================
+# Node
+# =============================================================================
 node_modules/
 
-# Quarto-generated files
-_output/
-quarto/_output/
-quarto/_freeze/
+# =============================================================================
+# Quarto
+# =============================================================================
+# Build output (output-dir = _book per Quarto official recommendation)
+quarto/_book/
 quarto/.quarto/
+.quarto/
 quarto/**/*.html
-!quarto/templates/**/*.html
 quarto/**/*_files/
+!quarto/templates/**/*.html
+
+# NOTE: quarto/_freeze/ is intentionally NOT ignored.
+# Commit it so CI does not re-execute Python/R compute blocks on every push.
+# (Quarto official guidance: https://quarto.org/docs/projects/code-execution.html#freeze)
+
+# =============================================================================
+# LaTeX build artifacts
+# =============================================================================
 quarto/*.aux
 quarto/*.log
 quarto/*.tex
@@ -25,34 +42,39 @@ quarto/*.tex
 quarto/*.toc
 quarto/*.pdf
 
-# Local/private material
-.data/
-quarto/assets/raw/
-quarto/assets/pdf/lectures/
-quarto/assets/images/lectures/
-!quarto/assets/raw/
-!quarto/assets/raw/lectures/
-!quarto/assets/raw/lectures/.gitkeep
-!quarto/assets/pdf/
-!quarto/assets/pdf/lectures/
-!quarto/assets/pdf/lectures/.gitkeep
-!quarto/assets/images/
-!quarto/assets/images/lectures/
-!quarto/assets/images/lectures/.gitkeep
+# =============================================================================
+# Research / private source material (raw lecture PDFs, scans, etc.)
+# Keep .gitkeep placeholders so directories are tracked.
+# =============================================================================
+quarto/assets/raw/*
+quarto/assets/private/*
+!quarto/assets/raw/.gitkeep
+!quarto/assets/private/.gitkeep
 
-# Intake raw materials (PDFs, images, OCR outputs)
 research/inbox/*/
+research/inbox/*
+!research/inbox/.gitkeep
 !research/inbox/manifest.yml
 
-# Tool caches and OS files
-.pytest_cache/
-.ruff_cache/
-.mypy_cache/
+# =============================================================================
+# Tool caches
+# =============================================================================
 tools/.validation_cache.json
-.DS_Store
 
-# Machine-local agent/tool config
+# =============================================================================
+# OS / Editor
+# =============================================================================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.data/
+.playwright-mcp/
+
+# =============================================================================
+# AI agent local config
+# =============================================================================
 .codex/
 .gemini/
-.vscode/
-.playwright-mcp/
+.claude/
+CLAUDE.local.md

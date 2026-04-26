@@ -1,42 +1,58 @@
 project:
   type: book
-  output-dir: _output
+  # Quarto 公式推奨は _book (https://quarto.org/docs/books/)
+  output-dir: _book
   resources:
     - "assets/pdf/**/*.pdf"
-    - "assets/images/**/*"
+    - "assets/images/**/*.png"
+    - "assets/images/**/*.jpg"
+    # Quarto Live (Pyodide) 用 — Noto Sans JP フォントを matplotlib に
+    # 届けるために配布対象に含める。詳細は AGENTS.md の「対話シミュレーション」節。
     - "assets/fonts/**/*"
   preview:
     watch-inputs: true
 
 book:
-  title: "物理学基礎論A (力学) 補足ノート"
-  author: "Daisuke Yamashiki"
+  title: "Your Textbook Title"
+  author: "Your Name"
   date: last-modified
+
+  # GitHub 連携 (utilizes book.repo-url + repo-actions for "Edit" / "Issue" links)
+  # テンプレ利用時は your-org/your-repo を書き換えてください。
+  repo-url: https://github.com/your-org/your-repo
+  repo-branch: main
+  repo-actions: [edit, issue]
+
+  # PDF ダウンロードボタン (uv sync --extra notebook 等で計算ブロックを使う場合)
+  # downloads: [pdf]
+
+  # 引用情報 (Cite this book → BibTeX 出力)
+  # citation: true
+
+  # 検索を有効化
+  search: true
+
   navbar:
     left:
       - text: "ホーム"
         href: index.qmd
   sidebar:
     style: "docked"
-    search: true
     collapse-level: 4
   chapters:
     - index.qmd
-    - part: "理論体系ノート"
+    - part: "本編"
       chapters:
-        - theory/textbook.qmd
-    - part: "シミュレーション"
-      chapters:
-        - theory/topics/simulations/sample.qmd
-    - part: "演習問題"
-      chapters:
-        - theory/topics/exercises/polar_kinematics.qmd
+        - textbook/textbook.qmd
   page-navigation: true
   page-footer:
-    left: "物理学基礎論A (力学) 学習ノート"
+    left: "© Your Name"
     right:
       - text: "ホーム"
         href: index.qmd
+
+# 文献ファイル (任意 — quarto/templates/references.bib をデフォルトで参照)
+# bibliography: templates/references.bib
 
 number-sections: false
 crossref:
@@ -52,7 +68,7 @@ format:
   html:
     theme: cosmo
     css: templates/styles.css
-    include-in-header: templates/cleanup-shinylive-sw.html
+    include-in-header: templates/plotly-loader.html
     include-after-body: templates/sidebar-toggle.html
     toc: true
     toc-depth: 3
@@ -68,7 +84,7 @@ format:
     grid:
       body-width: 1100px
       margin-width: 250px
-      sidebar-width: 220px
+      sidebar-width: 250px
       gutter-width: 1.5rem
     html-math-method: katex
   pdf:

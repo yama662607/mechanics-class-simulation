@@ -1,35 +1,28 @@
 ---
-subtitle: "物理学基礎論A (力学) の講義を起点にしたシミュレーション学習ノート"
-page-layout: full
-toc: true
-number-sections: false
+title: "Your Textbook Title"
+subtitle: "サブタイトルやコース名"
+author: "Your Name"
+date: last-modified
 ---
 
-# 目次 {.unnumbered}
+# はじめに
 
-::: {.callout-note appearance="simple"}
-京都大学の「物理学基礎論A」の講義を起点に、力学の概念・定義・計算・シミュレーションを自分の体系として整理するための Quarto ノートです。
-講義資料や板書写真は素材として保存し、本文はトピックごとに再構成・シミュレーションコードを交えて整理します。
+この教科書サイトは [quarto-textbook-template](https://github.com/yama662607/quarto-textbook-template) を雛形に作成されています。
 
-:::
+## このサイトの構成
 
-## 理論体系ロードマップ
+- **本編**: 章ごとに分割された教科書本体
+- **演習・サポート** (任意): 補助資料
+- **資料 PDF** (任意): 元教科書や講義スライドへのリンク
 
-| 項目名 | 素材 | ノート |
-| :--- | :--: | :--: |
-| **導入と記法** | raw / PDF / images | [理論体系ノート](theory/textbook.qmd#intro-notation) |
-| **質点の力学** | raw / PDF / images | [理論体系ノート](theory/textbook.qmd#particle-mechanics) |
-| **剛体の力学** | raw / PDF / images | [理論体系ノート](theory/textbook.qmd#rigid-body) |
-| **解析力学** | raw / PDF / images | [理論体系ノート](theory/textbook.qmd#analytical-mechanics) |
+## 利用方法
 
-## 素材置き場
+ローカルで編集・プレビューする場合は以下を実行:
 
-- `quarto/assets/raw/lectures/`: その日の講義資料、未整理の写真、手書きノート。
-- `quarto/assets/pdf/lectures/`: qmd から参照する整理済み PDF。
-- `quarto/assets/images/lectures/`: qmd から参照する整理済み画像。
+```bash
+just setup     # 初回のみ
+just docs      # http://localhost:4312 でプレビュー
+just check     # 公開前の品質チェック
+```
 
-## 執筆ルール
-
-- 本文は講義回単位ではなく、理論トピック単位で整理します。
-- シミュレーションコード（Python 等）を積極的に取り入れ、理論の視覚的理解を目指します。
-- 定義、命題、証明、直感、計算例を分け、講義で曖昧だった箇所を明示します。
+詳しくはリポジトリ root の `README.md` を参照してください。

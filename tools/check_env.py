@@ -5,60 +5,75 @@ from pathlib import Path
 
 sys.path.append(str(Path(__file__).parent / "utils"))
 
-from find_quarto import find_quarto
+from find_quarto import find_quarto  # noqa: E402
 
 
-def check_command(cmd: str, name: str) -> bool:
+def check_command(cmd, name):
     path = shutil.which(cmd)
-    if not path:
-        print(f"{name:10} NOT FOUND")
+    if path:
+        try:
+            version = (
+                subprocess.check_output([cmd, "--version"], stderr=subprocess.STDOUT)
+                .decode()
+                .strip()
+            )
+            print(f" {name:10} Found: {path}")
+            print(f"   Version: {version.splitlines()[0]}")
+            return True
+        except Exception:
+            print(f" {name:10} Found at {path}, but failed to get version.")
+            return True
+    else:
+        print(f" {name:10} NOT FOUND. Please install it.")
         return False
 
-    try:
-        version = subprocess.check_output(
-            [cmd, "--version"],
-            stderr=subprocess.STDOUT,
-            text=True,
-        ).strip()
-        print(f"{name:10} Found: {path}")
-        print(f"           Version: {version.splitlines()[0]}")
-    except Exception:
-        print(f"{name:10} Found: {path}")
 
-    return True
-
-
-def check_quarto() -> bool:
+def check_quarto():
+    """Check for Quarto using the enhanced finder (supports fallback paths)."""
     path = find_quarto()
-    if not path:
-        print("Quarto    NOT FOUND")
+    if path:
+        try:
+            version = (
+                subprocess.check_output([path, "--version"], stderr=subprocess.STDOUT)
+                .decode()
+                .strip()
+            )
+            print(f" {'Quarto':10} Found: {path}")
+            print(f"   Version: {version.splitlines()[0]}")
+            return True
+        except Exception:
+            print(f" {'Quarto':10} Found at {path}, but failed to get version.")
+            return True
+    else:
+        print(f" {'Quarto':10} NOT FOUND. Please install it.")
         return False
 
-    try:
-        version = subprocess.check_output(
-            [path, "--version"],
-            stderr=subprocess.STDOUT,
-            text=True,
-        ).strip()
-        print(f"Quarto    Found: {path}")
-        print(f"           Version: {version.splitlines()[0]}")
-    except Exception:
-        print(f"Quarto    Found: {path}")
 
-    return True
+def main():
+    print(" Checking development environment...\n")
 
-
-def main() -> None:
-    print("Checking development environment...\n")
     results = [
         check_command("uv", "uv"),
         check_command("just", "just"),
         check_quarto(),
-        check_command("npm", "npm"),
+        check_command("npm", "Node/npm"),
     ]
 
-    print(f"\nPython: {sys.executable}")
-    if not all(results):
+    print("\n--- Python Environment ---")
+    print(f"Interpretor: {sys.executable}")
+
+    if all(results):
+        print("\n All systems go! You are ready to develop.")
+        sys.exit(0)
+    else:
+        print(
+            "\n Some dependencies are missing. Please refer to README.md for installation instructions."
+        )
+        if sys.platform == "win32":
+            print("\n WINDOWS TIP:")
+            print("   If you just installed these tools, your terminal might not see them yet.")
+            print("   Try restarting your terminal (PowerShell/Command Prompt).")
+            print("   (Winget and installs often require a fresh session to update PATH)")
         sys.exit(1)
 
 

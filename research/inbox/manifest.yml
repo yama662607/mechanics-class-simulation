@@ -1,9 +1,12 @@
-# Lecture material intake manifest.
+# research/inbox/ — 取り込み待ち素材の置き場
 #
-# Record source files here before moving their contents into theory topics.
-# Keep private lecture PDFs/images out of git; track only the metadata needed
-# to recover where each idea came from.
+# 推奨: 1 つの素材セットごとに `YYYY-MM-DD_short-topic/` ディレクトリを作成。
+# 中身 (写真・PDF・スキャン等) は .gitignore で除外され、Git 追跡対象外。
 #
-# status: pending → in_progress → done
+# このファイル (manifest.yml) は素材の出所メモを残すために任意で使用。
 
-materials: []
+# 例:
+# - id: 2026-01-15_chapter3-photos
+#   source: 講義スライド
+#   notes: 写真 12 枚、第3章対応
+#   processed: false
