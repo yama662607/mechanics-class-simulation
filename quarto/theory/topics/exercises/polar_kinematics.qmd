@@ -1,8 +1,7 @@
 ---
 title: "演習：極座標系における速度と加速度"
-format: html
 filters:
-  - shinylive
+  - r-wasm/live
 ---
 
 ## 問題
@@ -18,76 +17,81 @@ filters:
 
 螺旋上の質点の動きをイメージするためのシミュレーションです。スライダーを動かして、パラメータ $k$ が軌道にどう影響するか確認してください。
 
-```{shinylive-python}
-#| standalone: true
-#| components: [editor, viewer]
+```{ojs}
+//| echo: false
+viewof k     = Inputs.range([-0.5, 0.5], {step: 0.05, label: tex`\text{パラメータ } k`,  value: 0.15})
+viewof omega = Inputs.range([0.5,  5.0], {step: 0.1,  label: tex`\text{角速度 } \omega`,       value: 1.5})
+viewof t     = Inputs.range([0.0,  5.0], {step: 0.05, label: tex`\text{時間 } t \text{ (s)}`,     value: 0.0})
+viewof animate = Inputs.toggle({label: "アニメーション再生", value: false})
 
+// アニメーション更新ロジック
+update_t = {
+  if (!animate) return;
+  while (animate) {
+    let next_t = t + 0.05;
+    if (next_t > 5.0) next_t = 0.0;
+    viewof t.value = next_t;
+    viewof t.dispatchEvent(new CustomEvent("input"));
+    await Promises.delay(50);
+  }
+}
+```
+
+```{pyodide}
+#| autorun: true
+#| input: ["k", "omega", "t"]
+# --- 日本語フォント (Noto Sans JP) のロード — 初回のみ ---
+import os
+import warnings
+import matplotlib
+from matplotlib import font_manager
+from pyodide.http import pyfetch
+
+warnings.simplefilter("ignore")  # font 登録前後の Glyph missing 警告を抑制
+
+if not os.path.exists("/tmp/NotoSansJP.ttf"):
+    resp = await pyfetch("../../../assets/fonts/NotoSansJP-Regular.ttf")
+    with open("/tmp/NotoSansJP.ttf", "wb") as f:
+        f.write(await resp.bytes())
+    font_manager.fontManager.addfont("/tmp/NotoSansJP.ttf")
+    matplotlib.rcParams["font.family"] = "Noto Sans JP"
+    matplotlib.rcParams["axes.unicode_minus"] = False
+
+# --- 描画ロジック ---
 import numpy as np
 import matplotlib.pyplot as plt
-from shiny import App, render, ui
 
-# --- UI（ユーザーインターフェース）の定義 ---
-app_ui = ui.page_fluid(
-    ui.layout_sidebar(
-        ui.sidebar(
-            ui.input_slider("k", "パラメータ k", -0.5, 0.5, 0.15, step=0.05),
-            ui.input_slider("omega", "角速度 ω", 0.5, 5.0, 1.5, step=0.1),
-            ui.input_slider("t", "時間 t (s)", 0.0, 5.0, 0.0, step=0.1, 
-                            animate=ui.AnimationOptions(interval=100, loop=True))
-        ),
-        ui.output_plot("spiral_plot"),
-    )
-)
+a = 1.0  # スケール係数
 
-# --- サーバー（計算ロジック）の定義 ---
-def server(input, output, session):
-    @render.plot(alt="等角螺旋のシミュレーション")
-    def spiral_plot():
-        k = input.k()
-        omega = input.omega()
-        t = input.t()
-        a = 1.0 # スケール係数
-        
-        # 軌跡を描画するための細かい角度配列
-        # 時間が進むにつれて角度の最大値が増え、軌道が伸びる
-        theta_max = omega * t
-        if theta_max == 0:
-            theta_max = 0.01 # 描画エラー回避
-            
-        theta_array = np.linspace(0, theta_max, 200)
-        
-        # 極座標 (r, theta) から直交座標 (x, y) への変換
-        r_array = a * np.exp(k * theta_array)
-        x_array = r_array * np.cos(theta_array)
-        y_array = r_array * np.sin(theta_array)
-        
-        # 現在時刻の質点の位置
-        x_current = x_array[-1]
-        y_current = y_array[-1]
-        
-        # --- 描画処理 ---
-        fig, ax = plt.subplots(figsize=(6, 6))
-        
-        # 最大半径を計算してグラフの描画枠を固定する
-        max_r = max(a, a * np.exp(k * omega * 5.0))
-        ax.set_xlim(-max_r*1.1, max_r*1.1)
-        ax.set_ylim(-max_r*1.1, max_r*1.1)
-        ax.set_aspect('equal')
-        ax.grid(True, linestyle='--', alpha=0.7)
-        ax.set_title(f"等角螺旋の軌道 (時間 t = {t:.1f})")
-        
-        # 軌跡の描画
-        ax.plot(x_array, y_array, 'k-', alpha=0.5, label='軌跡')
-        # 動径ベクトルの描画
-        ax.plot([0, x_current], [0, y_current], 'b-', lw=1.5, label='動径ベクトル $\\vec{r}$')
-        # 質点の描画
-        ax.plot(x_current, y_current, 'ro', markersize=8)
-        
-        ax.legend(loc='upper left')
-        return fig
+# 時間が進むにつれて角度の最大値が増え、軌道が伸びる
+theta_max = max(omega * t, 0.01)  # 0 除算・空配列を回避
+theta_array = np.linspace(0, theta_max, 200)
 
-# アプリの起動
-app = App(app_ui, server)
+# 極座標 (r, θ) → 直交座標 (x, y)
+r_array = a * np.exp(k * theta_array)
+x_array = r_array * np.cos(theta_array)
+y_array = r_array * np.sin(theta_array)
+
+# 現在時刻の質点の位置
+x_current, y_current = x_array[-1], y_array[-1]
+
+# 描画枠を t=5 s での最大半径に固定する（スライダー操作でサイズが変わらないように）
+max_r = max(a, a * np.exp(abs(k) * omega * 5.0))
+
+fig, ax = plt.subplots(figsize=(6, 6))
+ax.set_xlim(-max_r * 1.1, max_r * 1.1)
+ax.set_ylim(-max_r * 1.1, max_r * 1.1)
+ax.set_aspect('equal')
+ax.grid(True, linestyle='--', alpha=0.7)
+ax.set_title(f"等角螺旋の軌道 (t = {t:.1f} s, k = {k:.2f}, ω = {omega:.1f})")
+
+ax.plot(x_array, y_array, 'k-', alpha=0.5, label='軌跡')
+ax.plot([0, x_current], [0, y_current], 'b-', lw=1.5, label='動径ベクトル $\\vec{r}$')
+ax.plot(x_current, y_current, 'ro', markersize=8, label='質点')
+
+ax.legend(loc='upper left')
+plt.tight_layout()
+plt.show()
 ```
 
 ---

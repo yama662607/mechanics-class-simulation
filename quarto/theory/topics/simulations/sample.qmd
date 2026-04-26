@@ -1,75 +1,81 @@
 ---
 title: "単振り子のシミュレーション"
-format: html
 filters:
-  - shinylive
+  - r-wasm/live
 ---
 
-このページでは、**ShinyLive** を用いたPythonシミュレーションコードを解説します。
-以下のコードは、サーバーを立てることなく完全にブラウザ上のWebAssembly（Pyodide）で実行されています。コードの数式やパラメータをその場で書き換えて再実行することも可能です。
+このページでは、**quarto-live**（Pyodide）を用いたPythonシミュレーションコードを解説します。サーバーを立てることなく、完全にブラウザ上のWebAssembly（Pyodide）で実行されます。コードは純粋な NumPy + Matplotlib で書かれており、Jupyter Notebook にそのままコピーして実行することもできます。
 
 ## インタラクティブ・シミュレーション
 
-スライダーを動かしたり、時間スライダーの横にある「再生ボタン」を押してアニメーションを確認してください。
+スライダーを動かして、各パラメータが振り子の動きにどう影響するか確認してください。
 
-```{shinylive-python}
-#| standalone: true
-#| components: [editor, viewer]
+```{ojs}
+//| echo: false
+viewof length        = Inputs.range([0.1, 2.0], {step: 0.1,  label: tex`\text{振り子の長さ } L \text{ (m)}`,        value: 1.0})
+viewof initial_angle = Inputs.range([-1.57, 1.57], {step: 0.1, label: tex`\text{初期角度 } \theta_0 \text{ (rad)}`,  value: 0.785})
+viewof gravity       = Inputs.range([1.0, 20.0], {step: 0.1,  label: tex`\text{重力加速度 } g \text{ (m/s²)}`,      value: 9.8})
+viewof time          = Inputs.range([0.0, 10.0], {step: 0.1,  label: tex`\text{時間 } t \text{ (s)}`,              value: 0.0})
+viewof animate       = Inputs.toggle({label: "アニメーション再生", value: false})
 
+// アニメーション更新ロジック
+update_time = {
+  if (!animate) return;
+  while (animate) {
+    let next_t = time + 0.1;
+    if (next_t > 10.0) next_t = 0.0;
+    viewof time.value = next_t;
+    viewof time.dispatchEvent(new CustomEvent("input"));
+    await Promises.delay(100);
+  }
+}
+```
+
+```{pyodide}
+#| autorun: true
+#| input: ["length", "initial_angle", "gravity", "time"]
+# --- 日本語フォント (Noto Sans JP) のロード — 初回のみ ---
+import os
+import warnings
+import matplotlib
+from matplotlib import font_manager
+from pyodide.http import pyfetch
+
+warnings.simplefilter("ignore")  # font 登録前後の Glyph missing 警告を抑制
+
+if not os.path.exists("/tmp/NotoSansJP.ttf"):
+    resp = await pyfetch("../../../assets/fonts/NotoSansJP-Regular.ttf")
+    with open("/tmp/NotoSansJP.ttf", "wb") as f:
+        f.write(await resp.bytes())
+    font_manager.fontManager.addfont("/tmp/NotoSansJP.ttf")
+    matplotlib.rcParams["font.family"] = "Noto Sans JP"
+    matplotlib.rcParams["axes.unicode_minus"] = False
+
+# --- 描画ロジック ---
 import numpy as np
 import matplotlib.pyplot as plt
-from shiny import App, render, ui
 
-# --- UI（ユーザーインターフェース）の定義 ---
-app_ui = ui.page_fluid(
-    ui.layout_sidebar(
-        ui.sidebar(
-            ui.input_slider("length", "振り子の長さ L (m)", 0.1, 2.0, 1.0, step=0.1),
-            ui.input_slider("initial_angle", "初期角度 θ0 (rad)", -np.pi/2, np.pi/2, np.pi/4, step=0.1),
-            ui.input_slider("gravity", "重力加速度 g (m/s²)", 1.0, 20.0, 9.8, step=0.1),
-            # アニメーション可能な時間スライダー
-            ui.input_slider("time", "時間 t (s)", 0.0, 10.0, 0.0, step=0.1, 
-                            animate=ui.AnimationOptions(interval=100, loop=True))
-        ),
-        ui.output_plot("pendulum_plot"),
-    )
-)
+# 単振動の角振動数と角度の計算 (小振動近似)
+omega = np.sqrt(gravity / length)             # 角振動数
+theta = initial_angle * np.cos(omega * time)  # 角度 θ(t)
 
-# --- サーバー（計算ロジック）の定義 ---
-def server(input, output, session):
-    @render.plot(alt="単振り子のシミュレーション")
-    def pendulum_plot():
-        # スライダーから入力値を取得
-        L = input.length()
-        g = input.gravity()
-        theta0 = input.initial_angle()
-        t = input.time()
-        
-        # 単振動の角振動数と角度の計算
-        omega = np.sqrt(g / L)
-        theta = theta0 * np.cos(omega * t)
-        
-        # (x, y) 座標へ変換（下向きを負とする）
-        x = L * np.sin(theta)
-        y = -L * np.cos(theta)
-        
-        # プロットの初期化
-        fig, ax = plt.subplots(figsize=(6, 6))
-        ax.set_xlim(-2.5, 2.5)
-        ax.set_ylim(-2.5, 0.5)
-        ax.set_aspect('equal')
-        ax.grid(True)
-        ax.set_title(f"時間 t = {t:.1f} s における単振り子の位置")
-        
-        # 支点、紐、おもりを描画
-        ax.plot(0, 0, 'ko', markersize=8)        # 支点
-        ax.plot([0, x], [0, y], 'k-', lw=2)      # 紐
-        ax.plot(x, y, 'ro', markersize=20)       # おもり
-        
-        return fig
+# 直交座標変換
+x = length * np.sin(theta)
+y = -length * np.cos(theta)  # 支点が原点、下向き負
 
-# アプリの起動
-app = App(app_ui, server)
+fig, ax = plt.subplots(figsize=(6, 6))
+ax.set_xlim(-2.5, 2.5)
+ax.set_ylim(-2.5, 0.5)
+ax.set_aspect("equal")
+ax.grid(True)
+ax.set_title(f"時間 t = {time:.1f} s における単振り子の位置")
+
+ax.plot(0, 0, "ko", markersize=8)        # 支点
+ax.plot([0, x], [0, y], "k-", lw=2)      # 糸
+ax.plot(x, y, "ro", markersize=20)       # おもり
+
+plt.tight_layout()
+plt.show()
 ```
 
 ## 理論的背景

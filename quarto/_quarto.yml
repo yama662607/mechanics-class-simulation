@@ -4,6 +4,7 @@ project:
   resources:
     - "assets/pdf/**/*.pdf"
     - "assets/images/**/*"
+    - "assets/fonts/**/*"
   preview:
     watch-inputs: true
 

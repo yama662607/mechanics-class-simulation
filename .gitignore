@@ -55,3 +55,4 @@ tools/.validation_cache.json
 .codex/
 .gemini/
 .vscode/
+.playwright-mcp/
