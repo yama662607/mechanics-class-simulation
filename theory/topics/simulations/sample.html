@@ -80,11 +80,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../../site_libs/bootstrap/bootstrap-f57d11532290d8ef44d35aa1dbbccd91.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<meta name="shinylive:serviceworker_dir" content="../../..">
-<script src="../../../site_libs/quarto-contrib/shinylive-0.10.8/shinylive/load-shinylive-sw.js" type="module"></script>
-<script src="../../../site_libs/quarto-contrib/shinylive-0.10.8/shinylive/run-python-blocks.js" type="module"></script>
-<link href="../../../site_libs/quarto-contrib/shinylive-0.10.8/shinylive/shinylive.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-contrib/shinylive-quarto-css/shinylive-quarto.css" rel="stylesheet">
+<script src="../../../site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="../../../site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -113,6 +110,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
+<!--
+  One-time cleanup for visitors with a stale Service Worker registered by
+  the previous Shinylive build of this site. Safe to remove once enough
+  time has passed for all returning visitors to have hit a page once.
+-->
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(function (regs) {
+      regs.forEach(function (r) {
+        var url = (r.active && r.active.scriptURL) || '';
+        if (url.indexOf('shinylive-sw') !== -1) {
+          r.unregister();
+        }
+      });
+    });
+  }
+</script>
+<script type="module" src="../../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
@@ -287,7 +303,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../theory/topics/simulations/sample.html">シミュレーション</a></li><li class="breadcrumb-item"><a href="../../../theory/topics/simulations/sample.html"><span class="chapter-title">単振り子のシミュレーション</span></a></li></ol></nav>
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-title">単振り子のシミュレーション</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> コード</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-title">単振り子のシミュレーション</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> コード</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">すべてのコードを表示</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">すべてのコードを非表示</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">ソースコードを表示</a></li></ul></div></div>
 </div>
 
 
@@ -304,70 +320,82 @@ window.Quarto = {
 </header>
 
 
-<p>このページでは、<strong>ShinyLive</strong> を用いたPythonシミュレーションコードを解説します。 以下のコードは、サーバーを立てることなく完全にブラウザ上のWebAssembly（Pyodide）で実行されています。コードの数式やパラメータをその場で書き換えて再実行することも可能です。</p>
+<p>このページでは、<strong>quarto-live</strong>（Pyodide）を用いたPythonシミュレーションコードを解説します。サーバーを立てることなく、完全にブラウザ上のWebAssembly（Pyodide）で実行されます。コードは純粋な NumPy + Matplotlib で書かれており、Jupyter Notebook にそのままコピーして実行することもできます。</p>
 <section id="インタラクティブシミュレーション" class="level2">
 <h2 class="anchored" data-anchor-id="インタラクティブシミュレーション">インタラクティブ・シミュレーション</h2>
-<p>スライダーを動かしたり、時間スライダーの横にある「再生ボタン」を押してアニメーションを確認してください。</p>
-<pre class="shinylive-python" data-engine="python"><code>#| '!! shinylive warning !!': |
-#|   shinylive does not work in self-contained HTML documents.
-#|   Please set `embed-resources: false` in your metadata.
-#| standalone: true
-#| components: [editor, viewer]
+<p>スライダーを動かして、各パラメータが振り子の動きにどう影響するか確認してください。</p>
+<div class="cell">
+<details class="code-fold hidden">
+<summary>コード</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="15" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 14;"><span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>viewof length        <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.1</span><span class="op">,</span> <span class="fl">2.0</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span>  <span class="dt">label</span><span class="op">:</span> <span class="fu">tex</span><span class="vs">`</span><span class="sc">\t</span><span class="vs">ext{振り子の長さ } L </span><span class="sc">\t</span><span class="vs">ext{ (m)}`</span><span class="op">,</span>        <span class="dt">value</span><span class="op">:</span> <span class="fl">1.0</span>})</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>viewof initial_angle <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="fl">1.57</span><span class="op">,</span> <span class="fl">1.57</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="fu">tex</span><span class="vs">`</span><span class="sc">\t</span><span class="vs">ext{初期角度 } </span><span class="sc">\t</span><span class="vs">heta_0 </span><span class="sc">\t</span><span class="vs">ext{ (rad)}`</span><span class="op">,</span>  <span class="dt">value</span><span class="op">:</span> <span class="fl">0.785</span>})</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>viewof gravity       <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">1.0</span><span class="op">,</span> <span class="fl">20.0</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span>  <span class="dt">label</span><span class="op">:</span> <span class="fu">tex</span><span class="vs">`</span><span class="sc">\t</span><span class="vs">ext{重力加速度 } g </span><span class="sc">\t</span><span class="vs">ext{ (m/s²)}`</span><span class="op">,</span>      <span class="dt">value</span><span class="op">:</span> <span class="fl">9.8</span>})</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>viewof time          <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.0</span><span class="op">,</span> <span class="fl">10.0</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span>  <span class="dt">label</span><span class="op">:</span> <span class="fu">tex</span><span class="vs">`</span><span class="sc">\t</span><span class="vs">ext{時間 } t </span><span class="sc">\t</span><span class="vs">ext{ (s)}`</span><span class="op">,</span>              <span class="dt">value</span><span class="op">:</span> <span class="fl">0.0</span>})</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>viewof animate       <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">toggle</span>({<span class="dt">label</span><span class="op">:</span> <span class="st">"アニメーション再生"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="kw">false</span>})</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co">// アニメーション更新ロジック</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>update_time <span class="op">=</span> {</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="op">!</span>animate) <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> (animate) {</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> next_t <span class="op">=</span> time <span class="op">+</span> <span class="fl">0.1</span><span class="op">;</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (next_t <span class="op">&gt;</span> <span class="fl">10.0</span>) next_t <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    viewof time<span class="op">.</span><span class="at">value</span> <span class="op">=</span> next_t<span class="op">;</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    viewof time<span class="op">.</span><span class="fu">dispatchEvent</span>(<span class="kw">new</span> <span class="bu">CustomEvent</span>(<span class="st">"input"</span>))<span class="op">;</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> Promises<span class="op">.</span><span class="fu">delay</span>(<span class="dv">100</span>)<span class="op">;</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
 
-import numpy as np
-import matplotlib.pyplot as plt
-from shiny import App, render, ui
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="declaration">
 
-# --- UI（ユーザーインターフェース）の定義 ---
-app_ui = ui.page_fluid(
-    ui.layout_sidebar(
-        ui.sidebar(
-            ui.input_slider("length", "振り子の長さ L (m)", 0.1, 2.0, 1.0, step=0.1),
-            ui.input_slider("initial_angle", "初期角度 θ0 (rad)", -np.pi/2, np.pi/2, np.pi/4, step=0.1),
-            ui.input_slider("gravity", "重力加速度 g (m/s²)", 1.0, 20.0, 9.8, step=0.1),
-            # アニメーション可能な時間スライダー
-            ui.input_slider("time", "時間 t (s)", 0.0, 10.0, 0.0, step=0.1, 
-                            animate=ui.AnimationOptions(interval=100, loop=True))
-        ),
-        ui.output_plot("pendulum_plot"),
-    )
-)
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-3" data-nodetype="declaration">
 
-# --- サーバー（計算ロジック）の定義 ---
-def server(input, output, session):
-    @render.plot(alt="単振り子のシミュレーション")
-    def pendulum_plot():
-        # スライダーから入力値を取得
-        L = input.length()
-        g = input.gravity()
-        theta0 = input.initial_angle()
-        t = input.time()
-        
-        # 単振動の角振動数と角度の計算
-        omega = np.sqrt(g / L)
-        theta = theta0 * np.cos(omega * t)
-        
-        # (x, y) 座標へ変換（下向きを負とする）
-        x = L * np.sin(theta)
-        y = -L * np.cos(theta)
-        
-        # プロットの初期化
-        fig, ax = plt.subplots(figsize=(6, 6))
-        ax.set_xlim(-2.5, 2.5)
-        ax.set_ylim(-2.5, 0.5)
-        ax.set_aspect('equal')
-        ax.grid(True)
-        ax.set_title(f"時間 t = {t:.1f} s における単振り子の位置")
-        
-        # 支点、紐、おもりを描画
-        ax.plot(0, 0, 'ko', markersize=8)        # 支点
-        ax.plot([0, x], [0, y], 'k-', lw=2)      # 紐
-        ax.plot(x, y, 'ro', markersize=20)       # おもり
-        
-        return fig
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-4" data-nodetype="declaration">
 
-# アプリの起動
-app = App(app_ui, server)</code></pre>
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-6" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-1" class="exercise-cell">
+
+</div>
+<script type="pyodide-1-contents">
+eyJhdHRyIjp7ImF1dG9ydW4iOnRydWUsImVkaXQiOnRydWUsImV2YWwiOnRydWUsImlucHV0IjpbImxlbmd0aCIsImluaXRpYWxfYW5nbGUiLCJncmF2aXR5IiwidGltZSJdfSwiY29kZSI6IiMgLS0tIOaXpeacrOiqnuODleOCqeODs+ODiCAoTm90byBTYW5zIEpQKSDjga7jg63jg7zjg4kg4oCUIOWIneWbnuOBruOBvyAtLS1cbmltcG9ydCBvc1xuaW1wb3J0IHdhcm5pbmdzXG5pbXBvcnQgbWF0cGxvdGxpYlxuZnJvbSBtYXRwbG90bGliIGltcG9ydCBmb250X21hbmFnZXJcbmZyb20gcHlvZGlkZS5odHRwIGltcG9ydCBweWZldGNoXG5cbndhcm5pbmdzLnNpbXBsZWZpbHRlcihcImlnbm9yZVwiKSAgIyBmb250IOeZu+mMsuWJjeW+jOOBriBHbHlwaCBtaXNzaW5nIOitpuWRiuOCkuaKkeWItlxuXG5pZiBub3Qgb3MucGF0aC5leGlzdHMoXCIvdG1wL05vdG9TYW5zSlAudHRmXCIpOlxuICAgIHJlc3AgPSBhd2FpdCBweWZldGNoKFwiLi4vLi4vLi4vYXNzZXRzL2ZvbnRzL05vdG9TYW5zSlAtUmVndWxhci50dGZcIilcbiAgICB3aXRoIG9wZW4oXCIvdG1wL05vdG9TYW5zSlAudHRmXCIsIFwid2JcIikgYXMgZjpcbiAgICAgICAgZi53cml0ZShhd2FpdCByZXNwLmJ5dGVzKCkpXG4gICAgZm9udF9tYW5hZ2VyLmZvbnRNYW5hZ2VyLmFkZGZvbnQoXCIvdG1wL05vdG9TYW5zSlAudHRmXCIpXG4gICAgbWF0cGxvdGxpYi5yY1BhcmFtc1tcImZvbnQuZmFtaWx5XCJdID0gXCJOb3RvIFNhbnMgSlBcIlxuICAgIG1hdHBsb3RsaWIucmNQYXJhbXNbXCJheGVzLnVuaWNvZGVfbWludXNcIl0gPSBGYWxzZVxuXG4jIC0tLSDmj4/nlLvjg63jgrjjg4Pjgq8gLS0tXG5pbXBvcnQgbnVtcHkgYXMgbnBcbmltcG9ydCBtYXRwbG90bGliLnB5cGxvdCBhcyBwbHRcblxuIyDljZjmjK/li5Xjga7op5LmjK/li5XmlbDjgajop5Lluqbjga7oqIjnrpcgKOWwj+aMr+WLlei/keS8vClcbm9tZWdhID0gbnAuc3FydChncmF2aXR5IC8gbGVuZ3RoKSAgICAgICAgICAgICAjIOinkuaMr+WLleaVsFxudGhldGEgPSBpbml0aWFsX2FuZ2xlICogbnAuY29zKG9tZWdhICogdGltZSkgICMg6KeS5bqmIM64KHQpXG5cbiMg55u05Lqk5bqn5qiZ5aSJ5o+bXG54ID0gbGVuZ3RoICogbnAuc2luKHRoZXRhKVxueSA9IC1sZW5ndGggKiBucC5jb3ModGhldGEpICAjIOaUr+eCueOBjOWOn+eCueOAgeS4i+WQkeOBjeiyoFxuXG5maWcsIGF4ID0gcGx0LnN1YnBsb3RzKGZpZ3NpemU9KDYsIDYpKVxuYXguc2V0X3hsaW0oLTIuNSwgMi41KVxuYXguc2V0X3lsaW0oLTIuNSwgMC41KVxuYXguc2V0X2FzcGVjdChcImVxdWFsXCIpXG5heC5ncmlkKFRydWUpXG5heC5zZXRfdGl0bGUoZlwi5pmC6ZaTIHQgPSB7dGltZTouMWZ9IHMg44Gr44GK44GR44KL5Y2Y5oyv44KK5a2Q44Gu5L2N572uXCIpXG5cbmF4LnBsb3QoMCwgMCwgXCJrb1wiLCBtYXJrZXJzaXplPTgpICAgICAgICAjIOaUr+eCuVxuYXgucGxvdChbMCwgeF0sIFswLCB5XSwgXCJrLVwiLCBsdz0yKSAgICAgICMg57O4XG5heC5wbG90KHgsIHksIFwicm9cIiwgbWFya2Vyc2l6ZT0yMCkgICAgICAgIyDjgYrjgoLjgopcblxucGx0LnRpZ2h0X2xheW91dCgpXG5wbHQuc2hvdygpIn0=
+</script>
+</div>
 </section>
 <section id="理論的背景" class="level2">
 <h2 class="anchored" data-anchor-id="理論的背景">理論的背景</h2>
@@ -387,10 +415,38 @@ app = App(app_ui, server)</code></pre>
 
 <!-- -->
 
+<script type="pyodide-data">
+eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yOC4xL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIl19fQ==
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8xID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0xLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzEgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzEsIHtsZW5ndGgsIGluaXRpYWxfYW5nbGUsIGdyYXZpdHksIHRpbWV9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLXByZWx1ZGUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJweW9kaWRlT2pzID0ge1xuICBjb25zdCB7XG4gICAgUHlvZGlkZUV2YWx1YXRvcixcbiAgICBQeW9kaWRlRW52aXJvbm1lbnRNYW5hZ2VyLFxuICAgIHNldHVwUHl0aG9uLFxuICAgIHN0YXJ0UHlvZGlkZVdvcmtlcixcbiAgICBiNjREZWNvZGUsXG4gICAgY29sbGFwc2VQYXRoLFxuICB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzdGF0dXNDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctc3RhdHVzXCIpO1xuICBjb25zdCBpbmRpY2F0b3JDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpbmRpY2F0b3JDb250YWluZXIuY2xhc3NMaXN0LnJlbW92ZShcImQtbm9uZVwiKTtcblxuICBsZXQgc3RhdHVzVGV4dCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIilcbiAgc3RhdHVzVGV4dC5jbGFzc0xpc3QgPSBcImV4ZXJjaXNlLWxvYWRpbmctZGV0YWlsc1wiO1xuICBzdGF0dXNUZXh0ID0gc3RhdHVzQ29udGFpbmVyLmFwcGVuZENoaWxkKHN0YXR1c1RleHQpO1xuICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYEluaXRpYWxpc2VgO1xuXG4gIC8vIEhvaXN0IGluZGljYXRvciBvdXQgZnJvbSBmaW5hbCBzbGlkZSB3aGVuIHJ1bm5pbmcgdW5kZXIgcmV2ZWFsXG4gIGNvbnN0IHJldmVhbFN0YXR1cyA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsIC5leGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaWYgKHJldmVhbFN0YXR1cykge1xuICAgIHJldmVhbFN0YXR1cy5yZW1vdmUoKTtcbiAgICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCA+IC5zbGlkZXNcIikuYXBwZW5kQ2hpbGQocmV2ZWFsU3RhdHVzKTtcbiAgfVxuXG4gIC8vIE1ha2UgYW55IHJldmVhbCBzbGlkZXMgd2l0aCBsaXZlIGNlbGxzIHNjcm9sbGFibGVcbiAgZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbChcIi5yZXZlYWwgLmV4ZXJjaXNlLWNlbGxcIikuZm9yRWFjaCgoZWwpID0+IHtcbiAgICBlbC5jbG9zZXN0KCdzZWN0aW9uLnNsaWRlJykuY2xhc3NMaXN0LmFkZChcInNjcm9sbGFibGVcIik7XG4gIH0pXG5cbiAgLy8gUHlvZGlkZSBzdXBwbGVtZW50YWwgZGF0YSBhbmQgb3B0aW9uc1xuICBjb25zdCBkYXRhQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLWRhdGFcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBkYXRhID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZGF0YUNvbnRlbnQpKTtcblxuICAvLyBHcmFiIGxpc3Qgb2YgcmVzb3VyY2VzIHRvIGJlIGRvd25sb2FkZWRcbiAgY29uc3QgZmlsZXNDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInZmcy1maWxlXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZmlsZXMgPSBKU09OLnBhcnNlKGI2NERlY29kZShmaWxlc0NvbnRlbnQpKTtcblxuICBsZXQgcHlvZGlkZVByb21pc2UgPSAoYXN5bmMgKCkgPT4ge1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgUHlvZGlkZWA7XG4gICAgY29uc3QgcHlvZGlkZSA9IGF3YWl0IHN0YXJ0UHlvZGlkZVdvcmtlcihkYXRhLm9wdGlvbnMpO1xuXG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiBtaWNyb3BpcGA7XG4gICAgYXdhaXQgcHlvZGlkZS5sb2FkUGFja2FnZShcIm1pY3JvcGlwXCIpO1xuICAgIGNvbnN0IG1pY3JvcGlwID0gYXdhaXQgcHlvZGlkZS5weWltcG9ydChcIm1pY3JvcGlwXCIpO1xuICAgIGF3YWl0IGRhdGEucGFja2FnZXMucGtncy5tYXAoKHBrZykgPT4gKCkgPT4ge1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiAke3BrZ31gO1xuICAgICAgcmV0dXJuIG1pY3JvcGlwLmluc3RhbGwocGtnKTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcbiAgICBhd2FpdCBtaWNyb3BpcC5kZXN0cm95KCk7XG5cbiAgICAvLyBEb3dubG9hZCBhbmQgaW5zdGFsbCByZXNvdXJjZXNcbiAgICBhd2FpdCBmaWxlcy5tYXAoKGZpbGUpID0+IGFzeW5jICgpID0+IHtcbiAgICAgIGNvbnN0IG5hbWUgPSBmaWxlLnN1YnN0cmluZyhmaWxlLmxhc3RJbmRleE9mKCcvJykgKyAxKTtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcmVzb3VyY2U6ICR7bmFtZX1gO1xuICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChmaWxlKTtcbiAgICAgIGlmICghcmVzcG9uc2Uub2spIHtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBDYW4ndCBkb3dubG9hZCBcXGAke2ZpbGV9XFxgLiBFcnJvciAke3Jlc3BvbnNlLnN0YXR1c306IFwiJHtyZXNwb25zZS5zdGF0dXNUZXh0fVwiLmApO1xuICAgICAgfVxuICAgICAgY29uc3QgZGF0YSA9IGF3YWl0IHJlc3BvbnNlLmFycmF5QnVmZmVyKCk7XG5cbiAgICAgIC8vIFN0b3JlIFVSTHMgaW4gdGhlIGN3ZCB3aXRob3V0IGFueSBzdWJkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBpZiAoZmlsZS5pbmNsdWRlcyhcIjovL1wiKSkge1xuICAgICAgICBmaWxlID0gbmFtZTtcbiAgICAgIH1cblxuICAgICAgLy8gQ29sbGFwc2UgaGlnaGVyIGRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGZpbGUgPSBjb2xsYXBzZVBhdGgoZmlsZSk7XG5cbiAgICAgIC8vIENyZWF0ZSBkaXJlY3RvcnkgdHJlZSwgaWdub3JpbmcgXCJkaXJlY3RvcnkgZXhpc3RzXCIgVkZTIGVycm9yc1xuICAgICAgY29uc3QgcGFydHMgPSBmaWxlLnNwbGl0KCcvJykuc2xpY2UoMCwgLTEpO1xuICAgICAgbGV0IHBhdGggPSAnJztcbiAgICAgIHdoaWxlIChwYXJ0cy5sZW5ndGggPiAwKSB7XG4gICAgICAgIHBhdGggKz0gcGFydHMuc2hpZnQoKSArICcvJztcbiAgICAgICAgdHJ5IHtcbiAgICAgICAgICBhd2FpdCBweW9kaWRlLkZTLm1rZGlyKHBhdGgpO1xuICAgICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgICAgaWYgKGUubmFtZSAhPT0gXCJFcnJub0Vycm9yXCIpIHRocm93IGU7XG4gICAgICAgICAgaWYgKGUuZXJybm8gIT09IDIwKSB7XG4gICAgICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICAgICAgY29uc3QgZXJyb3JUZXh0ID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLlVURjhUb1N0cmluZyhlcnJvclRleHRQdHIpO1xuICAgICAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yICR7ZS5lcnJub30gXCIke2Vycm9yVGV4dH1cIi5gKTtcbiAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICAgIH1cblxuICAgICAgLy8gV3JpdGUgdGhpcyBmaWxlIHRvIHRoZSBWRlNcbiAgICAgIHRyeSB7XG4gICAgICAgIHJldHVybiBhd2FpdCBweW9kaWRlLkZTLndyaXRlRmlsZShmaWxlLCBuZXcgVWludDhBcnJheShkYXRhKSk7XG4gICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgIGlmIChlLm5hbWUgIT09IFwiRXJybm9FcnJvclwiKSB0aHJvdyBlO1xuICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICBjb25zdCBlcnJvclRleHQgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuVVRGOFRvU3RyaW5nKGVycm9yVGV4dFB0cik7XG4gICAgICAgIHRocm93IG5ldyBFcnJvcihgRmlsZXN5c3RlbSBFcnJvciAke2UuZXJybm99IFwiJHtlcnJvclRleHR9XCIuYCk7XG4gICAgICB9XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYFB5b2RpZGUgZW52aXJvbm1lbnQgc2V0dXBgO1xuICAgIGF3YWl0IHNldHVwUHl0aG9uKHB5b2RpZGUpO1xuXG4gICAgc3RhdHVzVGV4dC5yZW1vdmUoKTtcbiAgICBpZiAoc3RhdHVzQ29udGFpbmVyLmNoaWxkcmVuLmxlbmd0aCA9PSAwKSB7XG4gICAgICBzdGF0dXNDb250YWluZXIucGFyZW50Tm9kZS5yZW1vdmUoKTtcbiAgICB9XG4gICAgcmV0dXJuIHB5b2RpZGU7XG4gIH0pKCkuY2F0Y2goKGVycikgPT4ge1xuICAgIHN0YXR1c1RleHQuc3R5bGUuY29sb3IgPSBcInZhcigtLWV4ZXJjaXNlLWVkaXRvci1obC1lciwgI0FEMDAwMClcIjtcbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gZXJyLm1lc3NhZ2U7XG4gICAgLy9pbmRpY2F0b3JDb250YWluZXIucXVlcnlTZWxlY3RvcihcIi5zcGlubmVyLWdyb3dcIikuY2xhc3NMaXN0LmFkZChcImQtbm9uZVwiKTtcbiAgICB0aHJvdyBlcnI7XG4gIH0pO1xuXG4gIC8vIEtlZXAgdHJhY2sgb2YgaW5pdGlhbCBPSlMgYmxvY2sgcmVuZGVyXG4gIGNvbnN0IHJlbmRlcmVkT2pzID0ge307XG5cbiAgY29uc3QgcHJvY2VzcyA9IGFzeW5jIChjb250ZXh0LCBpbnB1dHMpID0+IHtcbiAgICBjb25zdCBweW9kaWRlID0gYXdhaXQgcHlvZGlkZVByb21pc2U7XG4gICAgY29uc3QgZXZhbHVhdG9yID0gbmV3IFB5b2RpZGVFdmFsdWF0b3IocHlvZGlkZSwgY29udGV4dCk7XG4gICAgYXdhaXQgZXZhbHVhdG9yLnByb2Nlc3MoaW5wdXRzKTtcbiAgICByZXR1cm4gZXZhbHVhdG9yLmNvbnRhaW5lcjtcbiAgfVxuXG4gIHJldHVybiB7XG4gICAgcHlvZGlkZVByb21pc2UsXG4gICAgcmVuZGVyZWRPanMsXG4gICAgcHJvY2VzcyxcbiAgfTtcbn1cbiJ9XX0=
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
 </section>
 
 </main> <!-- /main -->
 <script src="../../../templates/sidebar-toggle.js"></script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBsZW5ndGggICAgICAgID0gSW5wdXRzLnJhbmdlKFswLjEsIDIuMF0sIHtzdGVwOiAwLjEsICBsYWJlbDogdGV4YFxcdGV4dHvmjK/jgorlrZDjga7plbfjgZUgfSBMIFxcdGV4dHsgKG0pfWAsICAgICAgICB2YWx1ZTogMS4wfSlcbnZpZXdvZiBpbml0aWFsX2FuZ2xlID0gSW5wdXRzLnJhbmdlKFstMS41NywgMS41N10sIHtzdGVwOiAwLjEsIGxhYmVsOiB0ZXhgXFx0ZXh0e+WIneacn+inkuW6piB9IFxcdGhldGFfMCBcXHRleHR7IChyYWQpfWAsICB2YWx1ZTogMC43ODV9KVxudmlld29mIGdyYXZpdHkgICAgICAgPSBJbnB1dHMucmFuZ2UoWzEuMCwgMjAuMF0sIHtzdGVwOiAwLjEsICBsYWJlbDogdGV4YFxcdGV4dHvph43lipvliqDpgJ/luqYgfSBnIFxcdGV4dHsgKG0vc8KyKX1gLCAgICAgIHZhbHVlOiA5Ljh9KVxudmlld29mIHRpbWUgICAgICAgICAgPSBJbnB1dHMucmFuZ2UoWzAuMCwgMTAuMF0sIHtzdGVwOiAwLjEsICBsYWJlbDogdGV4YFxcdGV4dHvmmYLplpMgfSB0IFxcdGV4dHsgKHMpfWAsICAgICAgICAgICAgICB2YWx1ZTogMC4wfSlcbnZpZXdvZiBhbmltYXRlICAgICAgID0gSW5wdXRzLnRvZ2dsZSh7bGFiZWw6IFwi44Ki44OL44Oh44O844K344On44Oz5YaN55SfXCIsIHZhbHVlOiBmYWxzZX0pXG5cbi8vIOOCouODi+ODoeODvOOCt+ODp+ODs+abtOaWsOODreOCuOODg+OCr1xudXBkYXRlX3RpbWUgPSB7XG4gIGlmICghYW5pbWF0ZSkgcmV0dXJuO1xuICB3aGlsZSAoYW5pbWF0ZSkge1xuICAgIGxldCBuZXh0X3QgPSB0aW1lICsgMC4xO1xuICAgIGlmIChuZXh0X3QgPiAxMC4wKSBuZXh0X3QgPSAwLjA7XG4gICAgdmlld29mIHRpbWUudmFsdWUgPSBuZXh0X3Q7XG4gICAgdmlld29mIHRpbWUuZGlzcGF0Y2hFdmVudChuZXcgQ3VzdG9tRXZlbnQoXCJpbnB1dFwiKSk7XG4gICAgYXdhaXQgUHJvbWlzZXMuZGVsYXkoMTAwKTtcbiAgfVxufVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdsZW5ndGgnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnaW5pdGlhbF9hbmdsZScpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdncmF2aXR5JykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ3RpbWUnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnYW5pbWF0ZScpIn1dfQ==
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../theory/topics/simulations";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "../../..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
@@ -861,97 +917,104 @@ app = App(app_ui, server)</code></pre>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">ソースコード</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "単振り子のシミュレーション"</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> html</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="an">filters:</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">  - shinylive</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>このページでは、**ShinyLive** を用いたPythonシミュレーションコードを解説します。</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>以下のコードは、サーバーを立てることなく完全にブラウザ上のWebAssembly（Pyodide）で実行されています。コードの数式やパラメータをその場で書き換えて再実行することも可能です。</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="an">filters:</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">  - r-wasm/live</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>このページでは、**quarto-live**（Pyodide）を用いたPythonシミュレーションコードを解説します。サーバーを立てることなく、完全にブラウザ上のWebAssembly（Pyodide）で実行されます。コードは純粋な NumPy + Matplotlib で書かれており、Jupyter Notebook にそのままコピーして実行することもできます。</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## インタラクティブ・シミュレーション</span></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">## インタラクティブ・シミュレーション</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>スライダーを動かして、各パラメータが振り子の動きにどう影響するか確認してください。</span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>スライダーを動かしたり、時間スライダーの横にある「再生ボタン」を押してアニメーションを確認してください。</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="in">```{shinylive-python}</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#| standalone: true</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#| components: [editor, viewer]</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="ex">import</span> numpy as np</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="ex">import</span> matplotlib.pyplot as plt</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="ex">from</span> shiny import App, render, ui</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">//| echo: false</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>viewof length        <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.1</span><span class="op">,</span> <span class="fl">2.0</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span>  <span class="dt">label</span><span class="op">:</span> <span class="fu">tex</span><span class="vs">`</span><span class="sc">\t</span><span class="vs">ext{振り子の長さ } L </span><span class="sc">\t</span><span class="vs">ext{ (m)}`</span><span class="op">,</span>        <span class="dt">value</span><span class="op">:</span> <span class="fl">1.0</span>})</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>viewof initial_angle <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="fl">1.57</span><span class="op">,</span> <span class="fl">1.57</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="fu">tex</span><span class="vs">`</span><span class="sc">\t</span><span class="vs">ext{初期角度 } </span><span class="sc">\t</span><span class="vs">heta_0 </span><span class="sc">\t</span><span class="vs">ext{ (rad)}`</span><span class="op">,</span>  <span class="dt">value</span><span class="op">:</span> <span class="fl">0.785</span>})</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>viewof gravity       <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">1.0</span><span class="op">,</span> <span class="fl">20.0</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span>  <span class="dt">label</span><span class="op">:</span> <span class="fu">tex</span><span class="vs">`</span><span class="sc">\t</span><span class="vs">ext{重力加速度 } g </span><span class="sc">\t</span><span class="vs">ext{ (m/s²)}`</span><span class="op">,</span>      <span class="dt">value</span><span class="op">:</span> <span class="fl">9.8</span>})</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>viewof time          <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.0</span><span class="op">,</span> <span class="fl">10.0</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span>  <span class="dt">label</span><span class="op">:</span> <span class="fu">tex</span><span class="vs">`</span><span class="sc">\t</span><span class="vs">ext{時間 } t </span><span class="sc">\t</span><span class="vs">ext{ (s)}`</span><span class="op">,</span>              <span class="dt">value</span><span class="op">:</span> <span class="fl">0.0</span>})</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>viewof animate       <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">toggle</span>({<span class="dt">label</span><span class="op">:</span> <span class="st">"アニメーション再生"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="kw">false</span>})</span>
 <span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co"># --- UI（ユーザーインターフェース）の定義 ---</span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="ex">app_ui</span> = ui.page_fluid<span class="er">(</span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="ex">ui.layout_sidebar</span><span class="er">(</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ui.sidebar</span><span class="er">(</span></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>            <span class="ex">ui.input_slider</span><span class="er">(</span><span class="st">"length"</span><span class="ex">,</span> <span class="st">"振り子の長さ L (m)"</span>, 0.1, 2.0, 1.0, step=0.1<span class="kw">)</span><span class="ex">,</span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>            <span class="ex">ui.input_slider</span><span class="er">(</span><span class="st">"initial_angle"</span><span class="ex">,</span> <span class="st">"初期角度 θ0 (rad)"</span>, <span class="at">-np.pi</span>/2, np.pi/2, np.pi/4, step=0.1<span class="kw">)</span><span class="ex">,</span></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>            <span class="ex">ui.input_slider</span><span class="er">(</span><span class="st">"gravity"</span><span class="ex">,</span> <span class="st">"重力加速度 g (m/s²)"</span>, 1.0, 20.0, 9.8, step=0.1<span class="kw">)</span><span class="ex">,</span></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>            <span class="co"># アニメーション可能な時間スライダー</span></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>            <span class="ex">ui.input_slider</span><span class="er">(</span><span class="st">"time"</span><span class="ex">,</span> <span class="st">"時間 t (s)"</span>, 0.0, 10.0, 0.0, step=0.1, </span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>                            <span class="va">animate</span><span class="op">=</span>ui.AnimationOptions<span class="kw">(</span><span class="va">interval</span><span class="op">=</span>100, <span class="va">loop</span><span class="op">=</span>True<span class="kw">))</span></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>        <span class="kw">)</span><span class="ex">,</span></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ui.output_plot</span><span class="er">(</span><span class="st">"pendulum_plot"</span><span class="kw">)</span><span class="ex">,</span></span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">)</span></span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="kw">)</span></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="co"># --- サーバー（計算ロジック）の定義 ---</span></span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="ex">def</span> server<span class="er">(</span><span class="ex">input,</span> output, session<span class="kw">)</span><span class="bu">:</span></span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    <span class="ex">@render.plot</span><span class="er">(</span><span class="va">alt</span><span class="op">=</span><span class="st">"単振り子のシミュレーション"</span><span class="kw">)</span></span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    <span class="ex">def</span> pendulum_plot<span class="er">(</span><span class="kw">)</span><span class="bu">:</span></span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>        <span class="co"># スライダーから入力値を取得</span></span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>        <span class="ex">L</span> = input.length<span class="er">(</span><span class="kw">)</span></span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>        <span class="ex">g</span> = input.gravity<span class="er">(</span><span class="kw">)</span></span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>        <span class="ex">theta0</span> = input.initial_angle<span class="er">(</span><span class="kw">)</span></span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>        <span class="ex">t</span> = input.time<span class="er">(</span><span class="kw">)</span></span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 単振動の角振動数と角度の計算</span></span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>        <span class="ex">omega</span> = np.sqrt<span class="er">(</span><span class="ex">g</span> / L<span class="kw">)</span></span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>        <span class="ex">theta</span> = theta0 <span class="pp">*</span> np.cos<span class="er">(</span><span class="ex">omega</span> <span class="pp">*</span> t<span class="kw">)</span></span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>        <span class="co"># (x, y) 座標へ変換（下向きを負とする）</span></span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>        <span class="ex">x</span> = L <span class="pp">*</span> np.sin<span class="er">(</span><span class="ex">theta</span><span class="kw">)</span></span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>        <span class="ex">y</span> = <span class="at">-L</span> <span class="pp">*</span> np.cos<span class="er">(</span><span class="ex">theta</span><span class="kw">)</span></span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>        <span class="co"># プロットの初期化</span></span>
-<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>        <span class="ex">fig,</span> ax = plt.subplots<span class="er">(</span><span class="va">figsize</span><span class="op">=</span><span class="va">(</span>6, 6<span class="va">)</span><span class="kw">)</span></span>
-<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ax.set_xlim</span><span class="er">(</span><span class="ex">-2.5,</span> 2.5<span class="kw">)</span></span>
-<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ax.set_ylim</span><span class="er">(</span><span class="ex">-2.5,</span> 0.5<span class="kw">)</span></span>
-<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ax.set_aspect</span><span class="er">(</span><span class="st">'equal'</span><span class="kw">)</span></span>
-<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ax.grid</span><span class="er">(</span><span class="ex">True</span><span class="kw">)</span></span>
-<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ax.set_title</span><span class="er">(</span><span class="ex">f</span><span class="st">"時間 t = {t:.1f} s における単振り子の位置"</span><span class="kw">)</span></span>
-<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 支点、紐、おもりを描画</span></span>
-<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ax.plot</span><span class="er">(</span><span class="ex">0,</span> 0, <span class="st">'ko'</span>, markersize=8<span class="kw">)</span>        <span class="co"># 支点</span></span>
-<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ax.plot</span><span class="er">(</span><span class="ex">[0,</span> x], [0, y], <span class="st">'k-'</span>, lw=2<span class="kw">)</span>      <span class="co"># 紐</span></span>
-<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>        <span class="ex">ax.plot</span><span class="er">(</span><span class="ex">x,</span> y, <span class="st">'ro'</span>, markersize=20<span class="kw">)</span>       <span class="co"># おもり</span></span>
-<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ex">fig</span></span>
-<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a><span class="co"># アプリの起動</span></span>
-<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a><span class="ex">app</span> = App<span class="er">(</span><span class="ex">app_ui,</span> server<span class="kw">)</span></span>
-<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a><span class="fu">## 理論的背景</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">// アニメーション更新ロジック</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>update_time <span class="op">=</span> {</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="op">!</span>animate) <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> (animate) {</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> next_t <span class="op">=</span> time <span class="op">+</span> <span class="fl">0.1</span><span class="op">;</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (next_t <span class="op">&gt;</span> <span class="fl">10.0</span>) next_t <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    viewof time<span class="op">.</span><span class="at">value</span> <span class="op">=</span> next_t<span class="op">;</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    viewof time<span class="op">.</span><span class="fu">dispatchEvent</span>(<span class="kw">new</span> <span class="bu">CustomEvent</span>(<span class="st">"input"</span>))<span class="op">;</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> Promises<span class="op">.</span><span class="fu">delay</span>(<span class="dv">100</span>)<span class="op">;</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="in">```{pyodide}</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="co">#| autorun: true</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="co">#| input: ["length", "initial_angle", "gravity", "time"]</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 日本語フォント (Noto Sans JP) のロード — 初回のみ ---</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> font_manager</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyodide.http <span class="im">import</span> pyfetch</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>warnings.simplefilter(<span class="st">"ignore"</span>)  <span class="co"># font 登録前後の Glyph missing 警告を抑制</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> os.path.exists(<span class="st">"/tmp/NotoSansJP.ttf"</span>):</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    resp <span class="op">=</span> <span class="cf">await</span> pyfetch(<span class="st">"../../../assets/fonts/NotoSansJP-Regular.ttf"</span>)</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(<span class="st">"/tmp/NotoSansJP.ttf"</span>, <span class="st">"wb"</span>) <span class="im">as</span> f:</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>        f.write(<span class="cf">await</span> resp.<span class="bu">bytes</span>())</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>    font_manager.fontManager.addfont(<span class="st">"/tmp/NotoSansJP.ttf"</span>)</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>    matplotlib.rcParams[<span class="st">"font.family"</span>] <span class="op">=</span> <span class="st">"Noto Sans JP"</span></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>    matplotlib.rcParams[<span class="st">"axes.unicode_minus"</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 描画ロジック ---</span></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a><span class="co"># 単振動の角振動数と角度の計算 (小振動近似)</span></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>omega <span class="op">=</span> np.sqrt(gravity <span class="op">/</span> length)             <span class="co"># 角振動数</span></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>theta <span class="op">=</span> initial_angle <span class="op">*</span> np.cos(omega <span class="op">*</span> time)  <span class="co"># 角度 θ(t)</span></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a><span class="co"># 直交座標変換</span></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> length <span class="op">*</span> np.sin(theta)</span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> <span class="op">-</span>length <span class="op">*</span> np.cos(theta)  <span class="co"># 支点が原点、下向き負</span></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">6</span>))</span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="op">-</span><span class="fl">2.5</span>, <span class="fl">2.5</span>)</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="fl">2.5</span>, <span class="fl">0.5</span>)</span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>ax.set_aspect(<span class="st">"equal"</span>)</span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>)</span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="ss">f"時間 t = </span><span class="sc">{</span>time<span class="sc">:.1f}</span><span class="ss"> s における単振り子の位置"</span>)</span>
 <span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>長さ $l$ の軽い糸に質量 $m$ のおもりをつるした単振り子の運動方程式は、以下のようになります。</span>
-<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>\frac{d^2 \theta}{dt^2} = -\frac{g}{l} \sin \theta</span>
-<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>微小振動（$\theta \ll 1$）の近似を用いると、$\sin \theta \approx \theta$ となり、方程式は単振動の形になります。</span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>ax.plot(<span class="dv">0</span>, <span class="dv">0</span>, <span class="st">"ko"</span>, markersize<span class="op">=</span><span class="dv">8</span>)        <span class="co"># 支点</span></span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>ax.plot([<span class="dv">0</span>, x], [<span class="dv">0</span>, y], <span class="st">"k-"</span>, lw<span class="op">=</span><span class="dv">2</span>)      <span class="co"># 糸</span></span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>ax.plot(x, y, <span class="st">"ro"</span>, markersize<span class="op">=</span><span class="dv">20</span>)       <span class="co"># おもり</span></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>\frac{d^2 \theta}{dt^2} = -\frac{g}{l} \theta</span>
-<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a><span class="fu">## 理論的背景</span></span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>長さ $l$ の軽い糸に質量 $m$ のおもりをつるした単振り子の運動方程式は、以下のようになります。</span>
 <span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a>この方程式の一般解は以下の通りです。</span>
-<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a>\frac{d^2 \theta}{dt^2} = -\frac{g}{l} \sin \theta</span>
 <span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a>\theta(t) = \theta_0 \cos\left(\sqrt{\frac{g}{l}} t + \phi \right)</span>
-<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>$$</span></code></pre></div><button title="コピー" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>微小振動（$\theta \ll 1$）の近似を用いると、$\sin \theta \approx \theta$ となり、方程式は単振動の形になります。</span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a>\frac{d^2 \theta}{dt^2} = -\frac{g}{l} \theta</span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a>この方程式の一般解は以下の通りです。</span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a>\theta(t) = \theta_0 \cos\left(\sqrt{\frac{g}{l}} t + \phi \right)</span>
+<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a>$$</span>
+</code></pre></div><button title="コピー" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
