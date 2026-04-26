@@ -132,6 +132,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     });
   }
 </script>
+<script type="module" src="../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
@@ -305,7 +307,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../exercises/polar_kinematics.html">演習問題</a></li><li class="breadcrumb-item"><a href="../exercises/polar_kinematics.html"><span class="chapter-title">演習：極座標系における速度と加速度</span></a></li></ol></nav>
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-title">演習：極座標系における速度と加速度</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> コード</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-title">演習：極座標系における速度と加速度</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> コード</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">すべてのコードを表示</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">すべてのコードを非表示</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">ソースコードを表示</a></li></ul></div></div>
 </div>
 
 
@@ -331,6 +333,17 @@ window.Quarto = {
 <section id="軌道アニメーション-コード" class="level2">
 <h2 class="anchored" data-anchor-id="軌道アニメーション-コード">軌道アニメーション (コード)</h2>
 <p>質点が等角螺旋上をどう動くかを <code>FuncAnimation</code> で可視化します。<span class="math inline">k</span> の符号で内向き/外向きが切り替わることを観察してください。</p>
+<div class="cell">
+<details class="code-fold hidden">
+<summary>コード</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="21" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 20;"><span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-1" data-nodetype="expression">
+
+</div>
+</div>
+</div>
 <div>
 <div id="pyodide-1" class="exercise-cell">
 
@@ -481,6 +494,17 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('resize', positionRightBtn);
   }
 });
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IjFcbiJ9XX0=
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../exercises";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
 </script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -947,204 +971,209 @@ document.addEventListener('DOMContentLoaded', function () {
   <div class="nav-page nav-page-next">
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">ソースコード</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "演習：極座標系における速度と加速度"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">engine:</span><span class="co"> markdown</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">filters:</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">  - r-wasm/live</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## 問題</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>等角螺旋 $r = a e^{k\theta} \ (\theta &gt; 0)$ の上を、角速度 $\dot{\theta} = \omega = \text{const}$ で運動する点があります。この点の速度と加速度の極座標成分 $v_r,\ v_\theta,\ a_r,\ a_\theta$ を求めよ。</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>また、$a &gt; 0$ のとき、求めた加速度の動径成分 $a_r$ が $k$ に対してどのように変化するかを、定性的なグラフと共に簡潔に説明せよ。</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## 軌道アニメーション (コード)</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>質点が等角螺旋上をどう動くかを <span class="in">`FuncAnimation`</span> で可視化します。$k$ の符号で内向き/外向きが切り替わることを観察してください。</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="in">```{pyodide}</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co">#| autorun: true</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">#| edit: false</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> font_manager</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyodide.http <span class="im">import</span> pyfetch</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>warnings.simplefilter(<span class="st">"ignore"</span>)</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> os.path.exists(<span class="st">"/tmp/NotoSansJP.ttf"</span>):</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    resp <span class="op">=</span> <span class="cf">await</span> pyfetch(<span class="st">"../../../assets/fonts/NotoSansJP-Regular.ttf"</span>)</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(<span class="st">"/tmp/NotoSansJP.ttf"</span>, <span class="st">"wb"</span>) <span class="im">as</span> f:</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>        f.write(<span class="cf">await</span> resp.<span class="bu">bytes</span>())</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>font_manager.fontManager.addfont(<span class="st">"/tmp/NotoSansJP.ttf"</span>)</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>matplotlib.rcParams[<span class="st">"font.family"</span>] <span class="op">=</span> <span class="st">"Noto Sans JP"</span></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>matplotlib.rcParams[<span class="st">"axes.unicode_minus"</span>] <span class="op">=</span> <span class="va">False</span></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.animation <span class="im">import</span> FuncAnimation</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> HTML</span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 物理パラメータ ---</span></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="fl">1.0</span>       <span class="co"># スケール係数</span></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="fl">0.15</span>      <span class="co"># 螺旋の伸縮率 (正で外向き螺旋、負で内向き螺旋)</span></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>omega <span class="op">=</span> <span class="fl">1.5</span>   <span class="co"># 角速度 [rad/s]</span></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>t_end <span class="op">=</span> <span class="fl">5.0</span></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>n_frames <span class="op">=</span> <span class="dv">150</span></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, t_end, n_frames)</span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>theta <span class="op">=</span> omega <span class="op">*</span> t</span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> a <span class="op">*</span> np.exp(k <span class="op">*</span> theta)</span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> r <span class="op">*</span> np.cos(theta)</span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> r <span class="op">*</span> np.sin(theta)</span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="co"># 描画範囲は終端の最大半径で固定</span></span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>max_r <span class="op">=</span> a <span class="op">*</span> np.exp(<span class="bu">abs</span>(k) <span class="op">*</span> omega <span class="op">*</span> t_end)</span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">6</span>))</span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="op">-</span><span class="fl">1.1</span> <span class="op">*</span> max_r, <span class="fl">1.1</span> <span class="op">*</span> max_r)</span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="fl">1.1</span> <span class="op">*</span> max_r, <span class="fl">1.1</span> <span class="op">*</span> max_r)</span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>ax.set_aspect(<span class="st">"equal"</span>)</span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)</span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">rf"等角螺旋 </span><span class="dv">$</span><span class="vs">r = a e</span><span class="dv">^</span><span class="ch">{{</span><span class="vs">k</span><span class="ch">\t</span><span class="vs">heta</span><span class="ch">}}</span><span class="dv">$</span><span class="vs">  </span><span class="kw">(</span><span class="vs">k = </span><span class="sc">{</span>k<span class="sc">}</span><span class="vs">,  </span><span class="dv">$</span><span class="er">\</span><span class="vs">omega</span><span class="dv">$</span><span class="vs"> = </span><span class="sc">{</span>omega<span class="sc">}</span><span class="kw">)</span><span class="vs">"</span>)</span>
-<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>trail, <span class="op">=</span> ax.plot([], [], <span class="st">"k-"</span>, alpha<span class="op">=</span><span class="fl">0.5</span>, lw<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>radius_line, <span class="op">=</span> ax.plot([], [], <span class="st">"b-"</span>, lw<span class="op">=</span><span class="fl">1.5</span>)</span>
-<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>bob, <span class="op">=</span> ax.plot([], [], <span class="st">"ro"</span>, markersize<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> init():</span>
-<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>    trail.set_data([], [])</span>
-<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>    radius_line.set_data([], [])</span>
-<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>    bob.set_data([], [])</span>
-<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> trail, radius_line, bob</span>
-<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> update(i):</span>
-<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>    trail.set_data(x[: i <span class="op">+</span> <span class="dv">1</span>], y[: i <span class="op">+</span> <span class="dv">1</span>])</span>
-<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>    radius_line.set_data([<span class="dv">0</span>, x[i]], [<span class="dv">0</span>, y[i]])</span>
-<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>    bob.set_data([x[i]], [y[i]])</span>
-<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> trail, radius_line, bob</span>
-<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>ani <span class="op">=</span> FuncAnimation(fig, update, frames<span class="op">=</span>n_frames, init_func<span class="op">=</span>init,</span>
-<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>                    interval<span class="op">=</span><span class="dv">40</span>, blit<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>plt.close(fig)</span>
-<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>HTML(ani.to_jshtml())</span>
-<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>コード中の <span class="in">`k`</span> を <span class="in">`-0.2`</span> や <span class="in">`0.3`</span> に変えて再実行すると、内向き渦/外向き渦の振る舞いが変わります。<span class="in">`k = 0`</span> なら半径一定の円運動です。</span>
-<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a><span class="fu">## 解答と計算過程の解説</span></span>
-<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a><span class="fu">### 1. 速度と加速度の極座標成分の公式の導出 (復習)</span></span>
-<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>極座標系における基底ベクトルの微分の性質 (<span class="co">[</span><span class="ot">@eq-basis-derivative</span><span class="co">](../textbook/textbook.qmd#sec-polar-coordinates)</span> 参照) から出発します。位置ベクトル $\vec{r} = r \hat{e}_r$ を時間 $t$ で微分します。**積の微分公式** $(AB)' = A'B + AB'$ を用いると</span>
-<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>$$ \vec{v} = \frac{d\vec{r}}{dt} = \dot{r}\, \hat{e}_r + r\, \dot{\hat{e}}_r $$</span>
-<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>ノートで確認したように $\dot{\hat{e}}_r = \dot{\theta}\, \hat{e}_\theta$ なので</span>
-<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>$$ \vec{v} = \dot{r}\, \hat{e}_r + r\dot{\theta}\, \hat{e}_\theta $$</span>
-<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>したがって速度成分は $v_r = \dot{r}$、$v_\theta = r\dot{\theta}$。</span>
-<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>さらに微分して加速度を求めます。3 つの積の微分 $(ABC)' = A'BC + AB'C + ABC'$ も使います。</span>
-<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>$$ \vec{a} = \frac{d\vec{v}}{dt} = (\ddot{r}\hat{e}_r + \dot{r}\dot{\hat{e}}_r) + (\dot{r}\dot{\theta}\hat{e}_\theta + r\ddot{\theta}\hat{e}_\theta + r\dot{\theta}\dot{\hat{e}}_\theta) $$</span>
-<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>$\dot{\hat{e}}_r = \dot{\theta}\hat{e}_\theta$ と $\dot{\hat{e}}_\theta = -\dot{\theta}\hat{e}_r$ を代入して整理すると</span>
-<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a>$$ \vec{a} = (\ddot{r} - r\dot{\theta}^2)\hat{e}_r + (r\ddot{\theta} + 2\dot{r}\dot{\theta})\hat{e}_\theta $$ {#eq-polar-acceleration}</span>
-<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a>これが加速度の極座標成分 $a_r,\ a_\theta$ の公式です。</span>
-<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a><span class="fu">### 2. 本問の計算過程</span></span>
-<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a>問題の条件より</span>
-<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$r = a e^{k\theta}$</span>
-<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\dot{\theta} = \omega \quad (\text{一定})$</span>
-<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\ddot{\theta} = 0$</span>
-<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a>$r$ の時間微分 $\dot{r}$ は **合成関数の微分法則** より</span>
-<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a>$$ \dot{r} = \frac{dr}{d\theta}\cdot\frac{d\theta}{dt} = (ake^{k\theta})\cdot\omega = ak\omega e^{k\theta} = k\omega r $$</span>
-<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a>もう一度時間微分すると、定数倍の微分により</span>
-<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a>$$ \ddot{r} = k\omega \dot{r} = ak^2\omega^2 e^{k\theta} $$</span>
-<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a>これらを <span class="co">[</span><span class="ot">@eq-polar-acceleration</span><span class="co">]</span> と $v_r = \dot{r}$、$v_\theta = r\dot{\theta}$ に代入すると</span>
-<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a>**速度成分:**</span>
-<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a>$$ v_r = ak\omega e^{k\theta}, \qquad v_\theta = a\omega e^{k\theta} $$</span>
-<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a>**加速度成分:**</span>
-<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a>$$ a_r = \ddot{r} - r\dot{\theta}^2 = a\omega^2(k^2 - 1)e^{k\theta} $$ {#eq-ar-result}</span>
-<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a>$$ a_\theta = r\ddot{\theta} + 2\dot{r}\dot{\theta} = 2ak\omega^2 e^{k\theta} $$</span>
-<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a><span class="fu">### 3. 動径加速度 $a_r$ の $k$ 依存性 (コード生成グラフ)</span></span>
-<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">@eq-ar-result</span><span class="co">]</span> より、$a &gt; 0$、$\theta &gt; 0$ を固定したとき関数 $f(k) = (k^2 - 1) e^{k\theta}$ の振る舞いを調べれば足ります。以下のグラフはコードから直接生成しています。</span>
-<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a><span class="in">```{pyodide}</span></span>
-<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a><span class="co">#| autorun: true</span></span>
-<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a><span class="co">#| edit: false</span></span>
-<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a><span class="co"># (フォントは前のセルで登録済)</span></span>
-<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a>theta_fixed <span class="op">=</span> <span class="fl">2.0</span>  <span class="co"># 視認用に固定 (任意)</span></span>
-<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">3.5</span>, <span class="fl">3.0</span>, <span class="dv">400</span>)</span>
-<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> (k<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> np.exp(k <span class="op">*</span> theta_fixed)</span>
-<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a><span class="co"># 解析的な極値: θk^2 + 2k - θ = 0</span></span>
-<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a>disc <span class="op">=</span> <span class="dv">1</span> <span class="op">+</span> theta_fixed<span class="op">**</span><span class="dv">2</span></span>
-<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a>k_minus <span class="op">=</span> (<span class="op">-</span><span class="dv">1</span> <span class="op">-</span> np.sqrt(disc)) <span class="op">/</span> theta_fixed   <span class="co"># 極大 (k &lt; -1)</span></span>
-<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a>k_plus  <span class="op">=</span> (<span class="op">-</span><span class="dv">1</span> <span class="op">+</span> np.sqrt(disc)) <span class="op">/</span> theta_fixed   <span class="co"># 極小 (0 &lt; k &lt; 1)</span></span>
-<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="fl">4.5</span>))</span>
-<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"gray"</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"gray"</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a>ax.plot(k, f, <span class="st">"b-"</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="vs">r"</span><span class="dv">$</span><span class="vs">f</span><span class="kw">(</span><span class="vs">k</span><span class="kw">)</span><span class="vs"> = </span><span class="kw">(</span><span class="vs">k</span><span class="dv">^</span><span class="vs">2 - 1</span><span class="kw">)</span><span class="vs">e</span><span class="dv">^</span><span class="vs">{k</span><span class="ch">\t</span><span class="vs">heta}</span><span class="dv">$</span><span class="vs">"</span>)</span>
-<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="op">-</span><span class="dv">1</span>, color<span class="op">=</span><span class="st">"red"</span>, ls<span class="op">=</span><span class="st">"--"</span>, alpha<span class="op">=</span><span class="fl">0.5</span>, label<span class="op">=</span><span class="vs">r"</span><span class="dv">$</span><span class="vs">k = </span><span class="er">\</span><span class="vs">pm 1</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="vs">符号反転点</span><span class="kw">)</span><span class="vs">"</span>)</span>
-<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a>ax.axvline( <span class="dv">1</span>, color<span class="op">=</span><span class="st">"red"</span>, ls<span class="op">=</span><span class="st">"--"</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a>ax.plot([k_minus, k_plus],</span>
-<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a>        [(k_minus<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> np.exp(k_minus <span class="op">*</span> theta_fixed),</span>
-<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a>         (k_plus<span class="op">**</span><span class="dv">2</span>  <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> np.exp(k_plus  <span class="op">*</span> theta_fixed)],</span>
-<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a>        <span class="st">"go"</span>, markersize<span class="op">=</span><span class="dv">8</span>, label<span class="op">=</span><span class="st">"極値"</span>)</span>
-<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r"パラメータ </span><span class="dv">$</span><span class="vs">k</span><span class="dv">$</span><span class="vs">"</span>)</span>
-<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r"</span><span class="dv">$</span><span class="vs">f</span><span class="kw">(</span><span class="vs">k</span><span class="kw">)</span><span class="vs"> </span><span class="er">\</span><span class="vs">propto a_r</span><span class="dv">$</span><span class="vs">"</span>)</span>
-<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">rf"動径加速度の </span><span class="dv">$</span><span class="vs">k</span><span class="dv">$</span><span class="vs"> 依存性  </span><span class="kw">(</span><span class="dv">$</span><span class="ch">\t</span><span class="vs">heta</span><span class="dv">$</span><span class="vs"> = </span><span class="sc">{</span>theta_fixed<span class="sc">}</span><span class="vs"> で固定</span><span class="kw">)</span><span class="vs">"</span>)</span>
-<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="dv">3</span>, <span class="dv">8</span>)</span>
-<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a>ax.legend(loc<span class="op">=</span><span class="st">"upper left"</span>)</span>
-<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)</span>
-<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a><span class="fu">#### グラフから読み取れる振る舞い</span></span>
-<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**$a_r$ の符号 (力の向き)**: $e^{k\theta} &gt; 0$ なので $a_r$ の符号は $(k^2 - 1)$ で決まる。</span>
-<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>$|k| &lt; 1$: $a_r &lt; 0$ で、原点向きの実効的な向心力。</span>
-<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>$|k| &gt; 1$: $a_r &gt; 0$ で、原点から遠ざかる向き。</span>
-<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>$k = \pm 1$: $a_r = 0$。</span>
-<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**$k \to +\infty$**: 指数関数の発散が支配し、$a_r \to +\infty$。</span>
-<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**$k \to -\infty$**: $(k^2 - 1)$ は大きくなるが $e^{k\theta} \to 0$ の方が圧倒的に強く、$a_r \to 0$ に漸近 (螺旋が急激に原点へ巻き込まれるため速度自体が 0 に近づく)。</span>
-<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**極値**: $f'(k) = (\theta k^2 + 2k - \theta)e^{k\theta} = 0$ より</span>
-<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a>   $$ k_{\pm} = \frac{-1 \pm \sqrt{1 + \theta^2}}{\theta} $$</span>
-<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a>   $\theta &gt; 0$ より $k_+ \in (0, 1)$ (極小)、$k_- &lt; -1$ (極大)。</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "演習：極座標系における速度と加速度"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="an">engine:</span><span class="co"> markdown</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="an">filters:</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">  - r-wasm/live</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## 問題</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>等角螺旋 $r = a e^{k\theta} \ (\theta &gt; 0)$ の上を、角速度 $\dot{\theta} = \omega = \text{const}$ で運動する点があります。この点の速度と加速度の極座標成分 $v_r,\ v_\theta,\ a_r,\ a_\theta$ を求めよ。</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>また、$a &gt; 0$ のとき、求めた加速度の動径成分 $a_r$ が $k$ に対してどのように変化するかを、定性的なグラフと共に簡潔に説明せよ。</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## 軌道アニメーション (コード)</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>質点が等角螺旋上をどう動くかを <span class="in">`FuncAnimation`</span> で可視化します。$k$ の符号で内向き/外向きが切り替わることを観察してください。</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">//| echo: false</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="in">```{pyodide}</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co">#| autorun: true</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="co">#| edit: false</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> font_manager</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyodide.http <span class="im">import</span> pyfetch</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>warnings.simplefilter(<span class="st">"ignore"</span>)</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> os.path.exists(<span class="st">"/tmp/NotoSansJP.ttf"</span>):</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    resp <span class="op">=</span> <span class="cf">await</span> pyfetch(<span class="st">"../../../assets/fonts/NotoSansJP-Regular.ttf"</span>)</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(<span class="st">"/tmp/NotoSansJP.ttf"</span>, <span class="st">"wb"</span>) <span class="im">as</span> f:</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>        f.write(<span class="cf">await</span> resp.<span class="bu">bytes</span>())</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>font_manager.fontManager.addfont(<span class="st">"/tmp/NotoSansJP.ttf"</span>)</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>matplotlib.rcParams[<span class="st">"font.family"</span>] <span class="op">=</span> <span class="st">"Noto Sans JP"</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>matplotlib.rcParams[<span class="st">"axes.unicode_minus"</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.animation <span class="im">import</span> FuncAnimation</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> HTML</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 物理パラメータ ---</span></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="fl">1.0</span>       <span class="co"># スケール係数</span></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="fl">0.15</span>      <span class="co"># 螺旋の伸縮率 (正で外向き螺旋、負で内向き螺旋)</span></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>omega <span class="op">=</span> <span class="fl">1.5</span>   <span class="co"># 角速度 [rad/s]</span></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>t_end <span class="op">=</span> <span class="fl">5.0</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>n_frames <span class="op">=</span> <span class="dv">150</span></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, t_end, n_frames)</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>theta <span class="op">=</span> omega <span class="op">*</span> t</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> a <span class="op">*</span> np.exp(k <span class="op">*</span> theta)</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> r <span class="op">*</span> np.cos(theta)</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> r <span class="op">*</span> np.sin(theta)</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a><span class="co"># 描画範囲は終端の最大半径で固定</span></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>max_r <span class="op">=</span> a <span class="op">*</span> np.exp(<span class="bu">abs</span>(k) <span class="op">*</span> omega <span class="op">*</span> t_end)</span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">6</span>))</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="op">-</span><span class="fl">1.1</span> <span class="op">*</span> max_r, <span class="fl">1.1</span> <span class="op">*</span> max_r)</span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="fl">1.1</span> <span class="op">*</span> max_r, <span class="fl">1.1</span> <span class="op">*</span> max_r)</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>ax.set_aspect(<span class="st">"equal"</span>)</span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)</span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">rf"等角螺旋 </span><span class="dv">$</span><span class="vs">r = a e</span><span class="dv">^</span><span class="ch">{{</span><span class="vs">k</span><span class="ch">\t</span><span class="vs">heta</span><span class="ch">}}</span><span class="dv">$</span><span class="vs">  </span><span class="kw">(</span><span class="vs">k = </span><span class="sc">{</span>k<span class="sc">}</span><span class="vs">,  </span><span class="dv">$</span><span class="er">\</span><span class="vs">omega</span><span class="dv">$</span><span class="vs"> = </span><span class="sc">{</span>omega<span class="sc">}</span><span class="kw">)</span><span class="vs">"</span>)</span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>trail, <span class="op">=</span> ax.plot([], [], <span class="st">"k-"</span>, alpha<span class="op">=</span><span class="fl">0.5</span>, lw<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>radius_line, <span class="op">=</span> ax.plot([], [], <span class="st">"b-"</span>, lw<span class="op">=</span><span class="fl">1.5</span>)</span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>bob, <span class="op">=</span> ax.plot([], [], <span class="st">"ro"</span>, markersize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> init():</span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>    trail.set_data([], [])</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>    radius_line.set_data([], [])</span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>    bob.set_data([], [])</span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> trail, radius_line, bob</span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> update(i):</span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>    trail.set_data(x[: i <span class="op">+</span> <span class="dv">1</span>], y[: i <span class="op">+</span> <span class="dv">1</span>])</span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a>    radius_line.set_data([<span class="dv">0</span>, x[i]], [<span class="dv">0</span>, y[i]])</span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a>    bob.set_data([x[i]], [y[i]])</span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> trail, radius_line, bob</span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a>ani <span class="op">=</span> FuncAnimation(fig, update, frames<span class="op">=</span>n_frames, init_func<span class="op">=</span>init,</span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>                    interval<span class="op">=</span><span class="dv">40</span>, blit<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a>plt.close(fig)</span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a>HTML(ani.to_jshtml())</span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a>コード中の <span class="in">`k`</span> を <span class="in">`-0.2`</span> や <span class="in">`0.3`</span> に変えて再実行すると、内向き渦/外向き渦の振る舞いが変わります。<span class="in">`k = 0`</span> なら半径一定の円運動です。</span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a><span class="fu">## 解答と計算過程の解説</span></span>
+<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a><span class="fu">### 1. 速度と加速度の極座標成分の公式の導出 (復習)</span></span>
+<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a>極座標系における基底ベクトルの微分の性質 (<span class="co">[</span><span class="ot">@eq-basis-derivative</span><span class="co">](../textbook/textbook.qmd#sec-polar-coordinates)</span> 参照) から出発します。位置ベクトル $\vec{r} = r \hat{e}_r$ を時間 $t$ で微分します。**積の微分公式** $(AB)' = A'B + AB'$ を用いると</span>
+<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a>$$ \vec{v} = \frac{d\vec{r}}{dt} = \dot{r}\, \hat{e}_r + r\, \dot{\hat{e}}_r $$</span>
+<span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a>ノートで確認したように $\dot{\hat{e}}_r = \dot{\theta}\, \hat{e}_\theta$ なので</span>
+<span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-115"><a href="#cb2-115" aria-hidden="true" tabindex="-1"></a>$$ \vec{v} = \dot{r}\, \hat{e}_r + r\dot{\theta}\, \hat{e}_\theta $$</span>
+<span id="cb2-116"><a href="#cb2-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-117"><a href="#cb2-117" aria-hidden="true" tabindex="-1"></a>したがって速度成分は $v_r = \dot{r}$、$v_\theta = r\dot{\theta}$。</span>
+<span id="cb2-118"><a href="#cb2-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-119"><a href="#cb2-119" aria-hidden="true" tabindex="-1"></a>さらに微分して加速度を求めます。3 つの積の微分 $(ABC)' = A'BC + AB'C + ABC'$ も使います。</span>
+<span id="cb2-120"><a href="#cb2-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-121"><a href="#cb2-121" aria-hidden="true" tabindex="-1"></a>$$ \vec{a} = \frac{d\vec{v}}{dt} = (\ddot{r}\hat{e}_r + \dot{r}\dot{\hat{e}}_r) + (\dot{r}\dot{\theta}\hat{e}_\theta + r\ddot{\theta}\hat{e}_\theta + r\dot{\theta}\dot{\hat{e}}_\theta) $$</span>
+<span id="cb2-122"><a href="#cb2-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-123"><a href="#cb2-123" aria-hidden="true" tabindex="-1"></a>$\dot{\hat{e}}_r = \dot{\theta}\hat{e}_\theta$ と $\dot{\hat{e}}_\theta = -\dot{\theta}\hat{e}_r$ を代入して整理すると</span>
+<span id="cb2-124"><a href="#cb2-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-125"><a href="#cb2-125" aria-hidden="true" tabindex="-1"></a>$$ \vec{a} = (\ddot{r} - r\dot{\theta}^2)\hat{e}_r + (r\ddot{\theta} + 2\dot{r}\dot{\theta})\hat{e}_\theta $$ {#eq-polar-acceleration}</span>
+<span id="cb2-126"><a href="#cb2-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-127"><a href="#cb2-127" aria-hidden="true" tabindex="-1"></a>これが加速度の極座標成分 $a_r,\ a_\theta$ の公式です。</span>
+<span id="cb2-128"><a href="#cb2-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-129"><a href="#cb2-129" aria-hidden="true" tabindex="-1"></a><span class="fu">### 2. 本問の計算過程</span></span>
+<span id="cb2-130"><a href="#cb2-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-131"><a href="#cb2-131" aria-hidden="true" tabindex="-1"></a>問題の条件より</span>
+<span id="cb2-132"><a href="#cb2-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-133"><a href="#cb2-133" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$r = a e^{k\theta}$</span>
+<span id="cb2-134"><a href="#cb2-134" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\dot{\theta} = \omega \quad (\text{一定})$</span>
+<span id="cb2-135"><a href="#cb2-135" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\ddot{\theta} = 0$</span>
+<span id="cb2-136"><a href="#cb2-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-137"><a href="#cb2-137" aria-hidden="true" tabindex="-1"></a>$r$ の時間微分 $\dot{r}$ は **合成関数の微分法則** より</span>
+<span id="cb2-138"><a href="#cb2-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-139"><a href="#cb2-139" aria-hidden="true" tabindex="-1"></a>$$ \dot{r} = \frac{dr}{d\theta}\cdot\frac{d\theta}{dt} = (ake^{k\theta})\cdot\omega = ak\omega e^{k\theta} = k\omega r $$</span>
+<span id="cb2-140"><a href="#cb2-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-141"><a href="#cb2-141" aria-hidden="true" tabindex="-1"></a>もう一度時間微分すると、定数倍の微分により</span>
+<span id="cb2-142"><a href="#cb2-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-143"><a href="#cb2-143" aria-hidden="true" tabindex="-1"></a>$$ \ddot{r} = k\omega \dot{r} = ak^2\omega^2 e^{k\theta} $$</span>
+<span id="cb2-144"><a href="#cb2-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-145"><a href="#cb2-145" aria-hidden="true" tabindex="-1"></a>これらを <span class="co">[</span><span class="ot">@eq-polar-acceleration</span><span class="co">]</span> と $v_r = \dot{r}$、$v_\theta = r\dot{\theta}$ に代入すると</span>
+<span id="cb2-146"><a href="#cb2-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-147"><a href="#cb2-147" aria-hidden="true" tabindex="-1"></a>**速度成分:**</span>
+<span id="cb2-148"><a href="#cb2-148" aria-hidden="true" tabindex="-1"></a>$$ v_r = ak\omega e^{k\theta}, \qquad v_\theta = a\omega e^{k\theta} $$</span>
+<span id="cb2-149"><a href="#cb2-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-150"><a href="#cb2-150" aria-hidden="true" tabindex="-1"></a>**加速度成分:**</span>
+<span id="cb2-151"><a href="#cb2-151" aria-hidden="true" tabindex="-1"></a>$$ a_r = \ddot{r} - r\dot{\theta}^2 = a\omega^2(k^2 - 1)e^{k\theta} $$ {#eq-ar-result}</span>
+<span id="cb2-152"><a href="#cb2-152" aria-hidden="true" tabindex="-1"></a>$$ a_\theta = r\ddot{\theta} + 2\dot{r}\dot{\theta} = 2ak\omega^2 e^{k\theta} $$</span>
+<span id="cb2-153"><a href="#cb2-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-154"><a href="#cb2-154" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb2-155"><a href="#cb2-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-156"><a href="#cb2-156" aria-hidden="true" tabindex="-1"></a><span class="fu">### 3. 動径加速度 $a_r$ の $k$ 依存性 (コード生成グラフ)</span></span>
+<span id="cb2-157"><a href="#cb2-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-158"><a href="#cb2-158" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">@eq-ar-result</span><span class="co">]</span> より、$a &gt; 0$、$\theta &gt; 0$ を固定したとき関数 $f(k) = (k^2 - 1) e^{k\theta}$ の振る舞いを調べれば足ります。以下のグラフはコードから直接生成しています。</span>
+<span id="cb2-159"><a href="#cb2-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-162"><a href="#cb2-162" aria-hidden="true" tabindex="-1"></a><span class="in">```{pyodide}</span></span>
+<span id="cb2-163"><a href="#cb2-163" aria-hidden="true" tabindex="-1"></a><span class="co">#| autorun: true</span></span>
+<span id="cb2-164"><a href="#cb2-164" aria-hidden="true" tabindex="-1"></a><span class="co">#| edit: false</span></span>
+<span id="cb2-165"><a href="#cb2-165" aria-hidden="true" tabindex="-1"></a><span class="co"># (フォントは前のセルで登録済)</span></span>
+<span id="cb2-166"><a href="#cb2-166" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-167"><a href="#cb2-167" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-168"><a href="#cb2-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-169"><a href="#cb2-169" aria-hidden="true" tabindex="-1"></a>theta_fixed <span class="op">=</span> <span class="fl">2.0</span>  <span class="co"># 視認用に固定 (任意)</span></span>
+<span id="cb2-170"><a href="#cb2-170" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">3.5</span>, <span class="fl">3.0</span>, <span class="dv">400</span>)</span>
+<span id="cb2-171"><a href="#cb2-171" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> (k<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> np.exp(k <span class="op">*</span> theta_fixed)</span>
+<span id="cb2-172"><a href="#cb2-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-173"><a href="#cb2-173" aria-hidden="true" tabindex="-1"></a><span class="co"># 解析的な極値: θk^2 + 2k - θ = 0</span></span>
+<span id="cb2-174"><a href="#cb2-174" aria-hidden="true" tabindex="-1"></a>disc <span class="op">=</span> <span class="dv">1</span> <span class="op">+</span> theta_fixed<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb2-175"><a href="#cb2-175" aria-hidden="true" tabindex="-1"></a>k_minus <span class="op">=</span> (<span class="op">-</span><span class="dv">1</span> <span class="op">-</span> np.sqrt(disc)) <span class="op">/</span> theta_fixed   <span class="co"># 極大 (k &lt; -1)</span></span>
+<span id="cb2-176"><a href="#cb2-176" aria-hidden="true" tabindex="-1"></a>k_plus  <span class="op">=</span> (<span class="op">-</span><span class="dv">1</span> <span class="op">+</span> np.sqrt(disc)) <span class="op">/</span> theta_fixed   <span class="co"># 極小 (0 &lt; k &lt; 1)</span></span>
+<span id="cb2-177"><a href="#cb2-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-178"><a href="#cb2-178" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="fl">4.5</span>))</span>
+<span id="cb2-179"><a href="#cb2-179" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"gray"</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb2-180"><a href="#cb2-180" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"gray"</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb2-181"><a href="#cb2-181" aria-hidden="true" tabindex="-1"></a>ax.plot(k, f, <span class="st">"b-"</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="vs">r"</span><span class="dv">$</span><span class="vs">f</span><span class="kw">(</span><span class="vs">k</span><span class="kw">)</span><span class="vs"> = </span><span class="kw">(</span><span class="vs">k</span><span class="dv">^</span><span class="vs">2 - 1</span><span class="kw">)</span><span class="vs">e</span><span class="dv">^</span><span class="vs">{k</span><span class="ch">\t</span><span class="vs">heta}</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb2-182"><a href="#cb2-182" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="op">-</span><span class="dv">1</span>, color<span class="op">=</span><span class="st">"red"</span>, ls<span class="op">=</span><span class="st">"--"</span>, alpha<span class="op">=</span><span class="fl">0.5</span>, label<span class="op">=</span><span class="vs">r"</span><span class="dv">$</span><span class="vs">k = </span><span class="er">\</span><span class="vs">pm 1</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="vs">符号反転点</span><span class="kw">)</span><span class="vs">"</span>)</span>
+<span id="cb2-183"><a href="#cb2-183" aria-hidden="true" tabindex="-1"></a>ax.axvline( <span class="dv">1</span>, color<span class="op">=</span><span class="st">"red"</span>, ls<span class="op">=</span><span class="st">"--"</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb2-184"><a href="#cb2-184" aria-hidden="true" tabindex="-1"></a>ax.plot([k_minus, k_plus],</span>
+<span id="cb2-185"><a href="#cb2-185" aria-hidden="true" tabindex="-1"></a>        [(k_minus<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> np.exp(k_minus <span class="op">*</span> theta_fixed),</span>
+<span id="cb2-186"><a href="#cb2-186" aria-hidden="true" tabindex="-1"></a>         (k_plus<span class="op">**</span><span class="dv">2</span>  <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> np.exp(k_plus  <span class="op">*</span> theta_fixed)],</span>
+<span id="cb2-187"><a href="#cb2-187" aria-hidden="true" tabindex="-1"></a>        <span class="st">"go"</span>, markersize<span class="op">=</span><span class="dv">8</span>, label<span class="op">=</span><span class="st">"極値"</span>)</span>
+<span id="cb2-188"><a href="#cb2-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-189"><a href="#cb2-189" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r"パラメータ </span><span class="dv">$</span><span class="vs">k</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb2-190"><a href="#cb2-190" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r"</span><span class="dv">$</span><span class="vs">f</span><span class="kw">(</span><span class="vs">k</span><span class="kw">)</span><span class="vs"> </span><span class="er">\</span><span class="vs">propto a_r</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb2-191"><a href="#cb2-191" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">rf"動径加速度の </span><span class="dv">$</span><span class="vs">k</span><span class="dv">$</span><span class="vs"> 依存性  </span><span class="kw">(</span><span class="dv">$</span><span class="ch">\t</span><span class="vs">heta</span><span class="dv">$</span><span class="vs"> = </span><span class="sc">{</span>theta_fixed<span class="sc">}</span><span class="vs"> で固定</span><span class="kw">)</span><span class="vs">"</span>)</span>
+<span id="cb2-192"><a href="#cb2-192" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="dv">3</span>, <span class="dv">8</span>)</span>
+<span id="cb2-193"><a href="#cb2-193" aria-hidden="true" tabindex="-1"></a>ax.legend(loc<span class="op">=</span><span class="st">"upper left"</span>)</span>
+<span id="cb2-194"><a href="#cb2-194" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)</span>
+<span id="cb2-195"><a href="#cb2-195" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb2-196"><a href="#cb2-196" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb2-197"><a href="#cb2-197" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-198"><a href="#cb2-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-199"><a href="#cb2-199" aria-hidden="true" tabindex="-1"></a><span class="fu">#### グラフから読み取れる振る舞い</span></span>
+<span id="cb2-200"><a href="#cb2-200" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-201"><a href="#cb2-201" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**$a_r$ の符号 (力の向き)**: $e^{k\theta} &gt; 0$ なので $a_r$ の符号は $(k^2 - 1)$ で決まる。</span>
+<span id="cb2-202"><a href="#cb2-202" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>$|k| &lt; 1$: $a_r &lt; 0$ で、原点向きの実効的な向心力。</span>
+<span id="cb2-203"><a href="#cb2-203" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>$|k| &gt; 1$: $a_r &gt; 0$ で、原点から遠ざかる向き。</span>
+<span id="cb2-204"><a href="#cb2-204" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>$k = \pm 1$: $a_r = 0$。</span>
+<span id="cb2-205"><a href="#cb2-205" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**$k \to +\infty$**: 指数関数の発散が支配し、$a_r \to +\infty$。</span>
+<span id="cb2-206"><a href="#cb2-206" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**$k \to -\infty$**: $(k^2 - 1)$ は大きくなるが $e^{k\theta} \to 0$ の方が圧倒的に強く、$a_r \to 0$ に漸近 (螺旋が急激に原点へ巻き込まれるため速度自体が 0 に近づく)。</span>
+<span id="cb2-207"><a href="#cb2-207" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**極値**: $f'(k) = (\theta k^2 + 2k - \theta)e^{k\theta} = 0$ より</span>
+<span id="cb2-208"><a href="#cb2-208" aria-hidden="true" tabindex="-1"></a>   $$ k_{\pm} = \frac{-1 \pm \sqrt{1 + \theta^2}}{\theta} $$</span>
+<span id="cb2-209"><a href="#cb2-209" aria-hidden="true" tabindex="-1"></a>   $\theta &gt; 0$ より $k_+ \in (0, 1)$ (極小)、$k_- &lt; -1$ (極大)。</span>
 </code></pre></div><button title="コピー" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

@@ -60,7 +60,7 @@
     "href": "textbook/textbook.html#sec-polar-coordinates",
     "title": "理論体系ノート",
     "section": "極座標系と基底ベクトルの微分",
-    "text": "極座標系と基底ベクトルの微分\n平面の極座標 (r, \\theta) では、位置ベクトル \\vec{r} は以下のように表されます。\n \\vec{r} = r \\hat{e}_r  \\tag{2.1}\nここで、\\hat{e}_r は動径方向の単位ベクトルです。また、これに直交し反時計回りを正とする方向の単位ベクトルを \\hat{e}_\\theta とします。\n直交座標系 (デカルト座標) の基底ベクトル \\hat{i}, \\hat{j} は時間や位置によらず一定ですが、極座標の基底ベクトル \\hat{e}_r, \\hat{e}_\\theta は 質点の位置 (角度 \\theta) に依存して向きが変わる ため、時間微分するとゼロにはなりません。\n\n基底ベクトル変化の図解 (コード生成)\n以下の図は、角度が \\theta から \\theta + d\\theta へ微小に変化したときの基底ベクトルの変化 d\\hat{e}_r, d\\hat{e}_\\theta を matplotlib で描いたものです。コードを直接読んで、どのベクトルがどの式に対応するかを確認してください。\n\n\n\n\n\n\n図から定性的に以下のことが分かります。\n\nd\\hat{e}_r の向き: \\hat{e}_r が d\\theta だけ回転すると、その変化分 d\\hat{e}_r は元のベクトルと直交する方向、すなわち \\hat{e}_\\theta の方向を向きます。長さは 1 \\cdot d\\theta です。\nd\\hat{e}_\\theta の向き: \\hat{e}_\\theta が d\\theta だけ回転すると、その変化分 d\\hat{e}_\\theta は元のベクトルと直交する方向ですが、\\hat{e}_r とは逆向き (中心に向かう方向) となります。長さは 1 \\cdot d\\theta です。\n\n時間 dt で割ることで、時間微分の公式が得られます。\n \\frac{d\\hat{e}_r}{dt} = \\dot{\\theta}\\, \\hat{e}_\\theta, \\qquad \\frac{d\\hat{e}_\\theta}{dt} = -\\dot{\\theta}\\, \\hat{e}_r  \\tag{2.2}\nこれらは速度と加速度の極座標成分を計算する上で最も重要な関係式です。",
+    "text": "極座標系と基底ベクトルの微分\n平面の極座標 (r, \\theta) では、位置ベクトル \\vec{r} は以下のように表されます。\n \\vec{r} = r \\hat{e}_r  \\tag{2.1}\nここで、\\hat{e}_r は動径方向の単位ベクトルです。また、これに直交し反時計回りを正とする方向の単位ベクトルを \\hat{e}_\\theta とします。\n直交座標系 (デカルト座標) の基底ベクトル \\hat{i}, \\hat{j} は時間や位置によらず一定ですが、極座標の基底ベクトル \\hat{e}_r, \\hat{e}_\\theta は 質点の位置 (角度 \\theta) に依存して向きが変わる ため、時間微分するとゼロにはなりません。\n\n基底ベクトル変化の図解 (コード生成)\n以下の図は、角度が \\theta から \\theta + d\\theta へ微小に変化したときの基底ベクトルの変化 d\\hat{e}_r, d\\hat{e}_\\theta を matplotlib で描いたものです。コードを直接読んで、どのベクトルがどの式に対応するかを確認してください。\n\n\nコード\n// Quarto Live は OJS runtime のロードを {ojs} セルの存在で判定する。\n// {pyodide} セルしかないページではこのダミーが必要。\n1\n\n\n\n\n\n\n\n\n\n\n\n\n\n図から定性的に以下のことが分かります。\n\nd\\hat{e}_r の向き: \\hat{e}_r が d\\theta だけ回転すると、その変化分 d\\hat{e}_r は元のベクトルと直交する方向、すなわち \\hat{e}_\\theta の方向を向きます。長さは 1 \\cdot d\\theta です。\nd\\hat{e}_\\theta の向き: \\hat{e}_\\theta が d\\theta だけ回転すると、その変化分 d\\hat{e}_\\theta は元のベクトルと直交する方向ですが、\\hat{e}_r とは逆向き (中心に向かう方向) となります。長さは 1 \\cdot d\\theta です。\n\n時間 dt で割ることで、時間微分の公式が得られます。\n \\frac{d\\hat{e}_r}{dt} = \\dot{\\theta}\\, \\hat{e}_\\theta, \\qquad \\frac{d\\hat{e}_\\theta}{dt} = -\\dot{\\theta}\\, \\hat{e}_r  \\tag{2.2}\nこれらは速度と加速度の極座標成分を計算する上で最も重要な関係式です。",
     "crumbs": [
       "ホーム",
       "理論体系ノート",
@@ -192,7 +192,7 @@
     "href": "simulations/pendulum.html#アニメーション-コード",
     "title": "単振り子のシミュレーション",
     "section": "アニメーション (コード)",
-    "text": "アニメーション (コード)\n\n\n\n\n\n\n\n\n\n\n\n\nヒント\n\n\n\n読み解きヒント\n\n数値積分は omega[i+1] = omega[i] - (g/L) * sin(θ[i]) * dt の 1 行が \\dot{\\theta} = -(g/\\ell)\\sin\\theta$ の Euler-Cromer 離散化です。\n初期角度 60^\\circ は微小ではないので、振動周期が線形理論の T = 2\\pi\\sqrt{\\ell/g} よりわずかに長くなります。コード中の theta0 を 10^\\circ などに変えて比較してみてください。\nFuncAnimation の interval はミリ秒単位の再生間隔。to_jshtml() で生成された JS プレイヤーは再生・一時停止・コマ送り・スライダー操作ができ、Quarto Live 専用ではないので Jupyter にそのまま貼り付けても動きます。",
+    "text": "アニメーション (コード)\n\n\nコード\n1\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nヒント\n\n\n\n読み解きヒント\n\n数値積分は omega[i+1] = omega[i] - (g/L) * sin(θ[i]) * dt の 1 行が \\dot{\\theta} = -(g/\\ell)\\sin\\theta$ の Euler-Cromer 離散化です。\n初期角度 60^\\circ は微小ではないので、振動周期が線形理論の T = 2\\pi\\sqrt{\\ell/g} よりわずかに長くなります。コード中の theta0 を 10^\\circ などに変えて比較してみてください。\nFuncAnimation の interval はミリ秒単位の再生間隔。to_jshtml() で生成された JS プレイヤーは再生・一時停止・コマ送り・スライダー操作ができ、Quarto Live 専用ではないので Jupyter にそのまま貼り付けても動きます。",
     "crumbs": [
       "ホーム",
       "シミュレーション",
@@ -216,7 +216,7 @@
     "href": "exercises/polar_kinematics.html#軌道アニメーション-コード",
     "title": "演習：極座標系における速度と加速度",
     "section": "軌道アニメーション (コード)",
-    "text": "軌道アニメーション (コード)\n質点が等角螺旋上をどう動くかを FuncAnimation で可視化します。k の符号で内向き/外向きが切り替わることを観察してください。\n\n\n\n\n\n\n\n\n\n\n\n\nヒント\n\n\n\nコード中の k を -0.2 や 0.3 に変えて再実行すると、内向き渦/外向き渦の振る舞いが変わります。k = 0 なら半径一定の円運動です。",
+    "text": "軌道アニメーション (コード)\n質点が等角螺旋上をどう動くかを FuncAnimation で可視化します。k の符号で内向き/外向きが切り替わることを観察してください。\n\n\nコード\n1\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nヒント\n\n\n\nコード中の k を -0.2 や 0.3 に変えて再実行すると、内向き渦/外向き渦の振る舞いが変わります。k = 0 なら半径一定の円運動です。",
     "crumbs": [
       "ホーム",
       "演習問題",
