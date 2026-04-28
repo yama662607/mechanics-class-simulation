@@ -29,7 +29,6 @@ _quarto_live_loader = 1
 
 ```{pyodide}
 #| autorun: true
-#| edit: false
 # --- 日本語フォントを matplotlib に登録 ---
 import os
 import warnings

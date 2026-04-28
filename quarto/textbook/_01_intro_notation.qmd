@@ -26,7 +26,6 @@ _quarto_live_loader = 1
 
 ```{pyodide}
 #| autorun: true
-#| edit: false
 import os
 import warnings
 import matplotlib

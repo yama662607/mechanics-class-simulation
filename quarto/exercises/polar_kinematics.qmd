@@ -25,7 +25,6 @@ _quarto_live_loader = 1
 
 ```{pyodide}
 #| autorun: true
-#| edit: false
 import os
 import warnings
 import matplotlib
@@ -156,7 +155,6 @@ $$ a_\theta = r\ddot{\theta} + 2\dot{r}\dot{\theta} = 2ak\omega^2 e^{k\theta} $$
 
 ```{pyodide}
 #| autorun: true
-#| edit: false
 # Quarto Live の autorun は前のセルの完了を待たないため、
 # このセルでも font setup を inline する (`/tmp/NotoSansJP.ttf` が
 # 存在すれば pyfetch をスキップ、二重ダウンロードにはならない)。
