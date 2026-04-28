@@ -157,7 +157,25 @@ $$ a_\theta = r\ddot{\theta} + 2\dot{r}\dot{\theta} = 2ak\omega^2 e^{k\theta} $$
 ```{pyodide}
 #| autorun: true
 #| edit: false
-# (フォントは前のセルで登録済)
+# Quarto Live の autorun は前のセルの完了を待たないため、
+# このセルでも font setup を inline する (`/tmp/NotoSansJP.ttf` が
+# 存在すれば pyfetch をスキップ、二重ダウンロードにはならない)。
+import os
+import warnings
+import matplotlib
+from matplotlib import font_manager
+from pyodide.http import pyfetch
+
+warnings.simplefilter("ignore")
+
+if not os.path.exists("/tmp/NotoSansJP.ttf"):
+    resp = await pyfetch("../../../assets/fonts/NotoSansJP-Regular.ttf")
+    with open("/tmp/NotoSansJP.ttf", "wb") as f:
+        f.write(await resp.bytes())
+font_manager.fontManager.addfont("/tmp/NotoSansJP.ttf")
+matplotlib.rcParams["font.family"] = "Noto Sans JP"
+matplotlib.rcParams["axes.unicode_minus"] = False
+
 import numpy as np
 import matplotlib.pyplot as plt
 
