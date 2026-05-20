@@ -5,6 +5,7 @@
   "type": "commonjs",
   "license": "MIT",
   "private": true,
+  "packageManager": "bun@1.3.14",
   "scripts": {
     "test": "echo \"No npm tests — use 'just test' instead.\""
   },
